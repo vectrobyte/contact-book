@@ -5,4 +5,4 @@ export type Contact = {
   phone: string;
 };
 
-export type CreateContactPayload = Omit<Contact, 'id'>;
+export type ContactFormData = Omit<Contact, 'id'>;

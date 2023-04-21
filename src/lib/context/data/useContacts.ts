@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { type Contact, type CreateContactPayload } from '@/@types';
+import { type Contact, type ContactFormData } from '@/@types';
 import { uuid } from '@/lib/helpers';
 
 export function useContacts() {
@@ -23,7 +23,7 @@ export function useContacts() {
   }, []);
 
   const createContact = useCallback(
-    async (contactData: CreateContactPayload) => {
+    async (contactData: ContactFormData) => {
       const newContact: Contact = {
         id: uuid(),
         ...contactData,

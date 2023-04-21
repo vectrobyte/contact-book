@@ -5,11 +5,11 @@ import { type Contact } from '@/@types';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
 import ContactAvatar from '@/pages/contacts/components/ContactAvatar';
 
-type ViewContactProps = ModalProps & {
+type ViewContactModalProps = ModalProps & {
   contact: Contact;
 };
 
-const ViewContact: React.FC<ViewContactProps> = ({ contact, ...props }) => {
+const ViewContactModal: React.FC<ViewContactModalProps> = ({ contact, ...props }) => {
   return (
     <Modal
       header={<h1 className="mb-1 text-xl leading-tight tracking-tight">View Contact</h1>}
@@ -46,4 +46,4 @@ const ViewContact: React.FC<ViewContactProps> = ({ contact, ...props }) => {
   );
 };
 
-export default ViewContact;
+export default ViewContactModal;

@@ -4,16 +4,18 @@ import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 import { type Contact } from '@/@types';
 import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
+import SecondaryButton from '@/components/buttons/SecondaryButton';
 import AppLayout from '@/layouts/app-layout/AppLayout';
 import { useContacts } from '@/lib/context/data/useContacts';
 import ContactAvatar from '@/pages/contacts/components/ContactAvatar';
+import CreateContactModal from '@/pages/contacts/components/modals/CreateContactModal';
 import DeleteContactModal from '@/pages/contacts/components/modals/DeleteContactModal';
-import ViewContact from '@/pages/contacts/components/modals/ViewContact';
+import ViewContactModal from '@/pages/contacts/components/modals/ViewContactModal';
 
 type HomeProps = React.HTMLAttributes<HTMLElement>;
 
 const Home: React.FC<HomeProps> = () => {
-  const { contacts, dropContact } = useContacts();
+  const { contacts, createContact, dropContact } = useContacts();
 
   const [isViewContactVisible, setIsViewContactVisible] = useState(false);
   const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
@@ -91,8 +93,7 @@ const Home: React.FC<HomeProps> = () => {
       </table>
 
       <div className="fixed bottom-10 right-10">
-        <Button
-          className="rounded-full bg-gray-50"
+        <SecondaryButton
           onClick={() => {
             setIsCreateContactModalOpen(true);
           }}
@@ -101,10 +102,10 @@ const Home: React.FC<HomeProps> = () => {
             <MdAdd size={24} />
             <span>Create Contact</span>
           </div>
-        </Button>
+        </SecondaryButton>
       </div>
 
-      <ViewContact
+      <ViewContactModal
         visible={isViewContactVisible}
         contact={targetContact as Contact}
         onClose={() => {
@@ -113,14 +114,24 @@ const Home: React.FC<HomeProps> = () => {
         }}
       />
 
+      <CreateContactModal
+        visible={isCreateContactModalOpen}
+        contact={targetContact as Contact}
+        onSubmit={createContact}
+        onClose={() => {
+          clearTargetContact();
+          setIsCreateContactModalOpen(false);
+        }}
+      />
+
       <DeleteContactModal
         visible={isDeleteContactModalOpen}
         contact={targetContact as Contact}
+        onSubmit={dropContact}
         onClose={() => {
           clearTargetContact();
           setIsDeleteContactModalOpen(false);
         }}
-        onSubmit={() => dropContact(targetContact as Contact)}
       />
     </AppLayout>
   );

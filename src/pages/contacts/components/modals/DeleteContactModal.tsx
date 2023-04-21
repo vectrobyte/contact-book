@@ -8,7 +8,7 @@ import Modal, { type ModalProps } from '@/components/modals/Modal';
 
 type DeleteContactModalProps = ModalProps & {
   contact: Contact;
-  onSubmit(): Promise<void>;
+  onSubmit(contact: Contact): Promise<void>;
   onClose(): void;
 };
 
