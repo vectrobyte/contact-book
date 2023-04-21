@@ -60,10 +60,10 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className={`fixed inset-x-0 h-full transition-all sm:inset-0 ${zIndexClass} top-0 overflow-auto
+      className={`fixed inset-0 inset-x-0 h-full transition-all ${zIndexClass} top-0 overflow-auto
         ${
           showModal
-            ? 'opacity-100 duration-300 ease-out sm:flex sm:items-center sm:justify-center'
+            ? 'flex-center opacity-100 duration-300 ease-out'
             : 'opacity-0 duration-200 ease-in '
         }
         ${visible ? '' : 'hidden'}`}
@@ -80,19 +80,19 @@ const Modal: React.FC<ModalProps> = ({
 
       <div
         aria-label="modal-dialog"
-        className={`absolute flex h-full w-full md:h-auto md:w-6/12 lg:justify-center ${modalClass}`}
+        className={`absolute flex h-auto w-6/12 w-full justify-center ${modalClass}`}
       >
         <div
-          className={`relative w-full overflow-auto bg-white shadow-xl transition-all duration-200 lg:my-8 ${
+          className={`relative my-8 w-full overflow-auto bg-white shadow-xl transition-all duration-200 ${
             showModal
               ? visible
-                ? 'translate-y-0 opacity-100 ease-out sm:translate-y-0 sm:scale-100'
-                : 'translate-y-4 opacity-0 ease-in sm:translate-y-4 sm:scale-95 '
-              : 'translate-y-4 opacity-0 ease-in sm:translate-y-4 sm:scale-95 '
+                ? 'translate-y-0 scale-100 opacity-100 ease-out'
+                : 'translate-y-4 scale-95 opacity-0 ease-in'
+              : 'translate-y-4 translate-y-4 scale-95 opacity-0 ease-in'
           }`}
         >
           {!!header && !hideCloseBtn && (
-            <div className="absolute right-0 top-0 z-10 pr-6 pt-6 sm:block">
+            <div className="absolute right-0 top-0 z-10 block pr-6 pt-6">
               <button className="" onClick={onClose}>
                 <span>
                   <MdClose size={24} />
@@ -100,8 +100,8 @@ const Modal: React.FC<ModalProps> = ({
               </button>
             </div>
           )}
-          <div className="p-6 sm:flex sm:items-start">
-            <div className="mt-3 w-full sm:mt-0 sm:text-left">
+          <div className="flex items-start p-6">
+            <div className="mt-0 w-full text-left">
               {header}
               <div className="mt-2">
                 <LoadingOverlay loading={Boolean(loading)}>{children}</LoadingOverlay>

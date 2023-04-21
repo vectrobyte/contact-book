@@ -12,7 +12,7 @@ type ViewContactModalProps = ModalProps & {
 const ViewContactModal: React.FC<ViewContactModalProps> = ({ contact, ...props }) => {
   return (
     <Modal
-      header={<h1 className="mb-1 text-xl leading-tight tracking-tight">View Contact</h1>}
+      header={<h1 className="mb-4 text-xl leading-tight tracking-tight">View Contact</h1>}
       {...props}
       modalClass="!w-[400px]"
     >

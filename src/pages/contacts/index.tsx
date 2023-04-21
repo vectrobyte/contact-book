@@ -37,13 +37,17 @@ const Home: React.FC<HomeProps> = () => {
 
   return (
     <AppLayout>
-      <table className="w-full">
+      <table className="w-full table-fixed">
         <thead>
           <tr>
-            <td className="border-b p-3 text-gray-600">Name</td>
-            <td className="border-b p-3 text-gray-600">Email</td>
-            <td className="border-b p-3 text-gray-600">Mobile</td>
-            <td className="border-b p-3 text-gray-600" />
+            <th className="w-1/2 border-b p-3 text-left font-medium text-gray-600 lg:w-1/3">
+              Name
+            </th>
+            <th className="hidden w-[250px] border-b p-3 text-left font-medium text-gray-600 lg:table-cell">
+              Email
+            </th>
+            <th className="w-[250px] border-b p-3 text-left font-medium text-gray-600">Mobile</th>
+            <th className="border-b p-3 text-gray-600" />
           </tr>
         </thead>
 
@@ -51,7 +55,7 @@ const Home: React.FC<HomeProps> = () => {
           {contacts.length
             ? contacts.map((contact) => (
                 <tr className="group transition-colors hover:bg-gray-50" key={contact.id}>
-                  <td className="w-1/3 p-2 text-sm">
+                  <td className="p-2 text-sm">
                     <button
                       className="group flex items-center gap-4 transition-opacity hover:opacity-80"
                       onClick={() => {
@@ -63,7 +67,7 @@ const Home: React.FC<HomeProps> = () => {
                       <span className="group-hover:underline">{contact.full_name}</span>
                     </button>
                   </td>
-                  <td className="p-2 text-sm font-light">{contact.email}</td>
+                  <td className="hidden p-2 text-sm font-light lg:table-cell">{contact.email}</td>
                   <td className="p-2 text-sm font-light">{contact.phone}</td>
                   <td className="w-[100px] p-2">
                     <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
