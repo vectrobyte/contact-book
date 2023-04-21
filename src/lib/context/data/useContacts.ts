@@ -12,7 +12,7 @@ export function useContacts() {
       email: 'contact@vectrobyte.com',
     },
     {
-      id: 1,
+      id: 2,
       full_name: 'Rabin Bhattarai',
       phone: '9842632004',
     },
@@ -23,7 +23,7 @@ export function useContacts() {
   }, []);
 
   const createContact = useCallback(
-    (contactData: CreateContactPayload) => {
+    async (contactData: CreateContactPayload) => {
       const newContact: Contact = {
         id: uuid(),
         ...contactData,
@@ -35,7 +35,7 @@ export function useContacts() {
   );
 
   const updateContact = useCallback(
-    (updatedContact: Contact) => {
+    async (updatedContact: Contact) => {
       updateContacts(
         contacts.map((contact) => (contact.id === updatedContact.id ? updatedContact : contact))
       );
@@ -44,7 +44,7 @@ export function useContacts() {
   );
 
   const dropContact = useCallback(
-    (contactToDelete: Contact) => {
+    async (contactToDelete: Contact) => {
       updateContacts(contacts.filter((contact) => contactToDelete.id !== contact.id));
     },
     [contacts, updateContacts]

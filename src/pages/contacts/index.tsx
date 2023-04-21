@@ -7,12 +7,13 @@ import IconButton from '@/components/buttons/IconButton';
 import AppLayout from '@/layouts/app-layout/AppLayout';
 import { useContacts } from '@/lib/context/data/useContacts';
 import ContactAvatar from '@/pages/contacts/components/ContactAvatar';
+import DeleteContactModal from '@/pages/contacts/components/modals/DeleteContactModal';
 import ViewContact from '@/pages/contacts/components/modals/ViewContact';
 
 type HomeProps = React.HTMLAttributes<HTMLElement>;
 
 const Home: React.FC<HomeProps> = () => {
-  const { contacts } = useContacts();
+  const { contacts, dropContact } = useContacts();
 
   const [isViewContactVisible, setIsViewContactVisible] = useState(false);
   const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
@@ -46,19 +47,18 @@ const Home: React.FC<HomeProps> = () => {
         <tbody>
           {contacts.length
             ? contacts.map((contact) => (
-                <tr
-                  className="group cursor-pointer transition-colors hover:bg-gray-50"
-                  key={contact.id}
-                  onClick={() => {
-                    setTargetContact(contact);
-                    setIsViewContactVisible(true);
-                  }}
-                >
+                <tr className="group transition-colors hover:bg-gray-50" key={contact.id}>
                   <td className="w-1/3 p-2 text-sm">
-                    <div className="flex items-center gap-4">
+                    <button
+                      className="group flex items-center gap-4 transition-opacity hover:opacity-80"
+                      onClick={() => {
+                        setTargetContact(contact);
+                        setIsViewContactVisible(true);
+                      }}
+                    >
                       <ContactAvatar contact={contact} />
-                      <span>{contact.full_name}</span>
-                    </div>
+                      <span className="group-hover:underline">{contact.full_name}</span>
+                    </button>
                   </td>
                   <td className="p-2 text-sm font-light">{contact.email}</td>
                   <td className="p-2 text-sm font-light">{contact.phone}</td>
@@ -106,11 +106,21 @@ const Home: React.FC<HomeProps> = () => {
 
       <ViewContact
         visible={isViewContactVisible}
-        contact={targetContact}
+        contact={targetContact as Contact}
         onClose={() => {
           clearTargetContact();
           setIsViewContactVisible(false);
         }}
+      />
+
+      <DeleteContactModal
+        visible={isDeleteContactModalOpen}
+        contact={targetContact as Contact}
+        onClose={() => {
+          clearTargetContact();
+          setIsDeleteContactModalOpen(false);
+        }}
+        onSubmit={() => dropContact(targetContact as Contact)}
       />
     </AppLayout>
   );
