@@ -4,13 +4,13 @@ import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 import { type Contact } from '@/@types';
 import IconButton from '@/components/buttons/IconButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
+import ContactAvatar from '@/features/contacts/components/ContactAvatar';
+import CreateContactModal from '@/features/contacts/components/modals/CreateContactModal';
+import DeleteContactModal from '@/features/contacts/components/modals/DeleteContactModal';
+import EditContactModal from '@/features/contacts/components/modals/EditContactModal';
+import ViewContactModal from '@/features/contacts/components/modals/ViewContactModal';
 import AppLayout from '@/layouts/app-layout/AppLayout';
 import { useContacts } from '@/lib/hooks/data/useContacts';
-import ContactAvatar from '@/pages/contacts/components/ContactAvatar';
-import CreateContactModal from '@/pages/contacts/components/modals/CreateContactModal';
-import DeleteContactModal from '@/pages/contacts/components/modals/DeleteContactModal';
-import EditContactModal from '@/pages/contacts/components/modals/EditContactModal';
-import ViewContactModal from '@/pages/contacts/components/modals/ViewContactModal';
 
 type HomeProps = React.HTMLAttributes<HTMLElement>;
 
@@ -35,7 +35,7 @@ const Home: React.FC<HomeProps> = () => {
   }, []);
 
   return (
-    <AppLayout>
+    <div className="">
       <table className="mb-[100px] w-full table-fixed">
         <thead>
           <tr>
@@ -148,7 +148,7 @@ const Home: React.FC<HomeProps> = () => {
           setIsDeleteContactModalOpen(false);
         }}
       />
-    </AppLayout>
+    </div>
   );
 };
 

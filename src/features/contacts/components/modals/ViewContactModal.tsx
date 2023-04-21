@@ -3,7 +3,7 @@ import { MdMailOutline, MdPhone } from 'react-icons/md';
 
 import { type Contact } from '@/@types';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
-import ContactAvatar from '@/pages/contacts/components/ContactAvatar';
+import ContactAvatar from '@/features/contacts/components/ContactAvatar';
 
 type ViewContactModalProps = ModalProps & {
   contact: Contact;

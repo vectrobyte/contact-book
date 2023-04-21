@@ -1,19 +1,13 @@
 import '@/styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { type AppType } from 'next/app';
-import { type Session } from 'next-auth';
-import { SessionProvider } from 'next-auth/react';
 import { ToastContainer } from 'react-toastify';
 
-import { api } from '@/utils/api';
+import AppLayout from '@/layouts/app-layout/AppLayout';
 
-const MyApp: AppType<{ session: Session | null }> = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}) => {
+const MyApp = ({ Component, pageProps }) => {
   return (
-    <SessionProvider session={session}>
+    <AppLayout>
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
@@ -24,8 +18,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
       />
 
       <Component {...pageProps} />
-    </SessionProvider>
+    </AppLayout>
   );
 };
 
-export default api.withTRPC(MyApp);
+export default MyApp;
