@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 
+import { type Contact } from '@/@types';
 import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
 import AppLayout from '@/layouts/app-layout/AppLayout';
 import { useContacts } from '@/lib/context/data/useContacts';
 
-type ContactsProps = React.HTMLAttributes<HTMLElement>;
+type HomeProps = React.HTMLAttributes<HTMLElement>;
 
-const Contacts: React.FC<ContactsProps> = () => {
+const Home: React.FC<HomeProps> = () => {
   const { contacts } = useContacts();
+
+  const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
+  const [isDeleteContactModalOpen, setIsDeleteContactModalOpen] = useState(false);
+  const [isCreateContactModalOpen, setIsCreateContactModalOpen] = useState(false);
+
+  const [targetContact, setTargetContact] = useState<Contact>(null);
 
   return (
     <AppLayout>
@@ -32,10 +39,22 @@ const Contacts: React.FC<ContactsProps> = () => {
                   <td className="p-2 text-sm font-light">{contact.phone}</td>
                   <td className="w-[100px] py-2">
                     <div className="flex items-center justify-end gap-1">
-                      <IconButton title="Edit">
+                      <IconButton
+                        title="Edit"
+                        onClick={() => {
+                          setTargetContact(contact);
+                          setIsEditContactModalOpen(true);
+                        }}
+                      >
                         <MdEdit />
                       </IconButton>
-                      <IconButton title="Delete">
+                      <IconButton
+                        title="Delete"
+                        onClick={() => {
+                          setTargetContact(contact);
+                          setIsDeleteContactModalOpen(true);
+                        }}
+                      >
                         <MdDelete />
                       </IconButton>
                     </div>
@@ -47,7 +66,12 @@ const Contacts: React.FC<ContactsProps> = () => {
       </table>
 
       <div className="fixed bottom-10 right-10">
-        <Button className="rounded-full bg-gray-50">
+        <Button
+          className="rounded-full bg-gray-50"
+          onClick={() => {
+            setIsCreateContactModalOpen(true);
+          }}
+        >
           <div className="flex items-center justify-center gap-2">
             <MdAdd size={24} />
             <span>Create Contact</span>
@@ -58,4 +82,4 @@ const Contacts: React.FC<ContactsProps> = () => {
   );
 };
 
-export default Contacts;
+export default Home;
