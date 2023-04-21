@@ -91,9 +91,9 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
   return (
     <Modal
       visible={visible}
-      hideCloseBtn
       hasBorderInFooter={false}
       modalClass="!w-[400px]"
+      header={<h1 className="mb-6 text-xl">Edit Contact</h1>}
       onClose={handleClose}
       {...props}
     >
@@ -138,7 +138,7 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
           error={errors.email && errors.email?.message}
         />
 
-        <div className="mt-8 flex w-full items-center justify-end gap-2">
+        <div className="mt-8 flex w-full items-center justify-end gap-3">
           <PrimaryButton type="submit" loading={submitting}>
             Update
           </PrimaryButton>

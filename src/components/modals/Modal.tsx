@@ -83,12 +83,12 @@ const Modal: React.FC<ModalProps> = ({
         className={`absolute flex h-full w-full md:h-auto md:w-6/12 lg:justify-center ${modalClass}`}
       >
         <div
-          className={`relative w-full overflow-auto bg-white shadow-xl transition-all lg:my-8 ${
+          className={`relative w-full overflow-auto bg-white shadow-xl transition-all duration-200 lg:my-8 ${
             showModal
               ? visible
-                ? 'translate-y-0 opacity-100 duration-300 ease-out sm:translate-y-0 sm:scale-100'
-                : 'translate-y-4 opacity-0 duration-200 ease-in sm:translate-y-4 sm:scale-95 '
-              : 'translate-y-4 opacity-0 duration-200 ease-in sm:translate-y-4 sm:scale-95 '
+                ? 'translate-y-0 opacity-100 ease-out sm:translate-y-0 sm:scale-100'
+                : 'translate-y-4 opacity-0 ease-in sm:translate-y-4 sm:scale-95 '
+              : 'translate-y-4 opacity-0 ease-in sm:translate-y-4 sm:scale-95 '
           }`}
         >
           {!!header && !hideCloseBtn && (

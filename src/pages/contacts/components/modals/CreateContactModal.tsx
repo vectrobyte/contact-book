@@ -74,9 +74,9 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
 
   return (
     <Modal
-      hideCloseBtn
       hasBorderInFooter={false}
       modalClass="!w-[400px]"
+      header={<h1 className="mb-6 text-xl">Create Contact</h1>}
       onClose={handleClose}
       {...props}
     >
@@ -121,7 +121,7 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
           error={errors.email && errors.email?.message}
         />
 
-        <div className="mt-8 flex w-full items-center justify-end gap-2">
+        <div className="mt-8 flex w-full items-center justify-end gap-3">
           <PrimaryButton type="submit" loading={submitting}>
             Create
           </PrimaryButton>

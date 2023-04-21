@@ -40,8 +40,9 @@ const DeleteContactModal: React.FC<DeleteContactModalProps> = ({
     <Modal
       visible={visible}
       hideCloseBtn
+      header={<h1 className="mb-4 text-xl">Delete from contacts?</h1>}
       hasBorderInFooter={false}
-      modalClass="!w-[400px]"
+      modalClass="!w-[500px]"
       footer={
         <div className="flex w-full items-center justify-end gap-2">
           <PrimaryButton loading={loading} onClick={handleSubmit}>
@@ -52,7 +53,7 @@ const DeleteContactModal: React.FC<DeleteContactModalProps> = ({
       }
       onClose={onClose}
     >
-      <h1 className="mb-2 text-lg">Are you sure that you want to delete {contact.full_name}?</h1>
+      <h1 className="mb-2">This contact will be permanently deleted.</h1>
     </Modal>
   );
 };
