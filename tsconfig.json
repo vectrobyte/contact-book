@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2019",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "ES2017",
+      "ES2018",
+      "ES2019"
+    ],
     "allowJs": true,
-    "checkJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -14,15 +20,23 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "checkJs": true,
     "incremental": true,
     "noUncheckedIndexedAccess": true,
+    "types": [
+      "react",
+      "react-dom"
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/@types"
+    ],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
   "include": [
-    ".eslintrc.cjs",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
