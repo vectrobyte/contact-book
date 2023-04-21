@@ -1,0 +1,29 @@
+import React from 'react';
+import { AiFillWarning } from 'react-icons/ai';
+
+type InputBase = React.HTMLAttributes<HTMLElement> & {
+  label?: string;
+  error?: string;
+  labelClass?: string;
+};
+
+const InputBase: React.FC<InputBase> = ({ id, label, error, children, labelClass = '' }) => {
+  return (
+    <div className="mb-4">
+      {label && (
+        <label htmlFor={id} className={`mb-2 capitalize text-gray-800 ${labelClass}`}>
+          {label}
+        </label>
+      )}
+      {children}
+      {error && (
+        <span className="my-1 flex items-start text-sm text-red-500">
+          <AiFillWarning className="mr-1 mt-0.5" size="16" />
+          <span>{error}</span>
+        </span>
+      )}
+    </div>
+  );
+};
+
+export default InputBase;
