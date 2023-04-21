@@ -8,7 +8,7 @@ import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import TextInput from '@/components/inputs/TextInput';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
-import { ContactFormSchema } from '@/features/contacts/ContactFormSchema';
+import { ContactFormSchema } from '@/features/contacts/schemas/ContactFormSchema';
 import { EMAIL_REGEX } from '@/lib/configs';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';

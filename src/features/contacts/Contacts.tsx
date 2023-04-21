@@ -10,7 +10,7 @@ import DeleteContactModal from '@/features/contacts/components/modals/DeleteCont
 import EditContactModal from '@/features/contacts/components/modals/EditContactModal';
 import ViewContactModal from '@/features/contacts/components/modals/ViewContactModal';
 import AppLayout from '@/layouts/app-layout/AppLayout';
-import { useContacts } from '@/lib/hooks/data/useContacts';
+import { useContacts } from '@/features/contacts/hooks/useContacts';
 
 type HomeProps = React.HTMLAttributes<HTMLElement>;
 
