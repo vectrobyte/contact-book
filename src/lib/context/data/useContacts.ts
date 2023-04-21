@@ -9,6 +9,7 @@ export function useContacts() {
       id: 1,
       full_name: 'Dilip Bhattarai',
       phone: '9827352725',
+      email: 'contact@vectrobyte.com',
     },
     {
       id: 1,

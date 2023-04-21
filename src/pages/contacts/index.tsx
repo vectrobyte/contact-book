@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 
 import { type Contact } from '@/@types';
@@ -6,17 +6,30 @@ import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
 import AppLayout from '@/layouts/app-layout/AppLayout';
 import { useContacts } from '@/lib/context/data/useContacts';
+import ContactAvatar from '@/pages/contacts/components/ContactAvatar';
+import ViewContact from '@/pages/contacts/components/modals/ViewContact';
 
 type HomeProps = React.HTMLAttributes<HTMLElement>;
 
 const Home: React.FC<HomeProps> = () => {
   const { contacts } = useContacts();
 
+  const [isViewContactVisible, setIsViewContactVisible] = useState(false);
   const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
-  const [isDeleteContactModalOpen, setIsDeleteContactModalOpen] = useState(false);
   const [isCreateContactModalOpen, setIsCreateContactModalOpen] = useState(false);
+  const [isDeleteContactModalOpen, setIsDeleteContactModalOpen] = useState(false);
 
-  const [targetContact, setTargetContact] = useState<Contact>(null);
+  const [targetContact, setTargetContact] = useState<Partial<Contact>>({});
+
+  const clearTargetContact = useCallback(() => {
+    const timeout = setTimeout(() => {
+      setTargetContact({});
+    }, 300);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
     <AppLayout>
@@ -33,12 +46,24 @@ const Home: React.FC<HomeProps> = () => {
         <tbody>
           {contacts.length
             ? contacts.map((contact) => (
-                <tr className="transition-colors hover:bg-gray-50" key={contact.id}>
-                  <td className="w-1/3 p-2 text-sm">{contact.full_name}</td>
+                <tr
+                  className="group cursor-pointer transition-colors hover:bg-gray-50"
+                  key={contact.id}
+                  onClick={() => {
+                    setTargetContact(contact);
+                    setIsViewContactVisible(true);
+                  }}
+                >
+                  <td className="w-1/3 p-2 text-sm">
+                    <div className="flex items-center gap-4">
+                      <ContactAvatar contact={contact} />
+                      <span>{contact.full_name}</span>
+                    </div>
+                  </td>
                   <td className="p-2 text-sm font-light">{contact.email}</td>
                   <td className="p-2 text-sm font-light">{contact.phone}</td>
-                  <td className="w-[100px] py-2">
-                    <div className="flex items-center justify-end gap-1">
+                  <td className="w-[100px] p-2">
+                    <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                       <IconButton
                         title="Edit"
                         onClick={() => {
@@ -72,12 +97,21 @@ const Home: React.FC<HomeProps> = () => {
             setIsCreateContactModalOpen(true);
           }}
         >
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex-center gap-2">
             <MdAdd size={24} />
             <span>Create Contact</span>
           </div>
         </Button>
       </div>
+
+      <ViewContact
+        visible={isViewContactVisible}
+        contact={targetContact}
+        onClose={() => {
+          clearTargetContact();
+          setIsViewContactVisible(false);
+        }}
+      />
     </AppLayout>
   );
 };

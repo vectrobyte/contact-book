@@ -11,6 +11,7 @@ export type ModalProps = {
   hideCloseBtn?: boolean;
   zIndexClass?: string;
   hasBorderInFooter?: boolean;
+  modalClass?: string;
   onClose(): void;
 };
 
@@ -23,6 +24,7 @@ const Modal: React.FC<ModalProps> = ({
   hideCloseBtn = false,
   loading = false,
   children,
+  modalClass = '',
   zIndexClass = 'z-100',
   onClose = () => null,
   hasBorderInFooter = true,
@@ -76,7 +78,10 @@ const Modal: React.FC<ModalProps> = ({
         <div className="absolute inset-0 bg-gray-900 opacity-50" onClick={onClose} />
       </div>
 
-      <div className="absolute flex h-full w-full md:h-auto md:w-6/12 lg:justify-center">
+      <div
+        aria-label="modal-dialog"
+        className={`absolute flex h-full w-full md:h-auto md:w-6/12 lg:justify-center ${modalClass}`}
+      >
         <div
           className={`relative w-full overflow-auto bg-white shadow-xl transition-all lg:my-8 ${
             showModal
@@ -95,7 +100,7 @@ const Modal: React.FC<ModalProps> = ({
               </button>
             </div>
           )}
-          <div className="p-4 sm:flex sm:items-start lg:p-8">
+          <div className="p-6 sm:flex sm:items-start">
             <div className="mt-3 w-full sm:mt-0 sm:text-left">
               {header}
               <div className="mt-2">
