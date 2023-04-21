@@ -1,6 +1,8 @@
 export type Contact = {
-  id: string;
+  id: string | number;
   full_name: string;
   email?: string;
   phone: string;
 };
+
+export type CreateContactPayload = Omit<Contact, 'id'>;

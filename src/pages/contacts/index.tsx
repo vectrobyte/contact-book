@@ -4,12 +4,12 @@ import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
 import AppLayout from '@/layouts/app-layout/AppLayout';
-import { useGetContacts } from '@/lib/context/data/useGetContacts';
+import { useContacts } from '@/lib/context/data/useContacts';
 
 type ContactsProps = React.HTMLAttributes<HTMLElement>;
 
 const Contacts: React.FC<ContactsProps> = () => {
-  const { contacts } = useGetContacts();
+  const { contacts } = useContacts();
 
   return (
     <AppLayout>
