@@ -17,8 +17,8 @@ model Example {
 }
 
 model Contact {
-    id    String  @id @default(cuid())
-    name  String
-    phone String? @unique
-    email String?
+    id        String  @id @default(cuid())
+    full_name String
+    phone     String? @unique
+    email     String?
 }
