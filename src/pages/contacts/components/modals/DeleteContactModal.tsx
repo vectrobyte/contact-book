@@ -23,7 +23,7 @@ const DeleteContactModal: React.FC<DeleteContactModalProps> = ({
   function handleSubmit() {
     setLoading(true);
 
-    onSubmit()
+    onSubmit(contact)
       .then(() => {
         toast.success('Contact deleted successfully!');
         onClose();
@@ -44,7 +44,7 @@ const DeleteContactModal: React.FC<DeleteContactModalProps> = ({
       hasBorderInFooter={false}
       modalClass="!w-[500px]"
       footer={
-        <div className="flex w-full items-center justify-end gap-2">
+        <div className="flex w-full items-center justify-end gap-3">
           <PrimaryButton loading={loading} onClick={handleSubmit}>
             Confirm
           </PrimaryButton>
