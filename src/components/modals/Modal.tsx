@@ -12,6 +12,7 @@ export type ModalProps = {
   zIndexClass?: string;
   hasBorderInFooter?: boolean;
   modalClass?: string;
+  children?: ReactNode;
   onClose(): void;
 };
 

@@ -2,11 +2,10 @@ import React, { useCallback, useState } from 'react';
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 
 import { type Contact } from '@/@types';
-import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import AppLayout from '@/layouts/app-layout/AppLayout';
-import { useContacts } from '@/lib/context/data/useContacts';
+import { useContacts } from '@/lib/hooks/data/useContacts';
 import ContactAvatar from '@/pages/contacts/components/ContactAvatar';
 import CreateContactModal from '@/pages/contacts/components/modals/CreateContactModal';
 import DeleteContactModal from '@/pages/contacts/components/modals/DeleteContactModal';
@@ -123,7 +122,6 @@ const Home: React.FC<HomeProps> = () => {
 
       <CreateContactModal
         visible={isCreateContactModalOpen}
-        contact={targetContact as Contact}
         onSubmit={createContact}
         onClose={() => {
           clearTargetContact();

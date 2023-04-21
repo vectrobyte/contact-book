@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -10,6 +11,7 @@ import Modal, { type ModalProps } from '@/components/modals/Modal';
 import { EMAIL_REGEX } from '@/lib/configs';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';
+import { ContactFormSchema } from '@/lib/schemas';
 
 type EditContactModalProps = ModalProps & {
   contact: Contact;
@@ -32,7 +34,7 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
     reset,
     setError,
     clearErrors,
-  } = useForm<ContactFormData>();
+  } = useForm<ContactFormData>({ resolver: yupResolver(ContactFormSchema) });
 
   const resetForm = useCallback(() => {
     reset();
