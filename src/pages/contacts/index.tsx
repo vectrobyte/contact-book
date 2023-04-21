@@ -10,12 +10,13 @@ import { useContacts } from '@/lib/context/data/useContacts';
 import ContactAvatar from '@/pages/contacts/components/ContactAvatar';
 import CreateContactModal from '@/pages/contacts/components/modals/CreateContactModal';
 import DeleteContactModal from '@/pages/contacts/components/modals/DeleteContactModal';
+import EditContactModal from '@/pages/contacts/components/modals/EditContactModal';
 import ViewContactModal from '@/pages/contacts/components/modals/ViewContactModal';
 
 type HomeProps = React.HTMLAttributes<HTMLElement>;
 
 const Home: React.FC<HomeProps> = () => {
-  const { contacts, createContact, dropContact } = useContacts();
+  const { contacts, createContact, updateContact, dropContact } = useContacts();
 
   const [isViewContactVisible, setIsViewContactVisible] = useState(false);
   const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
@@ -121,6 +122,16 @@ const Home: React.FC<HomeProps> = () => {
         onClose={() => {
           clearTargetContact();
           setIsCreateContactModalOpen(false);
+        }}
+      />
+
+      <EditContactModal
+        visible={isEditContactModalOpen}
+        contact={targetContact as Contact}
+        onSubmit={updateContact}
+        onClose={() => {
+          clearTargetContact();
+          setIsEditContactModalOpen(false);
         }}
       />
 

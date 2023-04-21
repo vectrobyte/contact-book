@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { type ContactFormData } from '@/@types';
+import { type Contact, type ContactFormData } from '@/@types';
 import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import TextInput from '@/components/inputs/TextInput';
@@ -11,11 +11,18 @@ import { EMAIL_REGEX } from '@/lib/configs';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';
 
-type CreateContactModalProps = ModalProps & {
-  onSubmit(data: ContactFormData): Promise<void>;
+type EditContactModalProps = ModalProps & {
+  contact: Contact;
+  onSubmit(data: Contact): Promise<void>;
 };
 
-const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClose, ...props }) => {
+const EditContactModal: React.FC<EditContactModalProps> = ({
+  visible,
+  contact,
+  onSubmit,
+  onClose,
+  ...props
+}) => {
   const [submitting, setSubmitting] = useState(false);
 
   const {
@@ -33,10 +40,15 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
   }, [clearErrors, reset]);
 
   const handleFormSubmit = (data: ContactFormData) => {
+    console.log('Am I here?');
+
     setSubmitting(true);
-    onSubmit(data)
+    onSubmit({
+      id: contact.id,
+      ...data,
+    })
       .then(() => {
-        toast.success('Contact created successfully!');
+        toast.success('Contact updated successfully!');
         handleClose();
       })
       .catch((err: RequestError<ContactFormData>) => {
@@ -72,8 +84,13 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
     }, 300);
   }
 
+  useEffect(() => {
+    reset(contact);
+  }, [contact, reset]);
+
   return (
     <Modal
+      visible={visible}
       hideCloseBtn
       hasBorderInFooter={false}
       modalClass="!w-[400px]"
@@ -123,7 +140,7 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
 
         <div className="mt-8 flex w-full items-center justify-end gap-2">
           <PrimaryButton type="submit" loading={submitting}>
-            Create
+            Update
           </PrimaryButton>
           <SecondaryButton onClick={handleClose}>Cancel</SecondaryButton>
         </div>
@@ -132,4 +149,4 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
   );
 };
 
-export default CreateContactModal;
+export default EditContactModal;
