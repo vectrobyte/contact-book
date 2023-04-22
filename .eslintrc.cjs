@@ -3,21 +3,7 @@ const path = require("path");
 
 /** @type {import("eslint").Linter.Config} */
 const config = {
-  overrides: [
-    {
-      extends: [
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
-      ],
-      files: ["*.ts", "*.tsx"],
-      parserOptions: {
-        project: path.join(__dirname, "tsconfig.json"),
-      },
-    },
-  ],
   parser: "@typescript-eslint/parser",
-  parserOptions: {
-    project: path.join(__dirname, "tsconfig.json"),
-  },
   plugins: [
     "react",
     "@typescript-eslint",

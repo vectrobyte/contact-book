@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useCallback, useState } from 'react';
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 
@@ -9,7 +10,6 @@ import CreateContactModal from '@/features/contacts/components/modals/CreateCont
 import DeleteContactModal from '@/features/contacts/components/modals/DeleteContactModal';
 import EditContactModal from '@/features/contacts/components/modals/EditContactModal';
 import ViewContactModal from '@/features/contacts/components/modals/ViewContactModal';
-import AppLayout from '@/layouts/app-layout/AppLayout';
 import { useContacts } from '@/features/contacts/hooks/useContacts';
 
 type HomeProps = React.HTMLAttributes<HTMLElement>;
@@ -53,48 +53,64 @@ const Home: React.FC<HomeProps> = () => {
         </thead>
 
         <tbody>
-          {contacts.length
-            ? contacts.map((contact) => (
-                <tr className="group transition-colors hover:bg-gray-50" key={contact.id}>
-                  <td className="p-3 text-sm">
-                    <button
-                      className="group flex items-center gap-4 transition-opacity hover:opacity-80"
+          {contacts.length ? (
+            contacts.map((contact) => (
+              <tr className="group transition-colors hover:bg-gray-50" key={contact.id}>
+                <td className="p-3 text-sm">
+                  <button
+                    className="group flex items-center gap-4 transition-opacity hover:opacity-80"
+                    onClick={() => {
+                      setTargetContact(contact);
+                      setIsViewContactVisible(true);
+                    }}
+                  >
+                    <ContactAvatar contact={contact} />
+                    <span className="group-hover:underline">{contact.full_name}</span>
+                  </button>
+                </td>
+                <td className="hidden p-3 text-sm font-light lg:table-cell">{contact.email}</td>
+                <td className="p-3 text-sm font-light">{contact.phone}</td>
+                <td className="w-[100px] p-3">
+                  <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                    <IconButton
+                      title="Edit"
                       onClick={() => {
                         setTargetContact(contact);
-                        setIsViewContactVisible(true);
+                        setIsEditContactModalOpen(true);
                       }}
                     >
-                      <ContactAvatar contact={contact} />
-                      <span className="group-hover:underline">{contact.full_name}</span>
-                    </button>
-                  </td>
-                  <td className="hidden p-3 text-sm font-light lg:table-cell">{contact.email}</td>
-                  <td className="p-3 text-sm font-light">{contact.phone}</td>
-                  <td className="w-[100px] p-3">
-                    <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                      <IconButton
-                        title="Edit"
-                        onClick={() => {
-                          setTargetContact(contact);
-                          setIsEditContactModalOpen(true);
-                        }}
-                      >
-                        <MdEdit />
-                      </IconButton>
-                      <IconButton
-                        title="Delete"
-                        onClick={() => {
-                          setTargetContact(contact);
-                          setIsDeleteContactModalOpen(true);
-                        }}
-                      >
-                        <MdDelete />
-                      </IconButton>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            : ''}
+                      <MdEdit />
+                    </IconButton>
+                    <IconButton
+                      title="Delete"
+                      onClick={() => {
+                        setTargetContact(contact);
+                        setIsDeleteContactModalOpen(true);
+                      }}
+                    >
+                      <MdDelete />
+                    </IconButton>
+                  </div>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={4}>
+                <div className="flex-center flex-col gap-10 p-40">
+                  <Image
+                    src="/icons/main.png"
+                    alt=""
+                    height={100}
+                    width={100}
+                    className="grayscale"
+                  />
+
+                  <p className="text-xl font-light text-gray-600">Contacts not found</p>
+                </div>
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
 
