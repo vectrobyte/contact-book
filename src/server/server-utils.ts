@@ -1,4 +1,3 @@
-import { type PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { type IncomingHttpHeaders } from 'http';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { type ParsedUrlQuery } from 'querystring';
