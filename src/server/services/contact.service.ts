@@ -51,7 +51,7 @@ export function findContactById(id: string) {
   });
 }
 export function findContactByEmail(email: string) {
-  return prisma.contact.findUnique({ where: { email } });
+  return prisma.contact.findFirst({ where: { email } });
 }
 
 export function updateContact(id: string, data: ContactFormData) {
