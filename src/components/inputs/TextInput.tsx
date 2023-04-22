@@ -1,21 +1,30 @@
 import React, { forwardRef } from 'react';
 
+import InputBase from '@/components/inputs/InputBase';
 import { getSlug, uuid } from '@/lib/helpers';
-
-import InputBase from './InputBase';
 
 type TextInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   error?: string;
+  wrapperClass?: string;
   labelClass?: string;
 };
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ id, name, label, error, className = '', labelClass = '', ...props }, ref) => {
+  (
+    { id, name, label, error, className = '', labelClass = '', wrapperClass = '', ...props },
+    ref
+  ) => {
     const inputId = id || getSlug(name || '') || `input-${uuid()}`;
 
     return (
-      <InputBase id={inputId} label={label} labelClass={labelClass} error={error}>
+      <InputBase
+        id={inputId}
+        label={label}
+        labelClass={labelClass}
+        error={error}
+        className={wrapperClass}
+      >
         <input
           ref={ref}
           id={inputId}

@@ -5,7 +5,7 @@ import request from '@/services/request.service';
 
 import { useAbortController } from './useAbortController';
 
-export function useRequest() {
+export const useRequest = () => {
   const { abort } = useAbortController();
 
   const requestCall = useCallback(
@@ -34,4 +34,4 @@ export function useRequest() {
   );
 
   return { request: requestCall };
-}
+};

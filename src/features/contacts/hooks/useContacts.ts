@@ -9,20 +9,24 @@ import {
   type PaginationMeta,
 } from '@/@types';
 import { DEFAULT_PAGINATION_META } from '@/lib/configs';
-import request from '@/services/request.service';
+import { useQuery } from '@/lib/hooks/useQuery';
+import { useRequest } from '@/lib/hooks/useRequest';
 
 export function useContacts() {
+  const { request } = useRequest();
+  const [query, setQuery] = useQuery<PageParams>();
+
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState<PaginationMeta>(DEFAULT_PAGINATION_META);
 
-  const listContacts = useCallback(async (params: PageParams = {}) => {
+  const listContacts = useCallback(async () => {
     setLoading(true);
     try {
       const { data: paginatedContacts } = await request<PaginatedResult<Contact>>({
         url: 'contacts/list',
         method: 'GET',
-        params,
+        params: query,
       });
 
       if (paginatedContacts) {
@@ -34,7 +38,16 @@ export function useContacts() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [query]);
+
+  const searchContacts = useCallback(
+    async (keyword: string) => {
+      if (keyword !== (query.keyword || '')) {
+        return setQuery({ keyword });
+      }
+    },
+    [query.keyword, setQuery]
+  );
 
   const updateContacts = useCallback((updatedContacts: Contact[]) => {
     setContacts(updatedContacts);
@@ -82,10 +95,17 @@ export function useContacts() {
   );
 
   useEffect(() => {
-    if (!loading) {
-      listContacts();
-    }
-  }, []);
+    listContacts();
+  }, [listContacts]);
 
-  return { loading, contacts, pagination, updateContact, dropContact, createContact };
+  return {
+    loading,
+    query,
+    contacts,
+    pagination,
+    searchContacts,
+    updateContact,
+    dropContact,
+    createContact,
+  };
 }

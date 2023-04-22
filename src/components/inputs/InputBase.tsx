@@ -7,9 +7,16 @@ type InputBase = React.HTMLAttributes<HTMLElement> & {
   labelClass?: string;
 };
 
-const InputBase: React.FC<InputBase> = ({ id, label, error, children, labelClass = '' }) => {
+const InputBase: React.FC<InputBase> = ({
+  id,
+  label,
+  error,
+  children,
+  className = '',
+  labelClass = '',
+}) => {
   return (
-    <div className="mb-4">
+    <div className={`mb-4 ${className}`}>
       {label && (
         <label htmlFor={id} className={`mb-2 capitalize text-gray-800 ${labelClass}`}>
           {label}

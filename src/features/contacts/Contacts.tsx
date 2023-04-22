@@ -10,12 +10,14 @@ import CreateContactModal from '@/features/contacts/components/modals/CreateCont
 import DeleteContactModal from '@/features/contacts/components/modals/DeleteContactModal';
 import EditContactModal from '@/features/contacts/components/modals/EditContactModal';
 import ViewContactModal from '@/features/contacts/components/modals/ViewContactModal';
+import Search from '@/features/contacts/components/Search';
 import { useContacts } from '@/features/contacts/hooks/useContacts';
 
 type HomeProps = React.HTMLAttributes<HTMLElement>;
 
 const Home: React.FC<HomeProps> = () => {
-  const { contacts, createContact, updateContact, dropContact } = useContacts();
+  const { contacts, query, createContact, searchContacts, updateContact, dropContact } =
+    useContacts();
 
   const [isViewContactVisible, setIsViewContactVisible] = useState(false);
   const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
@@ -36,6 +38,10 @@ const Home: React.FC<HomeProps> = () => {
 
   return (
     <div className="">
+      <div className="my-4 flex items-center lg:justify-end">
+        <Search keyword={query.keyword} onSubmit={searchContacts} className="w-full lg:w-[500px]" />
+      </div>
+
       <table className="mb-[100px] w-full table-fixed">
         <thead>
           <tr>
