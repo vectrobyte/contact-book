@@ -11,10 +11,6 @@ export type ServerRequestContext = {
   params: Record<string, string | undefined>;
 };
 
-export type Validator<T> = {
-  validate(data: unknown): { success: true; data: T } | { success: false; error: ValidationError };
-};
-
 type HandlerConfig<P> = {
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
   target?: 'query' | 'body';
@@ -23,6 +19,21 @@ type HandlerConfig<P> = {
 
 type Impl<P, R> = (params: P, context: ServerRequestContext) => Promise<R>;
 
+function mapValidationError(errorObj: ValidationError) {
+  const errors = {};
+
+  errorObj.inner.forEach((err) => {
+    const { path, message } = err;
+    errors[path] = message;
+  });
+
+  return {
+    name: errorObj.name,
+    message: `${errorObj.errors.length} errors found`,
+    errors,
+  };
+}
+
 const createHandler = <P, R>(
   { method = 'GET', target = 'query', schema }: HandlerConfig<P>,
   impl: Impl<P, R>
@@ -30,7 +41,8 @@ const createHandler = <P, R>(
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       if (!req.url || !req.url.startsWith('/api/')) {
-        throw new AppError(`Invalid API URL "${req.url}"`);
+        res.status(404).json({ message: `Invalid API URL "${req.url}"` });
+        return;
       }
 
       if (req.method.toUpperCase() !== method) {
@@ -41,7 +53,7 @@ const createHandler = <P, R>(
       const data = req[target];
 
       if (schema) {
-        await schema.validate(data);
+        await schema.validate(data, { abortEarly: false });
       }
 
       const context: ServerRequestContext = {
@@ -54,7 +66,7 @@ const createHandler = <P, R>(
       res.send(response);
     } catch (error) {
       if (error.name === 'ValidationError') {
-        res.status(400).json({ message: error.message });
+        res.status(422).json(mapValidationError(error));
       } else {
         res
           .status(error.isExpected ? 400 : 500)

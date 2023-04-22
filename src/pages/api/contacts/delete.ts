@@ -1,6 +1,6 @@
 import { IdSchema } from '@/server/schemas/contact.schema';
-import { Delete } from '@/server/server-utils';
 import { deleteContact } from '@/server/services/contact.service';
+import { Delete } from '@/server/utils';
 
 export default Delete(IdSchema, async ({ id }) => {
   return deleteContact(id);

@@ -1,8 +1,8 @@
 import * as z from 'zod';
 
 import { type ContactFormData } from '@/@types';
-import { createHandler } from '@/server/server-utils';
 import { updateContact } from '@/server/services/contact.service';
+import { createHandler } from '@/server/utils';
 
 const schema = z.object({
   id: z.string(),
