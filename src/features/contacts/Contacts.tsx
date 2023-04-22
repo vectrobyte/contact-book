@@ -14,17 +14,28 @@ import EditContactModal from '@/features/contacts/components/modals/EditContactM
 import ViewContactModal from '@/features/contacts/components/modals/ViewContactModal';
 import Search from '@/features/contacts/components/Search';
 import { useContacts } from '@/features/contacts/hooks/useContacts';
+import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
 
 type HomeProps = React.HTMLAttributes<HTMLElement>;
 
 const Home: React.FC<HomeProps> = () => {
-  const { contacts, pagination, query, setQuery, createContact, updateContact, dropContact } =
-    useContacts();
-
   const [isViewContactVisible, setIsViewContactVisible] = useState(false);
   const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
   const [isCreateContactModalOpen, setIsCreateContactModalOpen] = useState(false);
   const [isDeleteContactModalOpen, setIsDeleteContactModalOpen] = useState(false);
+
+  const {
+    contacts,
+    loading,
+    pagination,
+    query,
+    setQuery,
+    createContact,
+    updateContact,
+    dropContact,
+  } = useContacts();
+
+  const isDesktop = useIsDesktop();
 
   const [targetContact, setTargetContact] = useState<Partial<Contact>>({});
 
@@ -122,14 +133,14 @@ const Home: React.FC<HomeProps> = () => {
             ))
           ) : (
             <tr>
-              <td colSpan={4}>
-                <div className="flex-center flex-col gap-10 p-40">
+              <td colSpan={isDesktop ? 4 : 3}>
+                <div className="flex-center flex-col gap-10 p-32 lg:p-64">
                   <Image
                     src="/icons/main.png"
                     alt=""
                     height={100}
                     width={100}
-                    className="grayscale"
+                    className="flex-shrink-0 grayscale"
                   />
 
                   <p className="text-xl font-light text-gray-600">Contacts not found</p>
