@@ -6,9 +6,10 @@ export const CircleLoader: React.FC<IContentLoaderProps> = (props) => {
     <ContentLoader
       width={36}
       height={36}
-      viewBox="0 0 36"
+      viewBox="0 0 36 36"
       backgroundColor="#f3f3f3"
       foregroundColor="#ecebeb"
+      uniqueKey="circle-loader"
       {...props}
     >
       <circle cx="18" cy="18" r="18" />
@@ -20,24 +21,24 @@ export const RectangleLoader: React.FC<IContentLoaderProps> = (props) => {
   return (
     <ContentLoader
       height={36}
-      viewBox="0 0 36"
+      width="80%"
       backgroundColor="#f3f3f3"
       foregroundColor="#ecebeb"
-      className="w-full"
+      uniqueKey="rectangle-loader"
       {...props}
     >
-      <rect x="0" y="10" rx="10" ry="10" height="20" className="w-full" />
+      <rect x="0" y="10" height="20" className="w-full" />
     </ContentLoader>
   );
 };
 
-const TableLoaderRow: React.FC<IContentLoaderProps> = (props) => {
+const TableLoaderRow: React.FC = (props) => {
   return (
-    <tr>
+    <tr {...props}>
       <td>
         <div className="group flex items-center gap-4 transition-opacity hover:opacity-80">
           <CircleLoader className="flex-shrink-0" />
-          <RectangleLoader className="w-min" />
+          <RectangleLoader width="50%" />
         </div>
       </td>
       <td className="hidden p-3 text-sm font-light lg:table-cell">

@@ -78,7 +78,7 @@ const Home: React.FC<HomeProps> = () => {
         </thead>
 
         {loading ? (
-          <TableLoader count={DEFAULT_PAGE_SIZE} />
+          <TableLoader count={contacts.length || DEFAULT_PAGE_SIZE} />
         ) : (
           <tbody>
             {contacts.length ? (
