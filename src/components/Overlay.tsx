@@ -1,10 +1,10 @@
 import Spinner from '@/components/spinners/Spinner';
 
-type LoadingOverlayProps = React.HTMLAttributes<HTMLElement> & {
+type OverlayProps = React.HTMLAttributes<HTMLElement> & {
   loading?: boolean;
 };
 
-const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ loading, children }) => {
+const Overlay: React.FC<OverlayProps> = ({ loading, children }) => {
   return (
     <div className="relative">
       {children}
@@ -19,4 +19,4 @@ const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ loading, children }) =>
   );
 };
 
-export default LoadingOverlay;
+export default Overlay;

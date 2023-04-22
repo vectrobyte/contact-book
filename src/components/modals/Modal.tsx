@@ -2,7 +2,7 @@ import { type ReactNode, useEffect, useState } from 'react';
 import { MdClose } from 'react-icons/md';
 
 import IconButton from '@/components/buttons/IconButton';
-import LoadingOverlay from '@/components/LoadingOverlay';
+import Overlay from '@/components/Overlay';
 
 export type ModalProps = {
   visible: boolean;
@@ -108,7 +108,7 @@ const Modal: React.FC<ModalProps> = ({
             <div className="mt-0 w-full text-left">
               {header}
               <div className="mt-2">
-                <LoadingOverlay loading={Boolean(loading)}>{children}</LoadingOverlay>
+                <Overlay loading={Boolean(loading)}>{children}</Overlay>
               </div>
             </div>
           </div>
