@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useCallback, useState } from 'react';
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 
@@ -76,11 +77,25 @@ const Home: React.FC<HomeProps> = () => {
                     }}
                   >
                     <ContactAvatar contact={contact} />
-                    <span className="group-hover:underline">{contact.full_name}</span>
+                    <span className="">{contact.full_name}</span>
                   </button>
                 </td>
-                <td className="hidden p-3 text-sm font-light lg:table-cell">{contact.email}</td>
-                <td className="p-3 text-sm font-light">{contact.phone}</td>
+                <td className="hidden p-3 text-sm font-light lg:table-cell">
+                  <Link
+                    href={`mailto:${contact.email}`}
+                    className="transition-opacity hover:opacity-80"
+                  >
+                    {contact.email}
+                  </Link>
+                </td>
+                <td className="p-3 text-sm font-light">
+                  <Link
+                    href={`tel:${contact.phone}`}
+                    className="transition-opacity hover:opacity-80"
+                  >
+                    {contact.phone}
+                  </Link>
+                </td>
                 <td className="w-[100px] p-3">
                   <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                     <IconButton
