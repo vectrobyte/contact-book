@@ -4,10 +4,11 @@ import {
   type PageParams,
   type PaginatedResult,
 } from '@/@types';
+import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
 import { prisma } from '@/server/db';
 
 export async function listContacts(params: PageParams): Promise<PaginatedResult<Contact>> {
-  const { page = 1, size = 10, keyword } = params;
+  const { page = 1, size = DEFAULT_PAGE_SIZE, keyword } = params;
 
   const skip = (page - 1) * size;
 
@@ -32,7 +33,7 @@ export async function listContacts(params: PageParams): Promise<PaginatedResult<
     meta: {
       total: count,
       total_page: totalPages,
-      current_page: page,
+      current_page: Number(page),
       per_page: size,
       current_page_size: currentPageSize,
     },

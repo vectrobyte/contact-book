@@ -8,7 +8,7 @@ type PaginationProps = Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> & {
 };
 
 const Pagination: React.FC<PaginationProps> = ({ pagination, onChange }) => {
-  const { total_page = 0, current_page = 1, total } = pagination;
+  const { total_page = 0, current_page = 1 } = pagination;
 
   function onPageClicked(page: number) {
     onChange(page);
@@ -20,7 +20,10 @@ const Pagination: React.FC<PaginationProps> = ({ pagination, onChange }) => {
 
   return (
     <div className="flex items-center gap-3">
-      <SecondaryButton disabled={current_page === 1} onClick={() => onPageClicked(current_page)}>
+      <SecondaryButton
+        disabled={current_page === 1}
+        onClick={() => onPageClicked(current_page - 1)}
+      >
         Prev
       </SecondaryButton>
       <PrimaryButton className="!px-4" disabled>
@@ -28,7 +31,7 @@ const Pagination: React.FC<PaginationProps> = ({ pagination, onChange }) => {
       </PrimaryButton>
       <SecondaryButton
         disabled={current_page === total_page}
-        onClick={() => onPageClicked(current_page)}
+        onClick={() => onPageClicked(current_page + 1)}
       >
         Next
       </SecondaryButton>

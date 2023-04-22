@@ -11,6 +11,9 @@ const schema = z.object({
   email: z.string().email().optional(),
 });
 
-export default createHandler('PATCH', 'body', schema, async ({ id, ...contact }) => {
-  return updateContact(id, contact as ContactFormData);
-});
+export default createHandler(
+  { method: 'PATCH', target: 'body', validator: schema },
+  async ({ id, ...contact }) => {
+    return updateContact(id, contact as ContactFormData);
+  }
+);

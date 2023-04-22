@@ -15,10 +15,14 @@ export type Validator<T> = {
   safeParse(data: unknown): { success: true; data: T } | { success: false; error: ZodError };
 };
 
+type HandlerConfig<P> = {
+  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
+  target?: 'query' | 'body';
+  validator?: Validator<P>;
+};
+
 export const createHandler = <P, R>(
-  method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
-  target: 'query' | 'body',
-  validator: Validator<P> = null,
+  { method = 'GET', target = 'query', validator }: HandlerConfig<P>,
   impl: (params: P, context: ServerRequestContext) => Promise<R>
 ) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {

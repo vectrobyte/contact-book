@@ -10,6 +10,9 @@ const schema = z.object({
   email: z.string().email().optional(),
 });
 
-export default createHandler('POST', 'body', schema, async (payload) => {
-  return createContact(payload as ContactFormData);
-});
+export default createHandler(
+  { method: 'POST', target: 'body', validator: schema },
+  async (payload) => {
+    return createContact(payload as ContactFormData);
+  }
+);
