@@ -20,6 +20,8 @@ async function main() {
         full_name: faker.name.fullName(),
         email: faker.internet.email(),
         phone: faker.phone.number('+4891#######'),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     });
     console.log(`Created contact with name ${contact.full_name} and number ${contact.phone}`);

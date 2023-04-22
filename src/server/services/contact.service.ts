@@ -22,7 +22,7 @@ export async function listContacts(params: PageParams): Promise<PaginatedResult<
     where,
     skip,
     take: size,
-    orderBy: [{ full_name: 'asc' }],
+    orderBy: [{ created_at: 'desc' }],
   });
 
   const totalPages = Math.ceil(count / size);
@@ -40,25 +40,33 @@ export async function listContacts(params: PageParams): Promise<PaginatedResult<
   };
 }
 
-export function createContact(data: ContactFormData) {
-  return prisma.contact.create({
-    data,
-  });
-}
-
 export function findContactById(id: string) {
   return prisma.contact.findUnique({
     where: { id },
   });
 }
+
 export function findContactByEmail(email: string) {
   return prisma.contact.findFirst({ where: { email } });
+}
+
+export function createContact(data: ContactFormData) {
+  return prisma.contact.create({
+    data: {
+      ...data,
+      created_at: new Date(),
+      updated_at: new Date(),
+    },
+  });
 }
 
 export function updateContact(id: string, data: ContactFormData) {
   return prisma.contact.update({
     where: { id },
-    data,
+    data: {
+      ...data,
+      updated_at: new Date(),
+    },
   });
 }
 

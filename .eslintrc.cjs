@@ -32,6 +32,7 @@ const config = {
         fixStyle: "inline-type-imports",
       },
     ],
+    "block-spacing": ["error", "never"],
     "@typescript-eslint/require-await": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
