@@ -7,6 +7,6 @@ const schema = z.object({
   id: z.string(),
 });
 
-export default createHandler('GET', 'query', null, async ({ id }) => {
+export default createHandler('GET', 'query', schema, async ({ id }) => {
   return findContactById(id);
 });
