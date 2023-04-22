@@ -7,8 +7,6 @@ export const useQuery = <T extends Record<string, any>>(): [T, (params: T) => vo
 
   const setQuery = useCallback(
     (params: T) => {
-      console.log('Is anybody calling me?');
-
       router.push({
         pathname: router.pathname,
         query: { ...query, ...params },

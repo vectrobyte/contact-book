@@ -142,7 +142,7 @@ const Home: React.FC<HomeProps> = () => {
 
       <Pagination pagination={pagination} onChange={(page) => setQuery({ page })} />
 
-      <div className="fixed bottom-10 right-10">
+      <div className="fixed bottom-8 right-4 sm:right-6 lg:right-8">
         <SecondaryButton
           onClick={() => {
             setIsCreateContactModalOpen(true);
@@ -167,8 +167,11 @@ const Home: React.FC<HomeProps> = () => {
       <CreateContactModal
         visible={isCreateContactModalOpen}
         onSubmit={createContact}
+        onSuccess={(contact) => {
+          setTargetContact(contact);
+          setIsViewContactVisible(true);
+        }}
         onClose={() => {
-          clearTargetContact();
           setIsCreateContactModalOpen(false);
         }}
       />
@@ -177,8 +180,11 @@ const Home: React.FC<HomeProps> = () => {
         visible={isEditContactModalOpen}
         contact={targetContact as Contact}
         onSubmit={updateContact}
+        onSuccess={(contact) => {
+          setTargetContact(contact);
+          setIsViewContactVisible(true);
+        }}
         onClose={() => {
-          clearTargetContact();
           setIsEditContactModalOpen(false);
         }}
       />

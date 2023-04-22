@@ -41,13 +41,15 @@ export function useContacts() {
   }, [query]);
 
   const createContact = useCallback(async (payload: ContactFormData) => {
-    await request<Contact>({
+    const { data: newContact } = await request<Contact>({
       url: 'contacts/create',
       method: 'POST',
       data: payload,
     });
 
     listContacts();
+
+    return newContact;
   }, []);
 
   const updateContact = useCallback(async (payload: Contact) => {
@@ -60,6 +62,8 @@ export function useContacts() {
     setContacts((prevState) =>
       prevState.map((contact) => (contact.id === updatedContact.id ? updatedContact : contact))
     );
+
+    return updatedContact;
   }, []);
 
   const dropContact = useCallback(async (contactToDelete: Contact) => {

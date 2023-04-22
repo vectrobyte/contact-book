@@ -24,8 +24,6 @@ const Search: React.FC<SearchProps> = ({ keyword: defaultKeyword, className = ''
     async (keyword: string, e) => {
       e.preventDefault();
 
-      console.log('I am still checking', { debouncedKeyword, defaultKeyword });
-
       if (debouncedKeyword === defaultKeyword) {
         return;
       }

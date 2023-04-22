@@ -14,13 +14,15 @@ import { UpdateContactSchema } from '@/lib/schemas/contact.schema';
 
 type EditContactModalProps = ModalProps & {
   contact: Contact;
-  onSubmit(data: Contact): Promise<void>;
+  onSubmit(data: Contact): Promise<Contact>;
+  onSuccess(contact: Contact): void;
 };
 
 const EditContactModal: React.FC<EditContactModalProps> = ({
   visible,
   contact,
   onSubmit,
+  onSuccess,
   onClose,
   ...props
 }) => {
@@ -41,15 +43,14 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
   }, [clearErrors, reset]);
 
   const handleFormSubmit = (data: ContactFormData) => {
-    console.log('Am I here?');
-
     setSubmitting(true);
     onSubmit({
       id: contact.id,
       ...data,
     })
-      .then(() => {
+      .then((updatedContact) => {
         toast.success('Contact updated successfully!');
+        onSuccess(updatedContact);
         handleClose();
       })
       .catch((err: RequestError<ContactFormData>) => {

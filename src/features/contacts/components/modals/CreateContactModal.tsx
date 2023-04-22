@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { type ContactFormData } from '@/@types';
+import { type Contact, type ContactFormData } from '@/@types';
 import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import TextInput from '@/components/inputs/TextInput';
@@ -13,10 +13,16 @@ import type RequestError from '@/lib/errors/RequestError';
 import { CreateContactSchema } from '@/lib/schemas/contact.schema';
 
 type CreateContactModalProps = ModalProps & {
-  onSubmit(data: ContactFormData): Promise<void>;
+  onSubmit(data: ContactFormData): Promise<Contact>;
+  onSuccess(contact: Contact): void;
 };
 
-const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClose, ...props }) => {
+const CreateContactModal: React.FC<CreateContactModalProps> = ({
+  onSubmit,
+  onSuccess,
+  onClose,
+  ...props
+}) => {
   const [submitting, setSubmitting] = useState(false);
 
   const {
@@ -36,8 +42,9 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
   const handleFormSubmit = (data: ContactFormData) => {
     setSubmitting(true);
     onSubmit(data)
-      .then(() => {
+      .then((newContact) => {
         toast.success('Contact created successfully!');
+        onSuccess(newContact);
         handleClose();
       })
       .catch((err: RequestError<ContactFormData>) => {
@@ -77,7 +84,7 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
     <Modal
       hasBorderInFooter={false}
       modalClass="!w-[400px]"
-      header={<h1 className="mb-6 text-xl">Create Contact</h1>}
+      header={<h1 className="mb-6 text-xl">Create New Contact</h1>}
       onClose={handleClose}
       {...props}
     >
