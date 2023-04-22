@@ -8,7 +8,6 @@ import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import TextInput from '@/components/inputs/TextInput';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
-import { EMAIL_REGEX } from '@/lib/configs';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';
 import { CreateContactSchema } from '@/server/schemas/contact.schema';
@@ -92,9 +91,7 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
           id="full_name"
           label="Full Name"
           autoComplete="off"
-          {...register('full_name', {
-            required: `Name is required.`,
-          })}
+          {...register('full_name')}
           error={errors.full_name && errors.full_name?.message}
         />
 
@@ -103,9 +100,7 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
           type="text"
           label="Phone"
           autoComplete="off"
-          {...register('phone', {
-            required: `Phone is required.`,
-          })}
+          {...register('phone')}
           error={errors.phone && errors.phone?.message}
         />
 
@@ -114,12 +109,7 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
           type="text"
           label="Email"
           autoComplete="off"
-          {...register('email', {
-            pattern: {
-              value: EMAIL_REGEX,
-              message: 'Email is not formatted properly',
-            },
-          })}
+          {...register('email')}
           error={errors.email && errors.email?.message}
         />
 
