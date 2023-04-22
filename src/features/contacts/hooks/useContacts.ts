@@ -41,13 +41,13 @@ export function useContacts() {
   }, [query]);
 
   const createContact = useCallback(async (payload: ContactFormData) => {
-    const { data: newContact } = await request<Contact>({
+    await request<Contact>({
       url: 'contacts/create',
       method: 'POST',
       data: payload,
     });
 
-    setContacts((prevState) => [...prevState, newContact]);
+    listContacts();
   }, []);
 
   const updateContact = useCallback(async (payload: Contact) => {

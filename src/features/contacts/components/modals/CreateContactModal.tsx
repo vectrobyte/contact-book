@@ -8,10 +8,10 @@ import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import TextInput from '@/components/inputs/TextInput';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
-import { ContactSchema } from '@/server/schemas/contact.schema';
 import { EMAIL_REGEX } from '@/lib/configs';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';
+import { CreateContactSchema } from '@/server/schemas/contact.schema';
 
 type CreateContactModalProps = ModalProps & {
   onSubmit(data: ContactFormData): Promise<void>;
@@ -27,7 +27,7 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({ onSubmit, onClo
     reset,
     setError,
     clearErrors,
-  } = useForm<ContactFormData>({ resolver: yupResolver(ContactSchema) });
+  } = useForm<ContactFormData>({ resolver: yupResolver(CreateContactSchema) });
 
   const resetForm = useCallback(() => {
     reset();

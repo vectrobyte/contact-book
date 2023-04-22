@@ -8,14 +8,14 @@ import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import TextInput from '@/components/inputs/TextInput';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
-import { ContactSchema } from '@/server/schemas/contact.schema';
 import { EMAIL_REGEX } from '@/lib/configs';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';
+import { UpdateContactSchema } from '@/server/schemas/contact.schema';
 
 type EditContactModalProps = ModalProps & {
-  contact: ContactSchema;
-  onSubmit(data: ContactSchema): Promise<void>;
+  contact: Contact;
+  onSubmit(data: Contact): Promise<void>;
 };
 
 const EditContactModal: React.FC<EditContactModalProps> = ({
@@ -34,7 +34,7 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
     reset,
     setError,
     clearErrors,
-  } = useForm<ContactFormData>({ resolver: yupResolver(ContactSchema) });
+  } = useForm<ContactFormData>({ resolver: yupResolver(UpdateContactSchema) });
 
   const resetForm = useCallback(() => {
     reset();
