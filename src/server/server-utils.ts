@@ -38,7 +38,7 @@ export const createHandler = <P, R>(
         const parsed = validator.safeParse(data);
 
         if (parsed.success === false) {
-          res.status(422).send(formatValidationError(parsed.error, req, data));
+          res.status(422).send(formatValidationError(parsed.error, data));
           return;
         }
         data = parsed.data;
