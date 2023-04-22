@@ -10,9 +10,11 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model ContactSchema {
-    id        String  @id @default(cuid())
-    full_name String
-    phone     String  @unique
-    email     String?
+model Contact {
+    id         String   @id @default(cuid())
+    full_name  String
+    phone      String   @unique
+    email      String?
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now())
 }
