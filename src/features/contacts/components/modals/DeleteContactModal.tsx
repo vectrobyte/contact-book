@@ -45,7 +45,7 @@ const DeleteContactModal: React.FC<DeleteContactModalProps> = ({
       hideCloseBtn
       header={<h1 className="mb-4 text-xl">Delete from contacts?</h1>}
       hasBorderInFooter={false}
-      modalClass="!w-[500px]"
+      modalClass="!w-[450px]"
       footer={
         <div className="flex w-full items-center justify-end gap-3">
           <PrimaryButton loading={loading} onClick={handleSubmit}>

@@ -13,7 +13,9 @@ import DeleteContactModal from '@/features/contacts/components/modals/DeleteCont
 import EditContactModal from '@/features/contacts/components/modals/EditContactModal';
 import ViewContactModal from '@/features/contacts/components/modals/ViewContactModal';
 import Search from '@/features/contacts/components/Search';
+import TableLoader from '@/features/contacts/components/TableLoader';
 import { useContacts } from '@/features/contacts/hooks/useContacts';
+import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
 import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
 
 type HomeProps = React.HTMLAttributes<HTMLElement>;
@@ -35,7 +37,7 @@ const Home: React.FC<HomeProps> = () => {
     dropContact,
   } = useContacts();
 
-  const isDesktop = useIsDesktop();
+  const isDesktop = useIsDesktop(true);
 
   const [targetContact, setTargetContact] = useState<Partial<Contact>>({});
 
@@ -75,80 +77,84 @@ const Home: React.FC<HomeProps> = () => {
           </tr>
         </thead>
 
-        <tbody>
-          {contacts.length ? (
-            contacts.map((contact) => (
-              <tr className="group transition-colors hover:bg-gray-50" key={contact.id}>
-                <td className="p-3 text-sm">
-                  <button
-                    className="group flex items-center gap-4 transition-opacity hover:opacity-80"
-                    onClick={() => {
-                      setTargetContact(contact);
-                      setIsViewContactVisible(true);
-                    }}
-                  >
-                    <ContactAvatar contact={contact} />
-                    <span className="">{contact.full_name}</span>
-                  </button>
-                </td>
-                <td className="hidden p-3 text-sm font-light lg:table-cell">
-                  <Link
-                    href={`mailto:${contact.email}`}
-                    className="transition-opacity hover:opacity-80"
-                  >
-                    {contact.email}
-                  </Link>
-                </td>
-                <td className="p-3 text-sm font-light">
-                  <Link
-                    href={`tel:${contact.phone}`}
-                    className="transition-opacity hover:opacity-80"
-                  >
-                    {contact.phone}
-                  </Link>
-                </td>
-                <td className="w-[100px] p-3">
-                  <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                    <IconButton
-                      title="Edit"
+        {loading ? (
+          <TableLoader count={DEFAULT_PAGE_SIZE} />
+        ) : (
+          <tbody>
+            {contacts.length ? (
+              contacts.map((contact) => (
+                <tr className="group transition-colors hover:bg-gray-50" key={contact.id}>
+                  <td className="p-3 text-sm">
+                    <button
+                      className="group flex items-center gap-4 transition-opacity hover:opacity-80"
                       onClick={() => {
                         setTargetContact(contact);
-                        setIsEditContactModalOpen(true);
+                        setIsViewContactVisible(true);
                       }}
                     >
-                      <MdEdit />
-                    </IconButton>
-                    <IconButton
-                      title="Delete"
-                      onClick={() => {
-                        setTargetContact(contact);
-                        setIsDeleteContactModalOpen(true);
-                      }}
+                      <ContactAvatar contact={contact} />
+                      <span className="">{contact.full_name}</span>
+                    </button>
+                  </td>
+                  <td className="hidden p-3 text-sm font-light lg:table-cell">
+                    <Link
+                      href={`mailto:${contact.email}`}
+                      className="transition-opacity hover:opacity-80"
                     >
-                      <MdDelete />
-                    </IconButton>
+                      {contact.email}
+                    </Link>
+                  </td>
+                  <td className="p-3 text-sm font-light">
+                    <Link
+                      href={`tel:${contact.phone}`}
+                      className="transition-opacity hover:opacity-80"
+                    >
+                      {contact.phone}
+                    </Link>
+                  </td>
+                  <td className="w-[100px] p-3">
+                    <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                      <IconButton
+                        title="Edit"
+                        onClick={() => {
+                          setTargetContact(contact);
+                          setIsEditContactModalOpen(true);
+                        }}
+                      >
+                        <MdEdit />
+                      </IconButton>
+                      <IconButton
+                        title="Delete"
+                        onClick={() => {
+                          setTargetContact(contact);
+                          setIsDeleteContactModalOpen(true);
+                        }}
+                      >
+                        <MdDelete />
+                      </IconButton>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={isDesktop ? 4 : 3}>
+                  <div className="flex-center flex-col gap-10 p-32 lg:p-64">
+                    <Image
+                      src="/icons/main.png"
+                      alt=""
+                      height={100}
+                      width={100}
+                      className="flex-shrink-0 grayscale"
+                    />
+
+                    <p className="text-xl font-light text-gray-600">Contacts not found</p>
                   </div>
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={isDesktop ? 4 : 3}>
-                <div className="flex-center flex-col gap-10 p-32 lg:p-64">
-                  <Image
-                    src="/icons/main.png"
-                    alt=""
-                    height={100}
-                    width={100}
-                    className="flex-shrink-0 grayscale"
-                  />
-
-                  <p className="text-xl font-light text-gray-600">Contacts not found</p>
-                </div>
-              </td>
-            </tr>
-          )}
-        </tbody>
+            )}
+          </tbody>
+        )}
       </table>
 
       <Pagination pagination={pagination} onChange={(page) => setQuery({ page })} />
