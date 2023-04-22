@@ -5,6 +5,7 @@ import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 import { type Contact } from '@/@types';
 import IconButton from '@/components/buttons/IconButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
+import Pagination from '@/components/Pagination';
 import ContactAvatar from '@/features/contacts/components/ContactAvatar';
 import CreateContactModal from '@/features/contacts/components/modals/CreateContactModal';
 import DeleteContactModal from '@/features/contacts/components/modals/DeleteContactModal';
@@ -16,7 +17,7 @@ import { useContacts } from '@/features/contacts/hooks/useContacts';
 type HomeProps = React.HTMLAttributes<HTMLElement>;
 
 const Home: React.FC<HomeProps> = () => {
-  const { contacts, query, createContact, searchContacts, updateContact, dropContact } =
+  const { contacts, pagination, query, setQuery, createContact, updateContact, dropContact } =
     useContacts();
 
   const [isViewContactVisible, setIsViewContactVisible] = useState(false);
@@ -39,7 +40,11 @@ const Home: React.FC<HomeProps> = () => {
   return (
     <div className="">
       <div className="my-4 flex items-center lg:justify-end">
-        <Search keyword={query.keyword} onSubmit={searchContacts} className="w-full lg:w-[500px]" />
+        <Search
+          keyword={query.keyword}
+          onSubmit={(keyword) => setQuery({ keyword: keyword || null })}
+          className="w-full lg:w-[500px]"
+        />
       </div>
 
       <table className="mb-[100px] w-full table-fixed">
@@ -119,6 +124,8 @@ const Home: React.FC<HomeProps> = () => {
           )}
         </tbody>
       </table>
+
+      <Pagination pagination={pagination} onChange={(page) => setQuery({ page })} />
 
       <div className="fixed bottom-10 right-10">
         <SecondaryButton

@@ -13,7 +13,11 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   return (
-    <button type={type} className={`relative px-6 py-2 transition-all ${className}`} {...props}>
+    <button
+      type={type}
+      className={`relative px-6 py-2 transition-all disabled:pointer-events-none ${className}`}
+      {...props}
+    >
       {loading && (
         <div className="absolute inset-0 z-10 flex items-center justify-center">
           <BiLoaderAlt size={24} color="inherit" className="animate-spin" />

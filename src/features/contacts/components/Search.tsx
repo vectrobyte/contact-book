@@ -6,7 +6,7 @@ import TextInput from '@/components/inputs/TextInput';
 
 type SearchProps = Omit<React.HTMLAttributes<HTMLElement>, 'onSubmit'> & {
   keyword: string;
-  onSubmit(keyword: string): Promise<void>;
+  onSubmit(keyword: string);
 };
 
 type SearchFormData = {

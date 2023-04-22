@@ -1,3 +1,5 @@
+export * from './object';
+
 export function uuid(): string {
   const s4 = () => {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -13,14 +15,4 @@ export function getSlug(str: string) {
     .toLowerCase()
     .replace(/ /g, '-')
     .replace(/[^\w-]+/g, '');
-}
-
-export function clearEmptyProperties(obj: { [key: string]: any }): { [key: string]: any } {
-  const result = {};
-  for (const key in obj) {
-    if (obj[key] !== null && obj[key] !== '') {
-      result[key] = obj[key];
-    }
-  }
-  return result;
 }

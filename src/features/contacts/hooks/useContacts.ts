@@ -40,59 +40,37 @@ export function useContacts() {
     }
   }, [query]);
 
-  const searchContacts = useCallback(
-    async (keyword: string) => {
-      if (keyword !== (query.keyword || '')) {
-        return setQuery({ keyword });
-      }
-    },
-    [query.keyword, setQuery]
-  );
+  const createContact = useCallback(async (payload: ContactFormData) => {
+    const { data: newContact } = await request<Contact>({
+      url: 'contacts/create',
+      method: 'POST',
+      data: payload,
+    });
 
-  const updateContacts = useCallback((updatedContacts: Contact[]) => {
-    setContacts(updatedContacts);
+    setContacts((prevState) => [...prevState, newContact]);
   }, []);
 
-  const createContact = useCallback(
-    async (payload: ContactFormData) => {
-      const { data: newContact } = await request<Contact>({
-        url: 'contacts/create',
-        method: 'POST',
-        data: payload,
-      });
+  const updateContact = useCallback(async (payload: Contact) => {
+    const { data: updatedContact } = await request<Contact>({
+      url: 'contacts/update',
+      method: 'PATCH',
+      data: payload,
+    });
 
-      updateContacts([...contacts, newContact]);
-    },
-    [contacts, updateContacts]
-  );
+    setContacts((prevState) =>
+      prevState.map((contact) => (contact.id === updatedContact.id ? updatedContact : contact))
+    );
+  }, []);
 
-  const updateContact = useCallback(
-    async (payload: Contact) => {
-      const { data: updatedContact } = await request<Contact>({
-        url: 'contacts/update',
-        method: 'PATCH',
-        data: payload,
-      });
+  const dropContact = useCallback(async (contactToDelete: Contact) => {
+    await request({
+      url: 'contacts/delete',
+      method: 'DELETE',
+      params: { id: contactToDelete.id },
+    });
 
-      updateContacts(
-        contacts.map((contact) => (contact.id === updatedContact.id ? updatedContact : contact))
-      );
-    },
-    [contacts, updateContacts]
-  );
-
-  const dropContact = useCallback(
-    async (contactToDelete: Contact) => {
-      await request({
-        url: 'contacts/delete',
-        method: 'DELETE',
-        params: { id: contactToDelete.id },
-      });
-
-      updateContacts(contacts.filter((contact) => contactToDelete.id !== contact.id));
-    },
-    [contacts, updateContacts]
-  );
+    setContacts((prevState) => prevState.filter((contact) => contactToDelete.id !== contact.id));
+  }, []);
 
   useEffect(() => {
     listContacts();
@@ -101,9 +79,10 @@ export function useContacts() {
   return {
     loading,
     query,
+    setQuery,
     contacts,
     pagination,
-    searchContacts,
+    listContacts,
     updateContact,
     dropContact,
     createContact,
