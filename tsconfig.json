@@ -24,6 +24,7 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true,
     "types": [
+      "node",
       "react",
       "react-dom"
     ],

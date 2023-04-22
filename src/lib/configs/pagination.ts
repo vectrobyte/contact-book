@@ -1,6 +1,6 @@
 import { type PaginationMeta } from '@/@types';
 
-export const DEFAULT_PAGE_SIZE = 2;
+export const DEFAULT_PAGE_SIZE = 10;
 
 export const DEFAULT_PAGINATION_META: PaginationMeta = {
   total: 0,
