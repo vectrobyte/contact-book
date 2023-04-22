@@ -1,4 +1,4 @@
-import { type AxiosRequestConfig } from 'axios';
+import { type AxiosPromise, type AxiosRequestConfig } from 'axios';
 import { useCallback } from 'react';
 
 import request from '@/services/request.service';
@@ -9,7 +9,7 @@ export const useRequest = () => {
   const { abort } = useAbortController();
 
   const requestCall = useCallback(
-    <T>(configs?: AxiosRequestConfig<T>) => {
+    <T>(configs?: AxiosRequestConfig) => {
       const fetchPromise = request({
         ...configs,
         headers: {
@@ -17,7 +17,7 @@ export const useRequest = () => {
           Accept: 'application/json',
           ...configs?.headers,
         },
-      });
+      }) as AxiosPromise<T>;
 
       abort();
 
