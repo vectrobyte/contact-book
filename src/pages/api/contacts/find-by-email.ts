@@ -1,4 +1,4 @@
-import { EmailSchema } from '@/lib/schemas/contact.schema';
+import { EmailSchema } from '@/lib/schemas/common.schema';
 import { findContactByEmail } from '@/server/services/contact.service';
 import { Get } from '@/server/utils';
 

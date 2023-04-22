@@ -1,4 +1,4 @@
-import { IdSchema } from '@/lib/schemas/contact.schema';
+import { IdSchema } from '@/lib/schemas/common.schema';
 import { deleteContact } from '@/server/services/contact.service';
 import { Delete } from '@/server/utils';
 

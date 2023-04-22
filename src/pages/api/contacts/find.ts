@@ -1,4 +1,4 @@
-import { IdSchema } from '@/lib/schemas/contact.schema';
+import { IdSchema } from '@/lib/schemas/common.schema';
 import { findContactById } from '@/server/services/contact.service';
 import { Get } from '@/server/utils';
 
