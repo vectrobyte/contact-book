@@ -17,7 +17,7 @@ export function useContacts() {
   const [query, setQuery] = useQuery<PageParams>();
 
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState<PaginationMeta>(DEFAULT_PAGINATION_META);
 
   const listContacts = useCallback(async () => {
