@@ -158,6 +158,12 @@ const Home: React.FC<HomeProps> = () => {
       <ViewContactModal
         visible={isViewContactVisible}
         contact={targetContact as Contact}
+        onEdit={() => {
+          setIsEditContactModalOpen(true);
+        }}
+        onDelete={() => {
+          setIsDeleteContactModalOpen(true);
+        }}
         onClose={() => {
           clearTargetContact();
           setIsViewContactVisible(false);
@@ -193,8 +199,11 @@ const Home: React.FC<HomeProps> = () => {
         visible={isDeleteContactModalOpen}
         contact={targetContact as Contact}
         onSubmit={dropContact}
-        onClose={() => {
+        onSuccess={() => {
           clearTargetContact();
+          setIsViewContactVisible(false);
+        }}
+        onClose={() => {
           setIsDeleteContactModalOpen(false);
         }}
       />

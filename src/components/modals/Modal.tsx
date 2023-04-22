@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect, useState } from 'react';
 import { MdClose } from 'react-icons/md';
 
+import IconButton from '@/components/buttons/IconButton';
 import LoadingOverlay from '@/components/LoadingOverlay';
 
 export type ModalProps = {
@@ -13,6 +14,7 @@ export type ModalProps = {
   hasBorderInFooter?: boolean;
   modalClass?: string;
   children?: ReactNode;
+  controlArea?: ReactNode;
   onClose(): void;
 };
 
@@ -28,6 +30,7 @@ const Modal: React.FC<ModalProps> = ({
   modalClass = '',
   zIndexClass = 'z-100',
   onClose = () => null,
+  controlArea,
   hasBorderInFooter = true,
 }) => {
   const [showModal, setShowModal] = useState(visible);
@@ -76,7 +79,7 @@ const Modal: React.FC<ModalProps> = ({
             : 'opacity-0 duration-200 ease-in'
         }`}
       >
-        <div className="absolute inset-0 bg-gray-900 opacity-50" onClick={onClose} />
+        <div className="absolute inset-0 bg-gray-800 opacity-50" onClick={onClose} />
       </div>
 
       <div
@@ -92,15 +95,15 @@ const Modal: React.FC<ModalProps> = ({
               : 'translate-y-4 translate-y-4 scale-95 opacity-0 ease-in'
           }`}
         >
-          {!!header && !hideCloseBtn && (
-            <div className="absolute right-0 top-0 z-10 block pr-6 pt-6">
-              <button className="" onClick={onClose}>
-                <span>
-                  <MdClose size={24} />
-                </span>
-              </button>
-            </div>
-          )}
+          <div className="items absolute right-0 top-0 z-10 block flex justify-end gap-1 pr-4 pt-4">
+            {controlArea}
+            {!!header && !hideCloseBtn && (
+              <IconButton className="" onClick={onClose}>
+                <MdClose size={24} />
+              </IconButton>
+            )}
+          </div>
+
           <div className="flex items-start p-6">
             <div className="mt-0 w-full text-left">
               {header}

@@ -1,19 +1,37 @@
 import React from 'react';
-import { MdMailOutline, MdPhone } from 'react-icons/md';
+import { MdClose, MdDelete, MdEdit, MdMailOutline, MdPhone } from 'react-icons/md';
 
 import { type Contact } from '@/@types';
+import IconButton from '@/components/buttons/IconButton';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
 import ContactAvatar from '@/features/contacts/components/ContactAvatar';
 
 type ViewContactModalProps = ModalProps & {
   contact: Contact;
+  onEdit(contact: Contact);
+  onDelete(contact: Contact);
 };
 
-const ViewContactModal: React.FC<ViewContactModalProps> = ({ contact, ...props }) => {
+const ViewContactModal: React.FC<ViewContactModalProps> = ({
+  contact,
+  onEdit,
+  onDelete,
+  ...props
+}) => {
   return (
     <Modal
       header={<h1 className="mb-4 text-xl leading-tight tracking-tight">View Contact</h1>}
       {...props}
+      controlArea={
+        <div className="flex items-center gap-1">
+          <IconButton className="" onClick={() => onEdit(contact)}>
+            <MdEdit />
+          </IconButton>
+          <IconButton className="" onClick={() => onDelete(contact)}>
+            <MdDelete />
+          </IconButton>
+        </div>
+      }
       modalClass="!w-[400px]"
     >
       <table>

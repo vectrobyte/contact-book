@@ -9,6 +9,7 @@ import Modal, { type ModalProps } from '@/components/modals/Modal';
 type DeleteContactModalProps = ModalProps & {
   contact: Contact;
   onSubmit(contact: Contact): Promise<void>;
+  onSuccess(): void;
   onClose(): void;
 };
 
@@ -16,6 +17,7 @@ const DeleteContactModal: React.FC<DeleteContactModalProps> = ({
   contact,
   visible,
   onSubmit,
+  onSuccess,
   onClose,
 }) => {
   const [loading, setLoading] = useState(false);
@@ -26,6 +28,7 @@ const DeleteContactModal: React.FC<DeleteContactModalProps> = ({
     onSubmit(contact)
       .then(() => {
         toast.success('Contact deleted successfully!');
+        onSuccess();
         onClose();
       })
       .catch((error: Error) => {
