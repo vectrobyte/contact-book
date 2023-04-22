@@ -15,7 +15,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       type={type}
-      className={`relative px-6 py-2 transition-all disabled:pointer-events-none disabled:opacity-60 ${className}`}
+      className={`relative px-6 py-2 transition-all disabled:pointer-events-none disabled:opacity-70 ${className}`}
       {...props}
     >
       {loading && (
