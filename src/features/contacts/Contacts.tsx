@@ -42,7 +42,7 @@ const Home: React.FC<HomeProps> = () => {
     <div className="">
       <div className="my-4 flex items-center lg:justify-end">
         <Search
-          keyword={query.keyword}
+          keyword={query.keyword || ''}
           onSubmit={(keyword) => setQuery({ keyword: keyword || null })}
           className="w-full lg:w-[500px]"
         />

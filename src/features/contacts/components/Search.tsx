@@ -1,3 +1,4 @@
+import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -16,11 +17,19 @@ type SearchFormData = {
 const Search: React.FC<SearchProps> = ({ keyword: defaultKeyword, className = '', onSubmit }) => {
   const [searching, setSearching] = useState(false);
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm<SearchFormData>();
   const [debouncedKeyword, setDebouncedKeyword] = useState('');
 
   const handleSearch = useCallback(
-    async (keyword: string) => {
+    async (keyword: string, e) => {
+      e.preventDefault();
+
+      console.log('I am still checking', { debouncedKeyword, defaultKeyword });
+
+      if (debouncedKeyword === defaultKeyword) {
+        return;
+      }
+
       setSearching(true);
       try {
         await onSubmit(keyword);
@@ -33,16 +42,32 @@ const Search: React.FC<SearchProps> = ({ keyword: defaultKeyword, className = ''
 
   const handleSubmitSearch = useCallback((data: SearchFormData) => {
     setDebouncedKeyword(data.keyword);
+    debouncedSearch(data.keyword);
   }, []);
 
+  async function onSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    setDebouncedKeyword(value);
+    debouncedSearch(value);
+  }
+
+  const debouncedSearch = React.useRef(
+    debounce(async (keyword: string) => {
+      onSubmit(keyword);
+    }, 500)
+  ).current;
+
+  React.useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
+
   useEffect(() => {
-    if (debouncedKeyword !== defaultKeyword) {
-      const timerId = setTimeout(() => {
-        handleSearch(debouncedKeyword);
-      }, 300);
-      return () => clearTimeout(timerId);
+    if (defaultKeyword?.length) {
+      reset({ keyword: defaultKeyword });
     }
-  }, [debouncedKeyword, defaultKeyword, handleSearch]);
+  }, [defaultKeyword, reset]);
 
   return (
     <form
@@ -53,12 +78,11 @@ const Search: React.FC<SearchProps> = ({ keyword: defaultKeyword, className = ''
         id="search"
         placeholder="Type keyword to search"
         autoComplete="off"
-        defaultValue={defaultKeyword}
         className="!m-0"
         wrapperClass="!m-0 w-full flex-auto lg:flex-grow-0"
         labelClass="!m-0"
         {...register('keyword')}
-        onChange={(e) => setDebouncedKeyword(e.target.value)}
+        onChange={onSearchInput}
       />
       <PrimaryButton type="submit" loading={searching}>
         Search
