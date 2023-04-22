@@ -10,7 +10,7 @@ import TextInput from '@/components/inputs/TextInput';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';
-import { UpdateContactSchema } from '@/server/schemas/contact.schema';
+import { UpdateContactSchema } from '@/lib/schemas/contact.schema';
 
 type EditContactModalProps = ModalProps & {
   contact: Contact;

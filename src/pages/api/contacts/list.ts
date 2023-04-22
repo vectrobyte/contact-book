@@ -1,4 +1,4 @@
-import { ListParamsSchema } from '@/server/schemas/common.schema';
+import { ListParamsSchema } from '@/lib/schemas/common.schema';
 import { listContacts } from '@/server/services/contact.service';
 import { Get } from '@/server/utils';
 

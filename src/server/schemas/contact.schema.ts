@@ -1,16 +1,26 @@
 import * as Yup from 'yup';
 
-import { EmailSchema, IdSchema } from '@/server/schemas/common.schema';
+import { CreateContactSchema, UpdateContactSchema } from '@/lib/schemas/contact.schema';
+import { findContactByPhone } from '@/server/services/contact.service';
 
-export const ContactFormSchema = Yup.object()
-  .shape({
-    full_name: Yup.string().required('Full name is required'),
-    phone: Yup.string()
-      .matches(/^(\+\d{1,3}[- ]?)?\d{10}$/, 'Invalid phone number format')
-      .required('Phone number is required'),
-  })
-  .concat(EmailSchema);
+export const CreateContactApiSchema = CreateContactSchema.shape({
+  phone: Yup.string()
+    .matches(/^(\+\d{1,3}[- ]?)?\d{10}$/, 'Invalid phone number format')
+    .required('Phone number is required')
+    .test('unique-phone', 'Phone number already exists', async (value) => {
+      const contact = await findContactByPhone(value);
+      return !contact;
+    }),
+});
 
-export const CreateContactSchema = ContactFormSchema;
-
-export const UpdateContactSchema = ContactFormSchema.concat(IdSchema);
+export const UpdateContactApiSchema = UpdateContactSchema.shape({
+  phone: Yup.string()
+    .matches(/^(\+\d{1,3}[- ]?)?\d{10}$/, 'Invalid phone number format')
+    .required('Phone number is required')
+    .test('unique-phone', 'This phone number is already in use', async function (value) {
+      const { id } = this.parent;
+      if (!value) return true;
+      const contact = await findContactByPhone(value);
+      return !contact || contact.id === id;
+    }),
+});

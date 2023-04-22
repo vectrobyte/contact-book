@@ -50,6 +50,10 @@ export function findContactByEmail(email: string) {
   return prisma.contact.findFirst({ where: { email } });
 }
 
+export function findContactByPhone(phone: string) {
+  return prisma.contact.findUnique({ where: { phone } });
+}
+
 export function createContact(data: ContactFormData) {
   return prisma.contact.create({
     data: {
@@ -60,7 +64,7 @@ export function createContact(data: ContactFormData) {
   });
 }
 
-export function updateContact(id: string, data: ContactFormData) {
+export function updateContact({ id, ...data }: Contact) {
   return prisma.contact.update({
     where: { id },
     data: {
