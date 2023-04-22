@@ -1,7 +1,7 @@
 import { type IncomingHttpHeaders } from 'http';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { type ParsedUrlQuery } from 'querystring';
-import { type ZodError } from 'zod';
+import { type Schema, type ValidationError } from 'yup';
 
 import AppError from '@/lib/errors/AppError';
 
@@ -12,18 +12,20 @@ export type ServerRequestContext = {
 };
 
 export type Validator<T> = {
-  safeParse(data: unknown): { success: true; data: T } | { success: false; error: ZodError };
+  validate(data: unknown): { success: true; data: T } | { success: false; error: ValidationError };
 };
 
 type HandlerConfig<P> = {
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
   target?: 'query' | 'body';
-  validator?: Validator<P>;
+  schema?: Schema<P>;
 };
 
-export const createHandler = <P, R>(
-  { method = 'GET', target = 'query', validator }: HandlerConfig<P>,
-  impl: (params: P, context: ServerRequestContext) => Promise<R>
+type Impl<P, R> = (params: P, context: ServerRequestContext) => Promise<R>;
+
+const createHandler = <P, R>(
+  { method = 'GET', target = 'query', schema }: HandlerConfig<P>,
+  impl: Impl<P, R>
 ) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
@@ -36,16 +38,10 @@ export const createHandler = <P, R>(
         return;
       }
 
-      let data = req[target || 'query'];
+      const data = req[target];
 
-      if (validator) {
-        const parsed = validator.safeParse(data);
-
-        if (parsed.success === false) {
-          res.status(422).send(formatValidationError(parsed.error, data));
-          return;
-        }
-        data = parsed.data;
+      if (schema) {
+        await schema.validate(data);
       }
 
       const context: ServerRequestContext = {
@@ -56,17 +52,30 @@ export const createHandler = <P, R>(
 
       const response = await impl(data, context);
       res.send(response);
-    } catch (e) {
-      res
-        .status(e.isExpected ? 400 : 500)
-        .send({ ...e, message: e.message || 'Unhandled Server Error' });
+    } catch (error) {
+      if (error.name === 'ValidationError') {
+        res.status(400).json({ message: error.message });
+      } else {
+        res
+          .status(error.isExpected ? 400 : 500)
+          .send({ ...error, message: error.message || 'Unhandled Server Error' });
+      }
     }
   };
 };
 
-function formatValidationError(error: ZodError, payload) {
-  return {
-    error,
-    payload,
-  };
-}
+export const Get = <P, R>(schema: Schema<P>, impl: Impl<P, R>) => {
+  return createHandler({ method: 'GET', target: 'query', schema }, impl);
+};
+
+export const Post = <P, R>(schema: Schema<P>, impl: Impl<P, R>) => {
+  return createHandler({ method: 'POST', target: 'body', schema }, impl);
+};
+
+export const Patch = <P, R>(schema: Schema<P>, impl: Impl<P, R>) => {
+  return createHandler({ method: 'PATCH', target: 'body', schema }, impl);
+};
+
+export const Delete = <P, R>(schema: Schema<P>, impl: Impl<P, R>) => {
+  return createHandler({ method: 'DELETE', target: 'query', schema }, impl);
+};

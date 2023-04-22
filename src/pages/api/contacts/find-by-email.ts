@@ -1,15 +1,7 @@
-import * as z from 'zod';
+import { Get } from '@/server/server-utils';
+import { EmailSchema } from '@/server/schemas/contact.schema';
+import { findContactByEmail } from '@/server/services/contact/contact.service';
 
-import { createHandler } from '@/server/server-utils';
-import { findContactByEmail } from '@/server/services/contact.service';
-
-const schema = z.object({
-  email: z.string().email(),
+export default Get(EmailSchema, async ({ email }) => {
+  return findContactByEmail(email);
 });
-
-export default createHandler(
-  { method: 'GET', target: 'query', validator: schema },
-  async ({ email }) => {
-    return findContactByEmail(email);
-  }
-);

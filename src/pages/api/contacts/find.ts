@@ -1,15 +1,7 @@
-import * as z from 'zod';
+import { Get } from '@/server/server-utils';
+import { IdSchema } from '@/server/schemas/contact.schema';
+import { findContactById } from '@/server/services/contact/contact.service';
 
-import { createHandler } from '@/server/server-utils';
-import { findContactById } from '@/server/services/contact.service';
-
-const schema = z.object({
-  id: z.string(),
+export default Get(IdSchema, async ({ id }) => {
+  return findContactById(id);
 });
-
-export default createHandler(
-  { method: 'GET', target: 'query', validator: schema },
-  async ({ id }) => {
-    return findContactById(id);
-  }
-);
