@@ -69,10 +69,12 @@ model VerificationToken {
 model Contact {
     id         String   @id @default(cuid())
     full_name  String
-    phone      String?
+    phone      String   @unique
     email      String?
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
     user       User?    @relation(fields: [user_id], references: [id])
     user_id    String?
+
+    @@unique([user_id, phone])
 }
