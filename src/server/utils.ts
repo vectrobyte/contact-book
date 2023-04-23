@@ -1,9 +1,12 @@
+import {
+  PrismaClientInitializationError,
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+} from '@prisma/client/runtime';
 import { type IncomingHttpHeaders } from 'http';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { type ParsedUrlQuery } from 'querystring';
 import { type Schema, type ValidationError } from 'yup';
-
-import AppError from '@/lib/errors/AppError';
 
 export type ServerRequestContext = {
   headers: IncomingHttpHeaders;
@@ -65,13 +68,30 @@ const createHandler = <P, R>(
       const response = await impl(data, context);
       res.send(response);
     } catch (error) {
+      // Handle Validation errors
       if (error.name === 'ValidationError') {
-        res.status(422).json(mapValidationError(error));
-      } else {
-        res
-          .status(error.isExpected ? 400 : 500)
-          .send({ ...error, message: error.message || 'Unhandled Server Error' });
+        return res.status(422).json(mapValidationError(error));
       }
+
+      // Handle Known Prisma errors
+      if (error instanceof PrismaClientKnownRequestError) {
+        return res.status(400).json({
+          message: 'Sorry, there was an error processing your request. Please try again later.',
+        });
+      }
+
+      // Handle initialization errors (e.g. database connection errors)
+      if (error instanceof PrismaClientInitializationError) {
+        return res.status(400).json({
+          message: 'Sorry, there was an error connecting to the database. Please try again later.',
+        });
+      }
+
+      // Handle any other errors
+      res.status(error.isExpected ? 400 : 500).send({
+        ...error,
+        message: error.message || 'Sorry, there was an unexpected error. Please try again later.',
+      });
     }
   };
 };
