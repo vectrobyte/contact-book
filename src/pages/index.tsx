@@ -1,10 +1,17 @@
 import { type NextPage } from 'next';
 import Head from 'next/head';
-import React from 'react';
+import { useSession } from 'next-auth/react';
+import { useMemo } from 'react';
 
+import LoginButton from '@/components/buttons/LoginButton';
 import Contacts from '@/features/contacts/Contacts';
+import AppLayout from '@/layouts/app-layout/AppLayout';
 
 const HomePage: React.FC<NextPage> = () => {
+  const { data: sessionData } = useSession();
+
+  const isLoggedIn = useMemo(() => sessionData && sessionData.user, [sessionData]);
+
   return (
     <>
       <Head>
@@ -24,7 +31,21 @@ const HomePage: React.FC<NextPage> = () => {
         <meta name="theme-color" content="#ffffff" />
       </Head>
 
-      <Contacts />
+      <AppLayout
+        navContent={
+          <div className="">
+            <LoginButton />
+          </div>
+        }
+      >
+        {isLoggedIn ? (
+          <Contacts />
+        ) : (
+          <div className="flex-center p-64 text-2xl font-light text-gray-600">
+            <h1>Sign in to access the contact book</h1>
+          </div>
+        )}
+      </AppLayout>
     </>
   );
 };
