@@ -159,7 +159,7 @@ const Home: React.FC<HomeProps> = () => {
 
       <Pagination
         pagination={pagination}
-        className="mb-5"
+        className="mb-4"
         onChange={(page) => setQuery({ page })}
       />
 
