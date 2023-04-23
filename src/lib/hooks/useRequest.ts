@@ -8,7 +8,7 @@ import { useAbortController } from './useAbortController';
 export const useRequest = () => {
   const { abort } = useAbortController();
 
-  const requestCall = useCallback(
+  return useCallback(
     <T>(configs?: AxiosRequestConfig) => {
       const fetchPromise = request({
         ...configs,
@@ -32,6 +32,4 @@ export const useRequest = () => {
     },
     [abort]
   );
-
-  return request;
 };
