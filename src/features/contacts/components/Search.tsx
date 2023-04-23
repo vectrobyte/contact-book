@@ -16,45 +16,25 @@ type SearchFormData = {
 };
 
 const Search: React.FC<SearchProps> = ({ keyword: defaultKeyword, className = '', onSubmit }) => {
-  const [searching, setSearching] = useState(false);
-
   const { register, handleSubmit, reset } = useForm<SearchFormData>();
-  const [debouncedKeyword, setDebouncedKeyword] = useState('');
-
-  const handleSearch = useCallback(
-    async (keyword: string, e) => {
-      e.preventDefault();
-
-      if (debouncedKeyword === defaultKeyword) {
-        return;
-      }
-
-      setSearching(true);
-      try {
-        await onSubmit(keyword);
-      } finally {
-        setSearching(false);
-      }
-    },
-    [onSubmit]
-  );
-
-  const handleSubmitSearch = useCallback((data: SearchFormData) => {
-    setDebouncedKeyword(data.keyword);
-    debouncedSearch(data.keyword);
-  }, []);
-
-  async function onSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    setDebouncedKeyword(value);
-    debouncedSearch(value);
-  }
 
   const debouncedSearch = React.useRef(
     debounce(async (keyword: string) => {
       onSubmit(keyword);
     }, 500)
   ).current;
+
+  const handleSubmitSearch = useCallback(
+    (data: SearchFormData) => {
+      debouncedSearch(data.keyword);
+    },
+    [debouncedSearch]
+  );
+
+  async function onSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    debouncedSearch(value);
+  }
 
   React.useEffect(() => {
     return () => {
@@ -83,7 +63,7 @@ const Search: React.FC<SearchProps> = ({ keyword: defaultKeyword, className = ''
         {...register('keyword')}
         onChange={onSearchInput}
       />
-      <PrimaryButton type="submit" icon={<MdSearch size={24} />} loading={searching}>
+      <PrimaryButton type="submit" icon={<MdSearch size={24} />}>
         <span className="hidden sm:block">Search</span>
       </PrimaryButton>
     </form>
