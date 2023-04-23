@@ -33,5 +33,5 @@ export const useRequest = () => {
     [abort]
   );
 
-  return { request: requestCall };
+  return request;
 };

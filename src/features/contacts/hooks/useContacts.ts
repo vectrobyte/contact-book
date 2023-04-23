@@ -13,7 +13,7 @@ import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';
 
 export function useContacts() {
-  const { request } = useRequest();
+  const request = useRequest();
   const [query, setQuery] = useQuery<PageParams>();
 
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -40,17 +40,20 @@ export function useContacts() {
     }
   }, [query]);
 
-  const createContact = useCallback(async (payload: ContactFormData) => {
-    const { data: newContact } = await request<Contact>({
-      url: 'contacts/create',
-      method: 'POST',
-      data: payload,
-    });
+  const createContact = useCallback(
+    async (payload: ContactFormData) => {
+      const { data: newContact } = await request<Contact>({
+        url: 'contacts/create',
+        method: 'POST',
+        data: payload,
+      });
 
-    listContacts();
+      listContacts();
 
-    return newContact;
-  }, []);
+      return newContact;
+    },
+    [listContacts]
+  );
 
   const updateContact = useCallback(async (payload: Contact) => {
     const { data: updatedContact } = await request<Contact>({

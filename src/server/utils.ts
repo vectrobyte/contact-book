@@ -1,7 +1,6 @@
 import {
   PrismaClientInitializationError,
   PrismaClientKnownRequestError,
-  PrismaClientUnknownRequestError,
 } from '@prisma/client/runtime';
 import { type IncomingHttpHeaders } from 'http';
 import { type NextApiRequest, type NextApiResponse } from 'next';

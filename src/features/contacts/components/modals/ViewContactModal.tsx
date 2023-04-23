@@ -1,5 +1,5 @@
 import React from 'react';
-import { MdClose, MdDelete, MdEdit, MdMailOutline, MdPhone } from 'react-icons/md';
+import { MdDelete, MdEdit, MdMailOutline, MdPhone } from 'react-icons/md';
 
 import { type Contact } from '@/@types';
 import IconButton from '@/components/buttons/IconButton';
