@@ -21,10 +21,10 @@ export const RectangleLoader: React.FC<IContentLoaderProps> = (props) => {
   return (
     <ContentLoader
       height={36}
-      width="80%"
       backgroundColor="#f3f3f3"
       foregroundColor="#ecebeb"
       uniqueKey="rectangle-loader"
+      className="w-[80%]"
       {...props}
     >
       <rect x="0" y="10" height="20" className="w-full" />
@@ -35,16 +35,16 @@ export const RectangleLoader: React.FC<IContentLoaderProps> = (props) => {
 const TableLoaderRow: React.FC = (props) => {
   return (
     <tr {...props}>
-      <td>
+      <td className="p-3">
         <div className="group flex items-center gap-8 transition-opacity hover:opacity-80 sm:gap-4">
           <CircleLoader className="flex-shrink-0" />
-          <RectangleLoader width="50%" />
+          <RectangleLoader className="w-full sm:w-[50%]" />
         </div>
       </td>
-      <td className="hidden p-3 text-sm font-light lg:table-cell">
+      <td className="hidden p-3 lg:table-cell">
         <RectangleLoader />
       </td>
-      <td className="hidden p-3 text-sm font-light sm:table-cell">
+      <td className="hidden p-3 sm:table-cell">
         <RectangleLoader />
       </td>
       <td className="w-[100px] p-3" />
