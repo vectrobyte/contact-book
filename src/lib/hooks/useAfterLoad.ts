@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export const useAfterLoad = (callback: CallableFunction, deps = []) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -8,7 +8,7 @@ export const useAfterLoad = (callback: CallableFunction, deps = []) => {
     callbackRef.current = callback;
   }, [callback]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const checkReadyState = () => {
       if (document.readyState === 'complete') {
         setIsLoaded(true);
