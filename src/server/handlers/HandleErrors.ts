@@ -23,7 +23,7 @@ export default function HandleErrors(error, res: NextApiResponse) {
   }
 
   // Handle Prisma errors
-  if (error.code && /^P\d{3}$/.test(error.code)) {
+  if (error.code && /^P\d{4}$/.test(error.code)) {
     switch (error.code) {
       case 'P2002':
         return res.status(400).json({
@@ -47,7 +47,7 @@ export default function HandleErrors(error, res: NextApiResponse) {
         });
       default:
         return res.status(500).json({
-          message: `Sorry, there was an error processing your request. Please try again later. (${error.code})`,
+          message: `Sorry, there was an error processing your request.\nPlease try again later. (${error.code})`,
         });
     }
   }
@@ -55,13 +55,13 @@ export default function HandleErrors(error, res: NextApiResponse) {
   // Handle database connection errors
   if (error.message && /connect ECONNREFUSED/.test(error.message)) {
     return res.status(500).json({
-      message: `Failed to connect to the database server. Please try again later. (${error.code})`,
+      message: `Failed to connect to the database server.\nPlease try again later. (${error.code})`,
     });
   }
 
   // Handle any other errors
   res.status(error.isExpected ? 400 : 500).json({
     ...error,
-    message: error.message || 'Sorry, there was an unexpected error. Please try again later.',
+    message: error.message || 'Sorry, there was an unexpected error.\nPlease try again later.',
   });
 }
