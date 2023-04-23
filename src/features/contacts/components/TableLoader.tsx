@@ -17,14 +17,14 @@ export const CircleLoader: React.FC<IContentLoaderProps> = (props) => {
   );
 };
 
-export const RectangleLoader: React.FC<IContentLoaderProps> = (props) => {
+export const RectangleLoader: React.FC<IContentLoaderProps> = ({ className = '', ...props }) => {
   return (
     <ContentLoader
       height={36}
       backgroundColor="#f3f3f3"
       foregroundColor="#ecebeb"
       uniqueKey="rectangle-loader"
-      className="w-[80%]"
+      className={`w-[70%] ${className}`}
       {...props}
     >
       <rect x="0" y="10" height="20" className="w-full" />
@@ -38,7 +38,7 @@ const TableLoaderRow: React.FC = (props) => {
       <td className="p-3">
         <div className="group flex items-center gap-8 transition-opacity hover:opacity-80 sm:gap-4">
           <CircleLoader className="flex-shrink-0" />
-          <RectangleLoader className="w-full sm:w-[50%]" />
+          <RectangleLoader className="sm:w-[50%]" />
         </div>
       </td>
       <td className="hidden p-3 lg:table-cell">
