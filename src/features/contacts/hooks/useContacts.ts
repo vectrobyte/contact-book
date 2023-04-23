@@ -9,12 +9,13 @@ import {
   type PaginationMeta,
 } from '@/@types';
 import { DEFAULT_PAGINATION_META } from '@/lib/configs';
+import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';
 
-export function useContacts() {
+export const useContacts = () => {
   const request = useRequest();
-  const [query, setQuery] = useQuery<PageParams>();
+  const [query, setQuery, ready] = useQuery<PageParams>();
 
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
@@ -79,9 +80,11 @@ export function useContacts() {
     setContacts((prevState) => prevState.filter((contact) => contactToDelete.id !== contact.id));
   }, []);
 
-  useEffect(() => {
-    listContacts();
-  }, [listContacts]);
+  useAfterLoad(async () => {
+    if (ready) {
+      await listContacts();
+    }
+  }, [query, ready]);
 
   return {
     loading,
@@ -94,4 +97,4 @@ export function useContacts() {
     dropContact,
     createContact,
   };
-}
+};

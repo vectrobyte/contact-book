@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-export const useQuery = <T extends Record<string, any>>(): [T, (params: T) => void] => {
+export const useQuery = <T extends Record<string, any>>(): [T, (params: T) => void, boolean] => {
   const router = useRouter();
-  const query = router.query as T;
+  const [ready, setReady] = useState(false);
+  const query = useMemo(() => router.query as T, [router.query]);
 
   const setQuery = useCallback(
     (params: T) => {
@@ -15,5 +16,11 @@ export const useQuery = <T extends Record<string, any>>(): [T, (params: T) => vo
     [query, router]
   );
 
-  return [query, setQuery];
+  useEffect(() => {
+    if (router.isReady) {
+      setReady(true);
+    }
+  }, [router]);
+
+  return [query, setQuery, ready];
 };
