@@ -83,8 +83,8 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({
   return (
     <Modal
       hasBorderInFooter={false}
-      modalClass="!w-[400px]"
       header={<h1 className="mb-6 text-xl">Create New Contact</h1>}
+      modalClass="!w-[350px] sm:!w-[450px]"
       onClose={handleClose}
       {...props}
     >

@@ -61,16 +61,16 @@ const Home: React.FC<HomeProps> = () => {
         />
       </div>
 
-      <table className="mb-[100px] w-full table-fixed">
+      <table className="mb-10 w-full table-fixed">
         <thead>
           <tr>
-            <th className="w-1/2 border-b p-3 text-left font-medium text-gray-600 lg:w-1/3">
+            <th className="w-full border-b p-3 text-left font-medium text-gray-600 sm:w-1/2 lg:w-1/3">
               Name
             </th>
             <th className="hidden border-b p-3 text-left font-medium text-gray-600 lg:table-cell lg:w-[250px]">
               Email
             </th>
-            <th className="border-b p-3 text-left font-medium text-gray-600 lg:w-[250px]">
+            <th className="hidden border-b p-3 text-left font-medium text-gray-600 sm:table-cell lg:w-[250px]">
               Mobile
             </th>
             <th className="border-b p-3 text-gray-600" />
@@ -86,7 +86,7 @@ const Home: React.FC<HomeProps> = () => {
                 <tr className="group transition-colors hover:bg-gray-50" key={contact.id}>
                   <td className="p-3 text-sm">
                     <button
-                      className="group flex items-center gap-4 transition-opacity hover:opacity-80"
+                      className="group flex items-center gap-8 transition-opacity hover:opacity-80 sm:gap-4"
                       onClick={() => {
                         setTargetContact(contact);
                         setIsViewContactVisible(true);
@@ -104,7 +104,7 @@ const Home: React.FC<HomeProps> = () => {
                       {contact.email}
                     </Link>
                   </td>
-                  <td className="p-3 text-sm font-light">
+                  <td className="hidden p-3 text-sm font-light sm:table-cell">
                     <Link
                       href={`tel:${contact.phone}`}
                       className="transition-opacity hover:opacity-80"
@@ -157,18 +157,20 @@ const Home: React.FC<HomeProps> = () => {
         )}
       </table>
 
-      <Pagination pagination={pagination} onChange={(page) => setQuery({ page })} />
+      <Pagination
+        pagination={pagination}
+        className="mb-5"
+        onChange={(page) => setQuery({ page })}
+      />
 
       <div className="fixed bottom-8 right-4 sm:right-6 lg:right-8">
         <SecondaryButton
+          icon={<MdAdd size={24} />}
           onClick={() => {
             setIsCreateContactModalOpen(true);
           }}
         >
-          <div className="flex-center gap-2">
-            <MdAdd size={24} />
-            <span>Create Contact</span>
-          </div>
+          <span className="hidden sm:block">Create Contact</span>
         </SecondaryButton>
       </div>
 

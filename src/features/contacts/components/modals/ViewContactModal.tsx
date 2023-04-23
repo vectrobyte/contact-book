@@ -20,7 +20,7 @@ const ViewContactModal: React.FC<ViewContactModalProps> = ({
 }) => {
   return (
     <Modal
-      header={<h1 className="mb-4 text-xl leading-tight tracking-tight">View Contact</h1>}
+      header={<h1 className="mb-4 text-xl leading-tight tracking-tight">Contact Details</h1>}
       {...props}
       controlArea={
         <div className="flex items-center gap-1">
@@ -32,7 +32,7 @@ const ViewContactModal: React.FC<ViewContactModalProps> = ({
           </IconButton>
         </div>
       }
-      modalClass="!w-[400px]"
+      modalClass="!w-[350px] sm:!w-[450px]"
     >
       <table>
         <tbody>

@@ -94,8 +94,8 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
     <Modal
       visible={visible}
       hasBorderInFooter={false}
-      modalClass="!w-[400px]"
       header={<h1 className="mb-6 text-xl">Edit Contact</h1>}
+      modalClass="!w-[350px] sm:!w-[450px]"
       onClose={handleClose}
       {...props}
     >

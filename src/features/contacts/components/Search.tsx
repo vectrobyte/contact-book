@@ -1,6 +1,7 @@
 import { debounce } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { MdSearch } from 'react-icons/md';
 
 import PrimaryButton from '@/components/buttons/PrimaryButton';
 import TextInput from '@/components/inputs/TextInput';
@@ -82,8 +83,8 @@ const Search: React.FC<SearchProps> = ({ keyword: defaultKeyword, className = ''
         {...register('keyword')}
         onChange={onSearchInput}
       />
-      <PrimaryButton type="submit" loading={searching}>
-        Search
+      <PrimaryButton type="submit" icon={<MdSearch size={24} />} loading={searching}>
+        <span className="hidden sm:block">Search</span>
       </PrimaryButton>
     </form>
   );
