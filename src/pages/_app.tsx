@@ -15,6 +15,7 @@ const MyApp = ({ Component, pageProps }) => {
         pauseOnFocusLoss
         pauseOnHover
         theme="light"
+        toastClassName="whitespace-pre-wrap w-[350px] sm:w-[450px] items-start"
       />
 
       <Component {...pageProps} />
