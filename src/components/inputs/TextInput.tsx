@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 import InputBase from '@/components/inputs/InputBase';
 import { getSlug, uuid } from '@/lib/helpers';
 
-type TextInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+export type TextInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   error?: string;
   wrapperClass?: string;
