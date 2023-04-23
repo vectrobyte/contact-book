@@ -23,20 +23,20 @@ const Pagination: React.FC<PaginationProps> = ({ pagination, className = '', onC
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      <PrimaryButton
+      <SecondaryButton
         type="submit"
         icon={<MdNavigateBefore size={24} />}
         disabled={current_page === 1}
         onClick={() => onPageClicked(current_page - 1)}
       >
         <span className="mr-4 hidden sm:block">Prev</span>
-      </PrimaryButton>
+      </SecondaryButton>
 
       <SecondaryButton className="!px-5" disabled>
         {current_page}
       </SecondaryButton>
 
-      <PrimaryButton
+      <SecondaryButton
         type="submit"
         icon={<MdNavigateNext size={24} />}
         iconPosition="right"
@@ -44,7 +44,7 @@ const Pagination: React.FC<PaginationProps> = ({ pagination, className = '', onC
         onClick={() => onPageClicked(current_page + 1)}
       >
         <span className="ml-4 hidden sm:block">Next</span>
-      </PrimaryButton>
+      </SecondaryButton>
     </div>
   );
 };

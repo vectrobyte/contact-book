@@ -5,7 +5,7 @@ import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 
 import { type Contact } from '@/@types';
 import IconButton from '@/components/buttons/IconButton';
-import SecondaryButton from '@/components/buttons/SecondaryButton';
+import PrimaryButton from '@/components/buttons/PrimaryButton';
 import Pagination from '@/components/Pagination';
 import ContactAvatar from '@/features/contacts/components/ContactAvatar';
 import CreateContactModal from '@/features/contacts/components/modals/CreateContactModal';
@@ -141,14 +141,14 @@ const Home: React.FC<HomeProps> = () => {
                 <td colSpan={isDesktop ? 4 : 3}>
                   <div className="flex-center flex-col gap-10 p-32 lg:p-64">
                     <Image
-                      src="/icons/main.png"
+                      src="/logo.svg"
                       alt=""
-                      height={100}
-                      width={100}
-                      className="flex-shrink-0 grayscale"
+                      height={150}
+                      width={150}
+                      className="flex-shrink-0 opacity-30 grayscale"
                     />
 
-                    <p className="text-xl font-light text-gray-600">Contacts not found</p>
+                    <p className="text-xl font-light text-gray-500">Contacts not found</p>
                   </div>
                 </td>
               </tr>
@@ -164,14 +164,14 @@ const Home: React.FC<HomeProps> = () => {
       />
 
       <div className="fixed bottom-8 right-4 sm:right-6 lg:right-8">
-        <SecondaryButton
+        <PrimaryButton
           icon={<MdAdd size={24} />}
           onClick={() => {
             setIsCreateContactModalOpen(true);
           }}
         >
           <span className="hidden sm:block">Create Contact</span>
-        </SecondaryButton>
+        </PrimaryButton>
       </div>
 
       <ViewContactModal

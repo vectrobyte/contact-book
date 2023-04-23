@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <g transform="matrix(1, 0, 0, 1, 0.567, 2.149)">
+    <rect x="-0.567" y="-2.149" width="429.959" height="514.789" style="stroke: rgb(0, 0, 0); stroke-width: 0px; stroke-opacity: 0; fill: rgb(33, 136, 229);" rx="76.546" ry="76.546"/>
+    <path style="fill:#91cbf9; stroke:none;" d="M 136 267.439 C 97.617 273.481 92.149 320.312 82.344 351 C 76.629 368.887 70.623 389.174 90.001 401.441 C 106.261 411.733 136.419 406 155 406 L 272 406 C 290.358 406 312.041 409.163 330 405.331 C 344.231 402.295 354.447 389.664 353.957 375 C 353.237 353.479 340.323 328.414 333.67 308 C 329.807 296.148 326.37 284.849 315.996 276.9 C 294.448 260.387 275.182 270.455 252 275.576 C 234.122 279.524 216.175 280.596 198 278.83 C 177.735 276.861 156.185 264.262 136 267.439 Z"/>
+    <rect x="452.244" y="49.081" width="59.929" height="115.737" style="stroke: rgb(0, 0, 0); fill: rgb(144, 203, 249); stroke-width: 0px; stroke-opacity: 0;" rx="29.965" ry="29.965"/>
+    <rect x="451.933" y="198.793" width="59.929" height="115.737" style="stroke: rgb(0, 0, 0); fill: rgb(144, 203, 249); stroke-width: 0px; stroke-opacity: 0;" rx="29.965" ry="29.965"/>
+    <rect x="452.244" y="347.51" width="59.929" height="115.737" style="stroke: rgb(0, 0, 0); fill: rgb(144, 203, 249); stroke-width: 0px; stroke-opacity: 0;" rx="29.965" ry="29.965"/>
+    <ellipse style="fill: rgb(216, 216, 216); stroke-width: 0px; stroke: rgb(227, 242, 253); stroke-opacity: 0;" cx="215.48" cy="179.587" rx="73.216" ry="73.216"/>
+  </g>
+</svg>
