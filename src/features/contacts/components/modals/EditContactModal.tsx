@@ -10,7 +10,7 @@ import TextInput from '@/components/inputs/TextInput';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';
-import { UpdateContactSchema } from '@/lib/schemas/contact.schema';
+import { ContactFormSchema } from '@/lib/schemas/contact.schema';
 
 type EditContactModalProps = ModalProps & {
   contact: Contact;
@@ -35,7 +35,7 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
     reset,
     setError,
     clearErrors,
-  } = useForm<ContactFormData>({ resolver: yupResolver(UpdateContactSchema) });
+  } = useForm<ContactFormData>({ resolver: yupResolver(ContactFormSchema) });
 
   const resetForm = useCallback(() => {
     reset();

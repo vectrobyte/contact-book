@@ -10,7 +10,7 @@ import TextInput from '@/components/inputs/TextInput';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';
-import { CreateContactSchema } from '@/lib/schemas/contact.schema';
+import { ContactFormSchema } from '@/lib/schemas/contact.schema';
 
 type CreateContactModalProps = ModalProps & {
   onSubmit(data: ContactFormData): Promise<Contact>;
@@ -32,7 +32,7 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({
     reset,
     setError,
     clearErrors,
-  } = useForm<ContactFormData>({ resolver: yupResolver(CreateContactSchema) });
+  } = useForm<ContactFormData>({ resolver: yupResolver(ContactFormSchema) });
 
   const resetForm = useCallback(() => {
     reset();

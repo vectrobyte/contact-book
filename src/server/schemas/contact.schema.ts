@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
 
-import { CreateContactSchema, UpdateContactSchema } from '@/lib/schemas/contact.schema';
+import { ContactFormSchema } from '@/lib/schemas/contact.schema';
 import { findContactByPhone } from '@/server/services/contact.service';
 
-export const CreateContactApiSchema = CreateContactSchema.shape({
+export const CreateContactSchema = ContactFormSchema.shape({
   phone: Yup.string()
     .matches(/^(\+\d{1,3}[- ]?)?\d{10}$/, 'Invalid phone number format')
     .required('Phone number is required')
@@ -13,7 +13,7 @@ export const CreateContactApiSchema = CreateContactSchema.shape({
     }),
 });
 
-export const UpdateContactApiSchema = UpdateContactSchema.shape({
+export const UpdateContactSchema = ContactFormSchema.shape({
   phone: Yup.string()
     .matches(/^(\+\d{1,3}[- ]?)?\d{10}$/, 'Invalid phone number format')
     .required('Phone number is required')

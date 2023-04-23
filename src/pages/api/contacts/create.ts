@@ -1,7 +1,7 @@
 import { type ContactFormData } from '@/@types';
-import { CreateContactApiSchema } from '@/server/schemas/contact.schema';
+import { CreateContactSchema } from '@/server/schemas/contact.schema';
 import { createContact } from '@/server/services/contact.service';
 import { Post } from '@/server/utils';
-export default Post(CreateContactApiSchema, async (payload) => {
+export default Post(CreateContactSchema, async (payload) => {
   return createContact(payload as ContactFormData);
 });
