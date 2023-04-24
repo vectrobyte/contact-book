@@ -16,7 +16,7 @@ function mapValidationError(errorObj: ValidationError) {
   };
 }
 
-export default function HandleErrors(error, res: NextApiResponse) {
+export default function ErrorHandler(error, res: NextApiResponse) {
   // Handle Validation errors
   if (error.name === 'ValidationError') {
     return res.status(422).json(mapValidationError(error));

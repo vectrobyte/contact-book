@@ -5,7 +5,7 @@ import { type ParsedUrlQuery } from 'querystring';
 import { type Schema } from 'yup';
 
 import { type Session, type SessionUser } from '@/server/auth';
-import HandleErrors from '@/server/handlers/HandleErrors';
+import ErrorHandler from '@/server/handlers/error.handler';
 
 export type ServerRequestContext = {
   headers: IncomingHttpHeaders;
@@ -57,7 +57,7 @@ const createHandler = <P, R>(
       const response = await impl(data, context);
       res.send(response);
     } catch (error) {
-      HandleErrors(error, res);
+      ErrorHandler(error, res);
     }
   };
 };
