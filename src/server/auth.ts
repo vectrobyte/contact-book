@@ -1,11 +1,27 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { type GetServerSidePropsContext } from 'next';
-import { type DefaultSession, getServerSession, type NextAuthOptions } from 'next-auth';
+import {
+  type DefaultSession,
+  getServerSession,
+  type NextAuthOptions,
+  type Session as NextSession,
+  type User,
+} from 'next-auth';
+import { type AdapterUser } from 'next-auth/adapters';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
 import { env } from '@/env.mjs';
 import { prisma } from '@/server/db';
+
+export type SessionUser = (AdapterUser | User) & {
+  accessToken?: string;
+};
+
+export type Session = Omit<NextSession, 'user'> & {
+  accessToken?: string;
+  user: SessionUser;
+};
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -35,13 +51,21 @@ declare module 'next-auth' {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
+    session: ({ session, user, token }) => ({
       ...session,
       user: {
         ...session.user,
         id: user.id,
+        accessToken: token?.accessToken,
       },
     }),
+    async jwt({ token, user }) {
+      const sessionUser: SessionUser = user;
+      if (sessionUser) {
+        token.accessToken = sessionUser.accessToken;
+      }
+      return token;
+    },
   },
   adapter: PrismaAdapter(prisma),
   providers: [

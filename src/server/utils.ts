@@ -1,14 +1,18 @@
 import { type IncomingHttpHeaders } from 'http';
 import { type NextApiRequest, type NextApiResponse } from 'next';
+import { getSession } from 'next-auth/react';
 import { type ParsedUrlQuery } from 'querystring';
 import { type Schema } from 'yup';
 
+import { type Session, type SessionUser } from '@/server/auth';
 import HandleErrors from '@/server/handlers/HandleErrors';
 
 export type ServerRequestContext = {
   headers: IncomingHttpHeaders;
-  query: ParsedUrlQuery;
   params: Record<string, string | undefined>;
+  query: ParsedUrlQuery;
+  session: Session;
+  user?: SessionUser;
 };
 
 type HandlerConfig<P> = {
@@ -36,6 +40,7 @@ const createHandler = <P, R>(
       }
 
       const data = req[target];
+      const session: Session = await getSession({ req });
 
       if (schema) {
         await schema.validate(data, { abortEarly: false });
@@ -45,6 +50,8 @@ const createHandler = <P, R>(
         headers: req.headers,
         params: {},
         query: req.query,
+        session,
+        user: session?.user || null,
       };
 
       const response = await impl(data, context);
