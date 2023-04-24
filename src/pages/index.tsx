@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { useSession } from 'next-auth/react';
 import { useMemo } from 'react';
 
-import LoginButton from '@/components/buttons/LoginButton';
 import Contacts from '@/features/contacts/Contacts';
 import AppLayout from '@/layouts/app-layout/AppLayout';
 
@@ -31,18 +30,14 @@ const HomePage: React.FC<NextPage> = () => {
         <meta name="theme-color" content="#ffffff" />
       </Head>
 
-      <AppLayout
-        navContent={
-          <div className="">
-            <LoginButton />
-          </div>
-        }
-      >
+      <AppLayout>
         {isLoggedIn ? (
           <Contacts />
         ) : (
-          <div className="flex-center p-64 text-2xl font-light text-gray-600">
-            <h1>Sign in to access the contact book</h1>
+          <div className="flex-center flex-col gap-5 px-16 py-32 sm:gap-10 md:px-32 lg:p-64">
+            <h1 className="text-center text-lg font-light text-gray-600 sm:text-2xl">
+              Sign in to access the contact book
+            </h1>
           </div>
         )}
       </AppLayout>

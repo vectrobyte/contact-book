@@ -3,15 +3,15 @@ import React, { useMemo } from 'react';
 
 import Button from '@/components/buttons/Button';
 
-const LoginButton: React.FC = () => {
+const AuthButton: React.FC = () => {
   const { data: sessionData } = useSession();
 
   const isLoggedIn = useMemo(() => sessionData && sessionData.user, [sessionData]);
 
   return (
-    <div className="flex-center gap-8">
+    <div className="flex-center gap-4 sm:gap-8">
       {isLoggedIn ? (
-        <div className="flex-center gap-4">
+        <div className="flex-center gap-2">
           <img
             src={sessionData.user.image}
             alt=""
@@ -20,7 +20,7 @@ const LoginButton: React.FC = () => {
             className="rounded-full"
             referrerPolicy="no-referrer"
           />
-          <span className="text-lg">{sessionData.user?.name}</span>
+          <span className="hidden text-lg sm:inline">{sessionData.user?.name}</span>
 
           <Button onClick={() => void signOut()}>Sign out</Button>
         </div>
@@ -31,4 +31,4 @@ const LoginButton: React.FC = () => {
   );
 };
 
-export default LoginButton;
+export default AuthButton;

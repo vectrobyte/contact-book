@@ -139,13 +139,13 @@ const Home: React.FC<HomeProps> = () => {
             ) : (
               <tr>
                 <td colSpan={isDesktop ? 4 : 3}>
-                  <div className="flex-center flex-col gap-10 p-32 lg:p-64">
+                  <div className="flex-center flex-col gap-5 px-16 py-32 sm:gap-10 md:px-32 lg:p-64">
                     <Image
                       src="/logo.svg"
                       alt=""
-                      height={150}
-                      width={150}
-                      className="flex-shrink-0 opacity-30 grayscale"
+                      height={isDesktop ? 150 : 100}
+                      width={isDesktop ? 150 : 100}
+                      className="flex-shrink-0 opacity-30 grayscale transition-all"
                     />
 
                     <p className="text-xl font-light text-gray-500">Contacts not found</p>
