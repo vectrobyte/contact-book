@@ -2,7 +2,6 @@ import React from 'react';
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 
 import { type PaginationMeta } from '@/@types';
-import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 
 type PaginationProps = Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> & {
