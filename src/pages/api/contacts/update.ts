@@ -1,8 +1,11 @@
 import { type Contact } from '@/@types';
+import { Patch } from '@/server/handlers/route.handler';
+import { AuthMiddleware } from '@/server/middleware/auth.middleware';
 import { UpdateContactSchema } from '@/server/schemas/contact.schema';
 import { updateContact } from '@/server/services/contact.service';
-import { Patch } from '@/server/handlers/route.handler';
 
-export default Patch(UpdateContactSchema, async (payload) => {
-  return updateContact(payload as Contact);
-});
+export default AuthMiddleware(
+  Patch(UpdateContactSchema, async (payload) => {
+    return updateContact(payload as Contact);
+  })
+);

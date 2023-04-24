@@ -1,7 +1,10 @@
 import { IdSchema } from '@/lib/schemas/common.schema';
-import { findContactById } from '@/server/services/contact.service';
 import { Get } from '@/server/handlers/route.handler';
+import { AuthMiddleware } from '@/server/middleware/auth.middleware';
+import { findContactById } from '@/server/services/contact.service';
 
-export default Get(IdSchema, async ({ id }) => {
-  return findContactById(id);
-});
+export default AuthMiddleware(
+  Get(IdSchema, async ({ id }) => {
+    return findContactById(id);
+  })
+);

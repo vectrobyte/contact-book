@@ -1,18 +1,15 @@
 import { type IncomingHttpHeaders } from 'http';
-import { type NextApiRequest, type NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 import { type ParsedUrlQuery } from 'querystring';
 import { type Schema } from 'yup';
 
-import { type Session, type SessionUser } from '@/server/auth';
 import ErrorHandler from '@/server/handlers/error.handler';
+import { type ServerRequest, type ServerResponse } from '@/server/types';
 
 export type ServerRequestContext = {
   headers: IncomingHttpHeaders;
   params: Record<string, string | undefined>;
   query: ParsedUrlQuery;
-  session: Session;
-  user?: SessionUser;
+  request: ServerRequest;
 };
 
 type HandlerConfig<P> = {
@@ -27,7 +24,7 @@ const createHandler = <P, R>(
   { method = 'GET', target = 'query', schema }: HandlerConfig<P>,
   impl: Impl<P, R>
 ) => {
-  return async (req: NextApiRequest, res: NextApiResponse) => {
+  return async (req: ServerRequest, res: ServerResponse) => {
     try {
       if (!req.url || !req.url.startsWith('/api/')) {
         res.status(404).json({ message: `Invalid API URL "${req.url}"` });
@@ -40,7 +37,6 @@ const createHandler = <P, R>(
       }
 
       const data = req[target];
-      const session: Session = await getSession({ req });
 
       if (schema) {
         await schema.validate(data, { abortEarly: false });
@@ -50,8 +46,7 @@ const createHandler = <P, R>(
         headers: req.headers,
         params: {},
         query: req.query,
-        session,
-        user: session?.user || null,
+        request: req,
       };
 
       const response = await impl(data, context);
