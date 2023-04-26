@@ -1,4 +1,5 @@
 import { type AxiosPromise, type AxiosRequestConfig } from 'axios';
+import { getCsrfToken, getSession } from 'next-auth/react';
 import { useCallback } from 'react';
 
 import request from '@/services/request.service';
@@ -9,14 +10,24 @@ export const useRequest = () => {
   const { abort } = useAbortController();
 
   return useCallback(
-    <T>(configs?: AxiosRequestConfig) => {
+    async <T>(configs?: AxiosRequestConfig) => {
+      const token = await getCsrfToken();
+      const session = await getSession();
+
+      const headers: AxiosRequestConfig['headers'] = {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'CSRF-Token': token,
+        ...configs?.headers,
+      };
+
+      if (session?.accessToken) {
+        headers.Authorization = `Bearer ${session.accessToken}`;
+      }
+
       const fetchPromise = request({
         ...configs,
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          ...configs?.headers,
-        },
+        headers,
       }) as AxiosPromise<T>;
 
       abort();
