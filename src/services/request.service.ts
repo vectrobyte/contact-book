@@ -6,7 +6,6 @@ export * from 'axios';
 
 const request: AxiosInstance = axios.create({
   baseURL: '/api',
-  withCredentials: true,
 });
 
 request.interceptors.response.use(

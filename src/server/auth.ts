@@ -45,24 +45,24 @@ export const authOptions: NextAuthOptions = {
   ],
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
-    session: ({ session, user, token }) => {
+    session: ({ session, token }) => {
       return {
         ...session,
+        accessToken: token?.accessToken,
         user: {
           ...session.user,
-          id: user.id,
           accessToken: token?.accessToken,
         },
       };
     },
-    async jwt({ token, account, user, profile }) {
-      // console.log('This is JWT callback: ', { token, user, account, profile });
-      if (user?.accessToken) {
-        token.accessToken = user.accessToken;
-      }
-      if (account?.accessToken) {
-        token.accessToken = account.accessToken;
+    async jwt({ token, account }) {
+      if (account) {
+        token.accessToken = account.access_token;
+        token.id = account.id;
       }
       return token;
     },

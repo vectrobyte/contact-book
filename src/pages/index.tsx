@@ -7,6 +7,7 @@ import React from 'react';
 import Contacts from '@/features/contacts/Contacts';
 import AppLayout from '@/layouts/app-layout/AppLayout';
 import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
+
 const HomePage: React.FC<NextPage> = () => {
   const isDesktop = useIsDesktop();
 
