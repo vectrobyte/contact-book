@@ -1,15 +1,16 @@
 import { type NextPage } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { useMemo } from 'react';
+import React from 'react';
 
 import Contacts from '@/features/contacts/Contacts';
 import AppLayout from '@/layouts/app-layout/AppLayout';
-
+import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
 const HomePage: React.FC<NextPage> = () => {
-  const { data: sessionData } = useSession();
+  const isDesktop = useIsDesktop();
 
-  const isLoggedIn = useMemo(() => sessionData && sessionData.user, [sessionData]);
+  const { status } = useSession();
 
   return (
     <>
@@ -31,7 +32,17 @@ const HomePage: React.FC<NextPage> = () => {
       </Head>
 
       <AppLayout>
-        {isLoggedIn ? (
+        {status === 'loading' ? (
+          <div className="flex-center flex-col gap-5 px-16 py-32 sm:gap-10 md:px-32 lg:p-64">
+            <Image
+              src="/logo.svg"
+              alt=""
+              height={isDesktop ? 150 : 100}
+              width={isDesktop ? 150 : 100}
+              className="mt-[130px] flex-shrink-0 animate-pulse opacity-10 grayscale"
+            />
+          </div>
+        ) : status === 'authenticated' ? (
           <Contacts />
         ) : (
           <div className="flex-center flex-col gap-5 px-16 py-32 sm:gap-10 md:px-32 lg:p-64">
