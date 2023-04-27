@@ -4,7 +4,7 @@ import { AuthMiddleware } from '@/server/middleware/auth.middleware';
 import { findContactByEmail } from '@/server/services/contact.service';
 
 export default AuthMiddleware(
-  Get(EmailSchema, async ({ email }) => {
-    return findContactByEmail(email);
+  Get(EmailSchema, async ({ email }, { request }) => {
+    return findContactByEmail(email, request.user.sub);
   })
 );

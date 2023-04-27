@@ -1,9 +1,9 @@
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import { type User } from 'next-auth';
-import { type Session } from 'next-auth/src';
+import { type Session } from 'next-auth';
+import { type DefaultJWT } from 'next-auth/src/jwt/types';
 
 export type ServerRequest = NextApiRequest & {
-  user?: User;
+  user?: DefaultJWT;
   session?: Session;
 };
 

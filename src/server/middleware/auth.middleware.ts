@@ -1,16 +1,15 @@
-import { getSession } from 'next-auth/react';
+import { getToken } from 'next-auth/jwt';
 
 import { type ServerRequest, type ServerResponse } from '@/server/types';
 
 export const AuthMiddleware = (handler) => async (req: ServerRequest, res: ServerResponse) => {
-  const session = await getSession({ req });
+  const token = await getToken({ req });
 
-  if (!session || !session.user) {
+  if (!token) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  req.session = session;
-  req.user = session.user;
+  req.user = token;
 
   return handler(req, res);
 };

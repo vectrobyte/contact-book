@@ -5,7 +5,9 @@ import { UpdateContactSchema } from '@/server/schemas/contact.schema';
 import { updateContact } from '@/server/services/contact.service';
 
 export default AuthMiddleware(
-  Patch(UpdateContactSchema, async (payload) => {
-    return updateContact(payload as Contact);
+  Patch(UpdateContactSchema, async (payload, { request }) => {
+    console.log(request);
+
+    return updateContact(payload as Contact, request.user.sub);
   })
 );

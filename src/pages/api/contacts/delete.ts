@@ -4,7 +4,7 @@ import { AuthMiddleware } from '@/server/middleware/auth.middleware';
 import { deleteContact } from '@/server/services/contact.service';
 
 export default AuthMiddleware(
-  Delete(IdSchema, async ({ id }) => {
-    return deleteContact(id);
+  Delete(IdSchema, async ({ id }, { request }) => {
+    return deleteContact(id, request.user.sub);
   })
 );

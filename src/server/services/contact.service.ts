@@ -7,14 +7,17 @@ import {
 import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
 import { prisma } from '@/server/db';
 
-export async function listContacts(params: PageParams): Promise<PaginatedResult<Contact>> {
+export async function listContacts(
+  params: PageParams,
+  user_id: string
+): Promise<PaginatedResult<Contact>> {
   const { page = 1, size = DEFAULT_PAGE_SIZE, keyword } = params;
 
   const skip = (page - 1) * size;
 
   const where = keyword
-    ? { OR: [{ full_name: { contains: keyword } }, { email: { contains: keyword } }] }
-    : {};
+    ? { user_id, OR: [{ full_name: { contains: keyword } }, { email: { contains: keyword } }] }
+    : { user_id };
 
   const count = await prisma.contact.count({ where });
 
@@ -40,33 +43,36 @@ export async function listContacts(params: PageParams): Promise<PaginatedResult<
   };
 }
 
-export function findContactById(id: string) {
-  return prisma.contact.findUnique({
-    where: { id },
+export function findContactById(id: string, user_id: string) {
+  return prisma.contact.findFirst({
+    where: { id, user_id },
   });
 }
 
-export function findContactByEmail(email: string) {
-  return prisma.contact.findFirst({ where: { email } });
+export function findContactByEmail(email: string, user_id: string) {
+  return prisma.contact.findFirst({ where: { email, user_id } });
 }
 
-export function findContactByPhone(phone: string) {
-  return prisma.contact.findUnique({ where: { phone } });
+export function findContactByPhone(phone: string, user_id: string) {
+  return prisma.contact.findUnique({ where: { user_id_phone: { phone, user_id } } });
 }
 
-export function createContact(data: ContactFormData) {
+export async function createContact(data: ContactFormData, user_id: string) {
   return prisma.contact.create({
     data: {
       ...data,
+      user_id,
       created_at: new Date(),
       updated_at: new Date(),
     },
   });
 }
 
-export function updateContact({ id, ...data }: Contact) {
+export async function updateContact({ id, ...data }: Contact, user_id: string) {
+  const { phone } = await findContactById(id, user_id);
+
   return prisma.contact.update({
-    where: { id },
+    where: { user_id_phone: { user_id, phone } },
     data: {
       ...data,
       updated_at: new Date(),
@@ -74,8 +80,10 @@ export function updateContact({ id, ...data }: Contact) {
   });
 }
 
-export function deleteContact(id: string) {
+export async function deleteContact(id: string, user_id: string) {
+  const { phone } = await findContactById(id, user_id);
+
   return prisma.contact.delete({
-    where: { id },
+    where: { user_id_phone: { user_id, phone } },
   });
 }

@@ -4,7 +4,7 @@ import { AuthMiddleware } from '@/server/middleware/auth.middleware';
 import { findContactById } from '@/server/services/contact.service';
 
 export default AuthMiddleware(
-  Get(IdSchema, async ({ id }) => {
-    return findContactById(id);
+  Get(IdSchema, async ({ id }, { request }) => {
+    return findContactById(id, request.user.sub);
   })
 );

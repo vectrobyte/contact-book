@@ -1,3 +1,4 @@
+import { getCsrfToken, getSession } from 'next-auth/react';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -43,10 +44,15 @@ export const useContacts = () => {
 
   const createContact = useCallback(
     async (payload: ContactFormData) => {
+      const session = await getSession();
+
       const { data: newContact } = await request<Contact>({
         url: 'contacts/create',
         method: 'POST',
-        data: payload,
+        data: {
+          ...payload,
+          user_id: session?.user?.id,
+        },
       });
 
       listContacts();
@@ -57,10 +63,16 @@ export const useContacts = () => {
   );
 
   const updateContact = useCallback(async (payload: Contact) => {
+    const session = await getSession();
+
     const { data: updatedContact } = await request<Contact>({
       url: 'contacts/update',
       method: 'PATCH',
-      data: payload,
+
+      data: {
+        ...payload,
+        user_id: session?.user?.id,
+      },
     });
 
     setContacts((prevState) =>
