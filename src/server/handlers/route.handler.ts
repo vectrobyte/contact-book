@@ -36,7 +36,7 @@ const createHandler = <P, R>(
         return;
       }
 
-      const data = req[target];
+      const data = req[target] as P;
 
       if (schema) {
         await schema.validate(data, { abortEarly: false });

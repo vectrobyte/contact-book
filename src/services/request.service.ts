@@ -1,4 +1,4 @@
-import axios, { type AxiosInstance } from 'axios';
+import axios, { type AxiosError, type AxiosInstance } from 'axios';
 
 import RequestError from '@/lib/errors/RequestError';
 
@@ -10,13 +10,12 @@ const request: AxiosInstance = axios.create({
 
 request.interceptors.response.use(
   (res) => res,
-  (e) => {
-    const message = e.response?.data?.message || e.message;
-
+  (err: AxiosError<any>) => {
     throw new RequestError({
-      message,
-      statusCode: e.response?.status,
-      response: e.response,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      message: err.response.data.message || err.message,
+      response: err.response,
+      statusCode: err?.response?.status || 500,
     });
   }
 );

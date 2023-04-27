@@ -1,5 +1,5 @@
 export default class AppError extends Error {
-  isExpected: boolean;
+  public isExpected: boolean;
 
   constructor(message: string) {
     super(message);

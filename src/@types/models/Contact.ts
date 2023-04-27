@@ -3,6 +3,7 @@ export type Contact = {
   full_name: string;
   email?: string;
   phone: string;
+  user_id: string;
 };
 
 export type ContactFormData = Omit<Contact, 'id'>;

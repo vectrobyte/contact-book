@@ -39,7 +39,7 @@ export const useAfterLoad = (callback: CallableFunction, deps = []) => {
     if (isLoaded) {
       callbackRef.current();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,react-hooks/exhaustive-deps
   }, [isLoaded, ...deps]);
 
   return isLoaded;

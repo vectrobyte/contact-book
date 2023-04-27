@@ -7,17 +7,28 @@ type Response<T> = Partial<{
   }>;
 }>;
 
+type ErrorResponse<T> = {
+  message: string;
+  statusCode: number;
+  response?: Response<T>;
+};
+
 export default class RequestError<T> extends AppError {
   public message: string;
   public statusCode?: number;
   public response?: Response<T>;
 
-  constructor(options: { message: string; statusCode?: number; response?: Response<T> }) {
+  constructor(options: ErrorResponse<T>) {
     super(options.message);
     this.isExpected = false;
-    this.message = options.message;
-    this.statusCode = options.statusCode;
-    this.response = options.response;
+
+    if (options.response) {
+      this.response = options.response;
+    }
+
+    if (options.statusCode) {
+      this.statusCode = options.statusCode;
+    }
   }
 
   public toJson() {

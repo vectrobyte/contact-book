@@ -24,10 +24,20 @@ const ViewContactModal: React.FC<ViewContactModalProps> = ({
       {...props}
       controlArea={
         <div className="flex items-center gap-1">
-          <IconButton className="" onClick={() => onEdit(contact)}>
+          <IconButton
+            className=""
+            onClick={() => {
+              onEdit(contact);
+            }}
+          >
             <MdEdit />
           </IconButton>
-          <IconButton className="" onClick={() => onDelete(contact)}>
+          <IconButton
+            className=""
+            onClick={() => {
+              onDelete(contact);
+            }}
+          >
             <MdDelete />
           </IconButton>
         </div>

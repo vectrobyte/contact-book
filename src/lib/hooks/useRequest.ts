@@ -1,5 +1,5 @@
 import { type AxiosPromise, type AxiosRequestConfig } from 'axios';
-import { getCsrfToken, getSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import { useCallback } from 'react';
 
 import request from '@/services/request.service';
@@ -11,13 +11,11 @@ export const useRequest = () => {
 
   return useCallback(
     async <T>(configs?: AxiosRequestConfig) => {
-      const token = await getCsrfToken();
       const session = await getSession();
 
       const headers: AxiosRequestConfig['headers'] = {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        'CSRF-Token': token,
         ...configs?.headers,
       };
 

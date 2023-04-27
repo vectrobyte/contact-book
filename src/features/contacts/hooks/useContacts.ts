@@ -1,5 +1,5 @@
-import { getCsrfToken, getSession } from 'next-auth/react';
-import { useCallback, useEffect, useState } from 'react';
+import { getSession } from 'next-auth/react';
+import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import {
@@ -16,7 +16,7 @@ import { useRequest } from '@/lib/hooks/useRequest';
 
 export const useContacts = () => {
   const request = useRequest();
-  const [query, setQuery, ready] = useQuery<PageParams>();
+  const { query, setQuery, ready } = useQuery<PageParams>();
 
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,11 +35,14 @@ export const useContacts = () => {
         setContacts(paginatedContacts.data);
         setPagination(paginatedContacts.meta);
       }
-    } catch (error) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
     } finally {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   const createContact = useCallback(
@@ -55,10 +58,11 @@ export const useContacts = () => {
         },
       });
 
-      listContacts();
+      void listContacts();
 
       return newContact;
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [listContacts]
   );
 
@@ -80,6 +84,7 @@ export const useContacts = () => {
     );
 
     return updatedContact;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const dropContact = useCallback(async (contactToDelete: Contact) => {
@@ -90,6 +95,7 @@ export const useContacts = () => {
     });
 
     setContacts((prevState) => prevState.filter((contact) => contactToDelete.id !== contact.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useAfterLoad(async () => {

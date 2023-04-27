@@ -6,13 +6,13 @@ import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 import { type Contact } from '@/@types';
 import IconButton from '@/components/buttons/IconButton';
 import PrimaryButton from '@/components/buttons/PrimaryButton';
+import Search from '@/components/inputs/Search';
 import Pagination from '@/components/Pagination';
 import ContactAvatar from '@/features/contacts/components/ContactAvatar';
 import CreateContactModal from '@/features/contacts/components/modals/CreateContactModal';
 import DeleteContactModal from '@/features/contacts/components/modals/DeleteContactModal';
 import EditContactModal from '@/features/contacts/components/modals/EditContactModal';
 import ViewContactModal from '@/features/contacts/components/modals/ViewContactModal';
-import Search from '@/features/contacts/components/Search';
 import TableLoader from '@/features/contacts/components/TableLoader';
 import { useContacts } from '@/features/contacts/hooks/useContacts';
 import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
@@ -56,7 +56,7 @@ const Home: React.FC<HomeProps> = () => {
       <div className="my-4 flex items-center lg:justify-end">
         <Search
           keyword={query.keyword || ''}
-          onSubmit={(keyword) => setQuery({ keyword: keyword || null })}
+          onSubmit={(keyword: string) => setQuery({ keyword: keyword || null })}
           className="w-full lg:w-[500px]"
         />
       </div>

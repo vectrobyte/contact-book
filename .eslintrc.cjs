@@ -4,6 +4,9 @@ const path = require("path");
 /** @type {import("eslint").Linter.Config} */
 const config = {
   parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: path.join(__dirname, "tsconfig.json"),
+  },
   plugins: [
     "react",
     "@typescript-eslint",
@@ -33,7 +36,6 @@ const config = {
       },
     ],
     "block-spacing": ["error", "never"],
-    "@typescript-eslint/require-await": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     "@typescript-eslint/explicit-function-return-type": 0,
