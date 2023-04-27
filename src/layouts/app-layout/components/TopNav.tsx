@@ -45,7 +45,7 @@ const TopNav: React.FC<TopNavProps> = () => {
               <Button onClick={() => void signOut()}>Sign out</Button>
             </div>
           ) : (
-            <Button onClick={() => void signIn('google')}>Sign in</Button>
+            <Button onClick={() => void signIn()}>Sign in</Button>
           )}
         </div>
       </div>
