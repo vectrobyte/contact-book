@@ -13,7 +13,7 @@ export type ServerRequestContext = {
 };
 
 type HandlerConfig<P> = {
-  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
+  method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
   target?: 'query' | 'body';
   schema?: Schema<P>;
 };
@@ -27,11 +27,11 @@ const createHandler = <P, R>(
   return async (req: ServerRequest, res: ServerResponse) => {
     try {
       if (!req.url || !req.url.startsWith('/api/')) {
-        res.status(404).json({ message: `Invalid API URL "${req.url}"` });
+        res.status(404).json({ message: `Invalid API URL "${req.url || ''}"` });
         return;
       }
 
-      if (req.method.toUpperCase() !== method) {
+      if (req.method && req.method.toUpperCase() !== method) {
         res.status(405).json({ message: `Method not allowed "${req.method}"` });
         return;
       }

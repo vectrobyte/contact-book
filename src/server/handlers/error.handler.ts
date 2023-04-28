@@ -2,14 +2,16 @@ import { type PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { type NextApiResponse } from 'next';
 import { type ValidationError } from 'yup';
 
-import AppError from '@/lib/errors/AppError';
+import ServerError from '@/lib/errors/ServerError';
 
 function mapValidationError(errorObj: ValidationError) {
-  const errors = {};
+  const errors: Record<string, any> = {};
 
   errorObj.inner.forEach((err) => {
     const { path, message } = err;
-    errors[path] = message;
+    if (path?.length) {
+      errors[path] = message;
+    }
   });
 
   return {
@@ -19,7 +21,7 @@ function mapValidationError(errorObj: ValidationError) {
   };
 }
 
-export default function ErrorHandler(error, res: NextApiResponse) {
+export default function ErrorHandler(error: unknown, res: NextApiResponse) {
   // Handle Validation errors
   if ((error as ValidationError).name === 'ValidationError') {
     return res.status(422).json(mapValidationError(error as ValidationError));
@@ -64,7 +66,7 @@ export default function ErrorHandler(error, res: NextApiResponse) {
   }
 
   // Handle database connection errors
-  if (error instanceof AppError) {
+  if (error instanceof ServerError) {
     return res.status(error.isExpected ? 400 : 500).json({
       message: error.message,
     });

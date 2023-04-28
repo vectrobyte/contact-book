@@ -97,12 +97,14 @@ const Home: React.FC<HomeProps> = () => {
                     </button>
                   </td>
                   <td className="hidden p-3 text-sm font-light lg:table-cell">
-                    <Link
-                      href={`mailto:${contact.email}`}
-                      className="transition-opacity hover:opacity-80"
-                    >
-                      {contact.email}
-                    </Link>
+                    {contact.email && (
+                      <Link
+                        href={`mailto:${contact.email}`}
+                        className="transition-opacity hover:opacity-80"
+                      >
+                        {contact.email}
+                      </Link>
+                    )}
                   </td>
                   <td className="hidden p-3 text-sm font-light sm:table-cell">
                     <Link

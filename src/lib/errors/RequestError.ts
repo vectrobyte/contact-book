@@ -14,7 +14,6 @@ type ErrorResponse<T> = {
 };
 
 export default class RequestError<T> extends AppError {
-  public message: string;
   public statusCode?: number;
   public response?: Response<T>;
 

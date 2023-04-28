@@ -1,11 +1,9 @@
-import {
-  type Contact,
-  type ContactFormData,
-  type PageParams,
-  type PaginatedResult,
-} from '@/@types';
+import { type ContactFormData, type PageParams, type PaginatedResult } from '@/@types';
 import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
+import ServerError from '@/lib/errors/ServerError';
 import { prisma } from '@/server/db';
+
+import { type Contact } from '.prisma/client';
 
 export async function listContacts(
   params: PageParams,
@@ -43,10 +41,16 @@ export async function listContacts(
   };
 }
 
-export function findContactById(id: string, user_id: string) {
-  return prisma.contact.findFirst({
+export async function findContactById(id: string, user_id: string): Promise<Contact> {
+  const contact = await prisma.contact.findFirst({
     where: { id, user_id },
   });
+
+  if (!contact || !contact.id) {
+    throw new ServerError('Contact not found!', 404);
+  }
+
+  return contact;
 }
 
 export function findContactByEmail(email: string, user_id: string) {

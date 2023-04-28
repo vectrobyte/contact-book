@@ -3,6 +3,17 @@ const path = require("path");
 
 /** @type {import("eslint").Linter.Config} */
 const config = {
+  overrides: [
+    {
+      extends: [
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+      ],
+      files: ["*.ts", "*.tsx"],
+      parserOptions: {
+        project: path.join(__dirname, "tsconfig.json"),
+      },
+    },
+  ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: path.join(__dirname, "tsconfig.json"),
@@ -36,12 +47,11 @@ const config = {
       },
     ],
     "block-spacing": ["error", "never"],
-    "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-    "@typescript-eslint/explicit-function-return-type": 0,
-    "@typescript-eslint/explicit-member-accessibility": 0,
-    "@typescript-eslint/explicit-module-boundary-types": 0,
-    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
     "import/order": "off",
     "no-console": "warn",
     "no-unused-vars": "warn",
@@ -61,12 +71,10 @@ const config = {
     "semi": "warn",
     "simple-import-sort/imports": "error",
     "sort-imports": "off",
-    "no-restricted-imports": [
+    "@typescript-eslint/no-misused-promises": [
       "error",
-      {
-        "patterns": []
-      }
-    ]
+      {"checksVoidReturn": {"attributes": false}}
+    ],
   },
 };
 

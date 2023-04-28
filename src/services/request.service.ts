@@ -1,4 +1,4 @@
-import axios, { type AxiosError, type AxiosInstance } from 'axios';
+import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
 
 import RequestError from '@/lib/errors/RequestError';
 
@@ -10,12 +10,19 @@ const request: AxiosInstance = axios.create({
 
 request.interceptors.response.use(
   (res) => res,
-  (err: AxiosError<any>) => {
+  (err: Error) => {
+    if ((err as AxiosError).response) {
+      const response = (err as AxiosError).response as AxiosResponse;
+      throw new RequestError({
+        message: ((response.data as Record<string, any>) || err)?.message as string,
+        response: response,
+        statusCode: response?.status || 500,
+      });
+    }
+
     throw new RequestError({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-      message: err.response.data.message || err.message,
-      response: err.response,
-      statusCode: err?.response?.status || 500,
+      message: err.message || 'Unknown error occurred',
+      statusCode: 500,
     });
   }
 );

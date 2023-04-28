@@ -6,7 +6,7 @@ import TextInput, { type TextInputProps } from '@/components/inputs/TextInput';
 
 type SearchProps = Omit<TextInputProps, 'onSubmit'> & {
   keyword: string;
-  onSubmit(keyword: string);
+  onSubmit(keyword: string): void;
 };
 
 type SearchFormData = {
@@ -17,14 +17,14 @@ const Search: React.FC<SearchProps> = ({ keyword, className = '', onSubmit }) =>
   const { register, reset } = useForm<SearchFormData>();
 
   const debouncedSearch = React.useRef(
-    debounce(async (keyword: string) => {
-      await onSubmit(keyword);
+    debounce((keyword: string) => {
+      onSubmit(keyword);
     }, 500)
   ).current;
 
-  async function onSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
+  function onSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    await debouncedSearch(value);
+    debouncedSearch(value);
   }
 
   React.useEffect(() => {

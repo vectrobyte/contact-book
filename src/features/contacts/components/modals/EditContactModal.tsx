@@ -63,10 +63,11 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
         if (!errors || !Object.keys(errors).length) {
           throw new AppError(err.message);
         }
-        Object.keys(errors).forEach((errorKey: keyof ContactFormData) => {
-          setError(errorKey, {
+        Object.keys(errors).forEach((errorKey) => {
+          const key = errorKey as keyof ContactFormData;
+          setError(key, {
             type: 'server',
-            message: errors[errorKey],
+            message: errors[key],
           });
         });
       })

@@ -23,28 +23,24 @@
     "checkJs": true,
     "incremental": true,
     "noUncheckedIndexedAccess": true,
-    "types": [
-      "node",
-      "react",
-      "react-dom"
-    ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/@types"
-    ],
-    "baseUrl": "./",
+    "noImplicitAny": false,
+    "strictPropertyInitialization": false,
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.cjs",
+    "./src/**/*.mjs"
   ],
   "exclude": [
     "node_modules",
-    "**/*.cjs",
-    "**/*.mjs"
+    "./node_modules",
+    "./node_modules/*",
+    "./node_modules/@types/node/index.d.ts"
   ]
 }
