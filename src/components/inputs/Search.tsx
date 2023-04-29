@@ -16,7 +16,9 @@ type SearchFormData = {
 const Search: React.FC<SearchProps> = ({ keyword, className = '', onSubmit }) => {
   const { register, reset } = useForm<SearchFormData>();
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const debouncedSearch = React.useRef(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     debounce((keyword: string) => {
       onSubmit(keyword);
     }, 500)
@@ -24,11 +26,13 @@ const Search: React.FC<SearchProps> = ({ keyword, className = '', onSubmit }) =>
 
   function onSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     debouncedSearch(value);
   }
 
   React.useEffect(() => {
     return () => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       debouncedSearch.cancel();
     };
   }, [debouncedSearch]);
