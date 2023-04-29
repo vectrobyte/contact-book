@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { type Contact, type ContactFormData } from '@/@types';
 import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import TextInput from '@/components/inputs/TextInput';
@@ -11,10 +10,11 @@ import Modal, { type ModalProps } from '@/components/modals/Modal';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';
 import { ContactFormSchema } from '@/lib/schemas/contact.schema';
+import { type Contact, type ContactInput } from '@/server/models';
 
 type EditContactModalProps = ModalProps & {
   contact: Contact;
-  onSubmit(data: Contact): Promise<Contact>;
+  onSubmit(id: string, data: ContactInput): Promise<Contact>;
   onSuccess(contact: Contact): void;
 };
 
@@ -35,25 +35,22 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
     reset,
     setError,
     clearErrors,
-  } = useForm<ContactFormData>({ resolver: yupResolver(ContactFormSchema) });
+  } = useForm<ContactInput>({ resolver: yupResolver(ContactFormSchema) });
 
   const resetForm = useCallback(() => {
     reset();
     clearErrors();
   }, [clearErrors, reset]);
 
-  const handleFormSubmit = (data: ContactFormData) => {
+  const handleFormSubmit = (data: ContactInput) => {
     setSubmitting(true);
-    onSubmit({
-      id: contact.id,
-      ...data,
-    })
+    onSubmit(contact.id, data)
       .then((updatedContact) => {
         toast.success('Contact updated successfully!');
         onSuccess(updatedContact);
         handleClose();
       })
-      .catch((err: RequestError<ContactFormData>) => {
+      .catch((err: RequestError<ContactInput>) => {
         if (!err.response) {
           throw err;
         }
@@ -64,7 +61,7 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
           throw new AppError(err.message);
         }
         Object.keys(errors).forEach((errorKey) => {
-          const key = errorKey as keyof ContactFormData;
+          const key = errorKey as keyof ContactInput;
           setError(key, {
             type: 'server',
             message: errors[key],

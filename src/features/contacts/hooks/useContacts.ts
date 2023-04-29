@@ -2,17 +2,12 @@ import { getSession } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import {
-  type Contact,
-  type ContactFormData,
-  type PageParams,
-  type PaginatedResult,
-  type PaginationMeta,
-} from '@/@types';
+import { type PageParams, type PaginatedResult, type PaginationMeta } from '@/@types';
 import { DEFAULT_PAGINATION_META } from '@/lib/configs';
 import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';
+import { type Contact, type ContactInput } from '@/server/models';
 
 export const useContacts = () => {
   const request = useRequest();
@@ -46,7 +41,7 @@ export const useContacts = () => {
   }, [query]);
 
   const createContact = useCallback(
-    async (payload: ContactFormData) => {
+    async (payload: ContactInput) => {
       const session = await getSession();
 
       const { data: newContact } = await request<Contact>({
@@ -66,7 +61,7 @@ export const useContacts = () => {
     [listContacts]
   );
 
-  const updateContact = useCallback(async (payload: Contact) => {
+  const updateContact = useCallback(async (id: string, payload: ContactInput) => {
     const session = await getSession();
 
     const { data: updatedContact } = await request<Contact>({
@@ -75,6 +70,7 @@ export const useContacts = () => {
 
       data: {
         ...payload,
+        id: payload,
         user_id: session?.user?.id,
       },
     });

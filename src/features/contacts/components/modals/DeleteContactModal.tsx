@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { type Contact } from '@/@types';
 import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
+import { type Contact } from '@/server/models';
 
 type DeleteContactModalProps = ModalProps & {
   contact: Contact;

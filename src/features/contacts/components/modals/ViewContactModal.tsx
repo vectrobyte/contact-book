@@ -1,10 +1,10 @@
 import React from 'react';
 import { MdDelete, MdEdit, MdMailOutline, MdPhone } from 'react-icons/md';
 
-import { type Contact } from '@/@types';
 import IconButton from '@/components/buttons/IconButton';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
 import ContactAvatar from '@/features/contacts/components/ContactAvatar';
+import { type Contact } from '@/server/models';
 
 type ViewContactModalProps = ModalProps & {
   contact: Contact;

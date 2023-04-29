@@ -1,9 +1,8 @@
-import { type ContactFormData, type PageParams, type PaginatedResult } from '@/@types';
+import { type PageParams, type PaginatedResult } from '@/@types';
 import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
 import ServerError from '@/lib/errors/ServerError';
 import { prisma } from '@/server/db';
-
-import { type Contact } from '.prisma/client';
+import { type Contact, type ContactInput } from '@/server/models';
 
 export async function listContacts(
   params: PageParams,
@@ -61,7 +60,7 @@ export function findContactByPhone(phone: string, user_id: string) {
   return prisma.contact.findUnique({ where: { user_id_phone: { phone, user_id } } });
 }
 
-export async function createContact(data: ContactFormData, user_id: string) {
+export async function createContact(data: ContactInput, user_id: string) {
   return prisma.contact.create({
     data: {
       ...data,

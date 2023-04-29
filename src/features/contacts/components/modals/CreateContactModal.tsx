@@ -3,7 +3,6 @@ import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { type Contact, type ContactFormData } from '@/@types';
 import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import TextInput from '@/components/inputs/TextInput';
@@ -11,9 +10,10 @@ import Modal, { type ModalProps } from '@/components/modals/Modal';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';
 import { ContactFormSchema } from '@/lib/schemas/contact.schema';
+import { type Contact, type ContactInput } from '@/server/models';
 
 type CreateContactModalProps = ModalProps & {
-  onSubmit(data: ContactFormData): Promise<Contact>;
+  onSubmit(data: ContactInput): Promise<Contact>;
   onSuccess(contact: Contact): void;
 };
 
@@ -32,14 +32,14 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({
     reset,
     setError,
     clearErrors,
-  } = useForm<ContactFormData>({ resolver: yupResolver(ContactFormSchema) });
+  } = useForm<ContactInput>({ resolver: yupResolver(ContactFormSchema) });
 
   const resetForm = useCallback(() => {
     reset();
     clearErrors();
   }, [clearErrors, reset]);
 
-  const handleFormSubmit = (data: ContactFormData) => {
+  const handleFormSubmit = (data: ContactInput) => {
     setSubmitting(true);
     onSubmit(data)
       .then((newContact) => {
@@ -47,7 +47,7 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({
         onSuccess(newContact);
         handleClose();
       })
-      .catch((err: RequestError<ContactFormData>) => {
+      .catch((err: RequestError<ContactInput>) => {
         if (!err.response) {
           throw err;
         }
@@ -58,7 +58,7 @@ const CreateContactModal: React.FC<CreateContactModalProps> = ({
           throw new AppError(err.message);
         }
         Object.keys(errors).forEach((errorKey) => {
-          const err = errorKey as keyof ContactFormData;
+          const err = errorKey as keyof ContactInput;
           setError(err, {
             type: 'server',
             message: errors[err],

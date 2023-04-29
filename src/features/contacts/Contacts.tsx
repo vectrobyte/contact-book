@@ -3,7 +3,6 @@ import Link from 'next/link';
 import React, { useCallback, useState } from 'react';
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md';
 
-import { type Contact } from '@/@types';
 import IconButton from '@/components/buttons/IconButton';
 import PrimaryButton from '@/components/buttons/PrimaryButton';
 import Search from '@/components/inputs/Search';
@@ -17,6 +16,7 @@ import TableLoader from '@/features/contacts/components/TableLoader';
 import { useContacts } from '@/features/contacts/hooks/useContacts';
 import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
 import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
+import { type Contact } from '@/server/models';
 
 type HomeProps = React.HTMLAttributes<HTMLElement>;
 

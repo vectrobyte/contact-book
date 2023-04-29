@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { type Contact } from '@/@types';
+import { type Contact } from '@/server/models';
 
 type ContactAvatarProps = React.HTMLAttributes<HTMLElement> & {
   contact: Contact;
