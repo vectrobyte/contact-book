@@ -1,15 +1,15 @@
 import { type IncomingHttpHeaders } from 'http';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import { type ParsedUrlQuery } from 'querystring';
 import { type Schema } from 'yup';
 
 import ErrorHandler from '@/server/handlers/error.handler';
-import { type ServerRequest, type ServerResponse } from '@/server/types';
 
 export type ServerRequestContext = {
   headers: IncomingHttpHeaders;
   params: Record<string, string | undefined>;
   query: ParsedUrlQuery;
-  request: ServerRequest;
+  request: NextApiRequest;
 };
 
 type HandlerConfig<P> = {
@@ -24,7 +24,7 @@ const createHandler = <P, R>(
   { method = 'GET', target = 'query', schema }: HandlerConfig<P>,
   impl: Impl<P, R>
 ) => {
-  return async (req: ServerRequest, res: ServerResponse) => {
+  return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       if (!req.url || !req.url.startsWith('/api/')) {
         res.status(404).json({ message: `Invalid API URL "${req.url || ''}"` });

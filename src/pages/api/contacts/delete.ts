@@ -5,6 +5,6 @@ import { deleteContact } from '@/server/services/contact.service';
 
 export default AuthMiddleware(
   Delete(IdSchema, async ({ id }, { request }) => {
-    return deleteContact(id, request.user.sub);
+    return deleteContact(id, request.user.id);
   })
 );

@@ -1,17 +1,17 @@
-import { type NextApiHandler } from 'next';
-import { getToken } from 'next-auth/jwt';
+import { type NextApiHandler, type NextApiRequest, type NextApiResponse } from 'next';
 
-import { type ServerRequest, type ServerResponse } from '@/server/types';
+import { getServerAuthSession, type ServerAuthSessionContext } from '@/server/auth';
 
 export const AuthMiddleware =
-  (handler: NextApiHandler) => async (req: ServerRequest, res: ServerResponse) => {
-    const token = await getToken({ req });
+  (handler: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
+    const session = await getServerAuthSession({ req, res } as ServerAuthSessionContext);
 
-    if (!token) {
+    if (!session || !session.user) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    req.user = token;
+    req.session = session;
+    req.user = session.user;
 
     return handler(req, res);
   };

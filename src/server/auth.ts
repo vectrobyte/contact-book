@@ -8,6 +8,11 @@ import * as process from 'process';
 import { env } from '@/env.mjs';
 import { prisma } from '@/server/db';
 
+export type ServerAuthSessionContext = {
+  req: GetServerSidePropsContext['req'];
+  res: GetServerSidePropsContext['res'];
+};
+
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
@@ -59,9 +64,6 @@ export const authOptions: NextAuthOptions = {
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
-export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext['req'];
-  res: GetServerSidePropsContext['res'];
-}) => {
+export const getServerAuthSession = (ctx: ServerAuthSessionContext) => {
   return getServerSession(ctx.req, ctx.res, authOptions);
 };

@@ -5,6 +5,6 @@ import { CreateContactSchema } from '@/server/schemas/contact.schema';
 import { createContact } from '@/server/services/contact.service';
 export default AuthMiddleware(
   Post(CreateContactSchema, async (payload, { request }) => {
-    return createContact(payload as ContactFormData, request.user.sub);
+    return createContact(payload as ContactFormData, request.user.id);
   })
 );
