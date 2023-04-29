@@ -7,6 +7,6 @@ import { type Contact } from '.prisma/client';
 
 export default AuthMiddleware(
   Patch(UpdateContactSchema, async (payload, { request }) => {
-    return updateContact(payload as Contact, request.user.id);
+    return updateContact(payload as Contact, request.user?.id);
   })
 );

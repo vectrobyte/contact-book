@@ -5,6 +5,6 @@ import { findContactById } from '@/server/services/contact.service';
 
 export default AuthMiddleware(
   Get(IdSchema, async ({ id }, { request }) => {
-    return findContactById(id, request.user.id);
+    return findContactById(id, request.user?.id);
   })
 );

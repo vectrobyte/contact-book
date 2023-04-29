@@ -5,6 +5,6 @@ import { listContacts } from '@/server/services/contact.service';
 
 export default AuthMiddleware(
   Get(ListParamsSchema, async (params, { request }) => {
-    return listContacts(params, request.user.id);
+    return listContacts(params, request.user?.id);
   })
 );
