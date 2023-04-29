@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * Specify your server-side environment variables schema here. This way you can ensure the app isn't
@@ -14,7 +14,7 @@ const server = z.object({
     // Since NextAuth.js automatically uses the VERCEL_URL if present.
     (str) => process.env.VERCEL_URL ?? str,
     // VERCEL_URL doesn't include `https` so it cant be validated as a URL
-    process.env.VERCEL ? z.string().min(1) : z.string().url()
+    process.env.VERCEL ? z.string().min(1) : z.string().url(),
   ),
   // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
   GOOGLE_CLIENT_ID: z.string(),
@@ -32,7 +32,7 @@ const client = z.object(
     {
       // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
     }
-  )
+  ),
 );
 
 /**
@@ -66,8 +66,8 @@ let env = /** @type {MergedOutput} */ (process.env);
 
 const skip =
   !!process.env.SKIP_ENV_VALIDATION &&
-  process.env.SKIP_ENV_VALIDATION !== false &&
-  process.env.SKIP_ENV_VALIDATION !== 0;
+  process.env.SKIP_ENV_VALIDATION !== 'false' &&
+  process.env.SKIP_ENV_VALIDATION !== '0';
 if (!skip) {
   const isServer = typeof window === 'undefined';
 
