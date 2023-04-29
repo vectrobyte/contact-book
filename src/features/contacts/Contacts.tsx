@@ -18,9 +18,9 @@ import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
 import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
 import { type Contact } from '@/server/models';
 
-type HomeProps = React.HTMLAttributes<HTMLElement>;
+type ContactsProps = React.HTMLAttributes<HTMLElement>;
 
-const Home: React.FC<HomeProps> = () => {
+const Contacts: React.FC<ContactsProps> = () => {
   const [isViewContactVisible, setIsViewContactVisible] = useState(false);
   const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
   const [isCreateContactModalOpen, setIsCreateContactModalOpen] = useState(false);
@@ -232,4 +232,4 @@ const Home: React.FC<HomeProps> = () => {
   );
 };
 
-export default Home;
+export default Contacts;
