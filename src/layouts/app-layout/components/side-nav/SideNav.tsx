@@ -1,44 +1,92 @@
 import { useRouter } from 'next/router';
-import React, { type CSSProperties } from 'react';
+import React, { type CSSProperties, useCallback, useEffect } from 'react';
 import { MdAdd, MdDelete, MdEdit, MdLabel } from 'react-icons/md';
 import { RiContactsBookFill } from 'react-icons/ri';
 
 import IconButton, { IconButtonUnstyled } from '@/components/buttons/IconButton';
+import PrimaryButton from '@/components/buttons/PrimaryButton';
 import NavMenu from '@/layouts/app-layout/components/side-nav/components/NavMenu';
+import { ESC_KEY_CODE } from '@/lib/configs';
+import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
 import { ROUTE_PATHS } from '@/routes';
-import { type Group } from '@/server/models';
+import { type Contact, type Group } from '@/server/models';
 
 type SideNavProps = {
+  groups: Group[];
+  contacts: Contact[];
+  isSidenavOpen: boolean;
   className?: string;
   style?: CSSProperties;
-  groups: Group[];
-  onOpenAddGroup: () => void;
-  onOpenEditGroup: (group: Group) => void;
-  onOpenDeleteGroup: (group: Group) => void;
+  onOpenAddGroup(): void;
+  onOpenEditGroup(group: Group): void;
+  onOpenDeleteGroup(group: Group): void;
+  onOpenCreateContactModal(): void;
+  onCloseSidenav(): void;
 };
 const navbarHeight = '80px';
 const SideNav: React.FC<SideNavProps> = ({
   className,
   groups,
+  contacts,
+  isSidenavOpen,
   onOpenAddGroup,
   onOpenEditGroup,
   onOpenDeleteGroup,
+  onOpenCreateContactModal,
+  onCloseSidenav,
 }) => {
   const router = useRouter();
+  const isDesktop = useIsDesktop();
+
+  const closeNavbar = useCallback(() => {
+    if (!isDesktop) {
+      onCloseSidenav();
+    }
+  }, [isDesktop]);
+
+  useEffect(() => {
+    const close = (event: KeyboardEvent) => {
+      if (isSidenavOpen && event.keyCode === ESC_KEY_CODE) {
+        onCloseSidenav();
+      }
+    };
+    window.addEventListener('keydown', close);
+    return () => window.removeEventListener('keydown', close);
+  }, [onCloseSidenav, isSidenavOpen]);
 
   return (
     <aside
-      className={`fixed flex w-64 w-64 flex-none flex-col bg-white pt-4 ${className}`}
+      className={`fixed z-10 flex w-72 flex-none flex-col border-b bg-white shadow-[4px_0px_6px_#0000001a] transition-all lg:shadow-none ${className}`}
       style={{ height: `calc(100vh - ${navbarHeight})` }}
     >
-      <div className="mb-4 bg-white">
+      <div
+        role="button"
+        className={`fixed inset-0 transition-all lg:hidden ${isSidenavOpen ? 'block' : 'hidden'}`}
+        onClick={onCloseSidenav}
+      ></div>
+
+      <div className="relative z-20 h-full bg-white">
         <ul className="sidenav sidenav-main mb-8">
+          <li>
+            <div className="mx-4 my-6">
+              <PrimaryButton
+                icon={<MdAdd size={24} />}
+                onClick={() => {
+                  onOpenCreateContactModal();
+                }}
+              >
+                <span className="hidden sm:block">Create Contact</span>
+              </PrimaryButton>
+            </div>
+          </li>
           <li>
             <NavMenu
               icon={<RiContactsBookFill size={20} />}
               label="Contacts"
               active={router.asPath === ROUTE_PATHS.contacts}
               href={ROUTE_PATHS.contacts}
+              after={Boolean(contacts.length) && <p className="pr-6">{contacts.length}</p>}
+              onClick={closeNavbar}
             />
           </li>
         </ul>
@@ -94,6 +142,7 @@ const SideNav: React.FC<SideNavProps> = ({
                     </IconButtonUnstyled>
                   </div>
                 }
+                onClick={closeNavbar}
               />
             );
           })}

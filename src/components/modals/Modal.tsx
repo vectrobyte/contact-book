@@ -3,6 +3,7 @@ import { MdClose } from 'react-icons/md';
 
 import IconButton from '@/components/buttons/IconButton';
 import Overlay from '@/components/Overlay';
+import { ESC_KEY_CODE } from '@/lib/configs';
 
 export type ModalProps = {
   visible: boolean;
@@ -18,8 +19,6 @@ export type ModalProps = {
   onClose(): void;
 };
 
-const ESC_KEY_CODE = 27;
-
 const Modal: React.FC<ModalProps> = ({
   visible,
   header,
@@ -28,7 +27,7 @@ const Modal: React.FC<ModalProps> = ({
   loading = false,
   children,
   modalClass = '',
-  zIndexClass = 'z-100',
+  zIndexClass = 'z-[100]',
   onClose = () => null,
   controlArea,
   hasBorderInFooter = true,
@@ -95,7 +94,7 @@ const Modal: React.FC<ModalProps> = ({
               : 'translate-y-4 translate-y-4 scale-95 opacity-0 ease-in'
           }`}
         >
-          <div className="items absolute right-0 top-0 z-10 block flex justify-end gap-1 pr-4 pt-4">
+          <div className="items absolute right-0 top-0 z-[100] block flex justify-end gap-1 pr-4 pt-4">
             {controlArea}
             {!!header && !hideCloseBtn && (
               <IconButton className="" onClick={onClose}>

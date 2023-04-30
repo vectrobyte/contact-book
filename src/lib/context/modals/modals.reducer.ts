@@ -8,6 +8,42 @@ export const ModalStoreReducer = (
   { type, payload }: Action<MODAL_STORE_ACTIONS>
 ): ModalStore => {
   switch (type) {
+    case MODAL_STORE_ACTIONS.setTargetContact: {
+      return {
+        ...state,
+        targetContact: payload,
+      };
+    }
+    case MODAL_STORE_ACTIONS.toggleAddContactModal: {
+      return {
+        ...state,
+        isAddContactModalOpen: payload,
+      };
+    }
+    case MODAL_STORE_ACTIONS.toggleEditContactModal: {
+      return {
+        ...state,
+        isEditContactModalOpen: payload,
+      };
+    }
+    case MODAL_STORE_ACTIONS.toggleDeleteContactModal: {
+      return {
+        ...state,
+        isDeleteContactModalOpen: payload,
+      };
+    }
+    case MODAL_STORE_ACTIONS.toggleViewContactModal: {
+      return {
+        ...state,
+        isViewContactModalOpen: payload,
+      };
+    }
+    case MODAL_STORE_ACTIONS.setTargetGroup: {
+      return {
+        ...state,
+        targetGroup: payload,
+      };
+    }
     case MODAL_STORE_ACTIONS.toggleAddGroupModal: {
       return {
         ...state,
