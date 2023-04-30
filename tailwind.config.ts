@@ -6,7 +6,8 @@ export default {
     extend: {
       colors: {
         primary: '#1f89e5',
-        'primary-light': '#91cbf9',
+        'primary-alt': '#91cbf9',
+        'primary-light': '#e8f0fe',
       },
     },
   },
