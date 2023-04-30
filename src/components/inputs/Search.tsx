@@ -1,6 +1,7 @@
 import { debounce } from 'lodash';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { MdSearch } from 'react-icons/md';
 
 import TextInput, { type TextInputProps } from '@/components/inputs/TextInput';
 
@@ -53,6 +54,7 @@ const Search: React.FC<SearchProps> = ({ keyword, className = '', onSubmit }) =>
       className="!m-0"
       wrapperClass={`!m-0 w-full flex-auto lg:flex-grow-0 ${className}`}
       labelClass="!m-0"
+      pre={<MdSearch size={24} className="text-gray-600" />}
       onChange={onSearchInput}
     />
   );
