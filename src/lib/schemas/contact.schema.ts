@@ -6,4 +6,5 @@ export const ContactFormSchema = Yup.object().shape({
   phone: Yup.string()
     .matches(/^(\+\d{1,3}[- ]?)?\d{10}$/, 'Invalid phone number format')
     .required('Phone number is required'),
+  notes: Yup.string().max(255, 'Notes must be at most 255 characters'),
 });
