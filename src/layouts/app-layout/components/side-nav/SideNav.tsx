@@ -9,10 +9,10 @@ import NavMenu from '@/layouts/app-layout/components/side-nav/components/NavMenu
 import { ESC_KEY_CODE } from '@/lib/configs';
 import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
 import { ROUTE_PATHS } from '@/routes';
-import { type Contact, type Group } from '@/server/models';
+import { type Contact, type Group, type GroupWithCount } from '@/server/models';
 
 type SideNavProps = {
-  groups: Group[];
+  groups: GroupWithCount[];
   contacts: Contact[];
   isSidenavOpen: boolean;
   className?: string;
@@ -85,7 +85,9 @@ const SideNav: React.FC<SideNavProps> = ({
               label="Contacts"
               active={router.asPath === ROUTE_PATHS.contacts}
               href={ROUTE_PATHS.contacts}
-              after={Boolean(contacts.length) && <p className="pr-6">{contacts.length}</p>}
+              after={
+                Boolean(contacts.length) && <p className="pr-6 leading-none">{contacts.length}</p>
+              }
               onClick={closeNavbar}
             />
           </li>
@@ -121,25 +123,33 @@ const SideNav: React.FC<SideNavProps> = ({
                 active={router.asPath === path}
                 href={path}
                 after={
-                  <div className="flex flex-shrink-0 items-center justify-end gap-3 pr-5 opacity-0 transition-opacity group-hover:opacity-100">
-                    <IconButtonUnstyled
-                      title="Edit"
-                      className="hover:brightness-75"
-                      onClick={() => {
-                        onOpenEditGroup(group);
-                      }}
-                    >
-                      <MdEdit size={18} />
-                    </IconButtonUnstyled>
-                    <IconButtonUnstyled
-                      title="Delete"
-                      className="hover:brightness-75"
-                      onClick={() => {
-                        onOpenDeleteGroup(group);
-                      }}
-                    >
-                      <MdDelete size={18} />
-                    </IconButtonUnstyled>
+                  <div className="relative flex-shrink-0 pr-5 transition-opacity">
+                    {Boolean(group._count.group_contacts) && (
+                      <p className="leading-none opacity-100 transition-all group-hover:opacity-0">
+                        {group._count.group_contacts}
+                      </p>
+                    )}
+
+                    <div className="absolute inset-y-0 right-0 flex items-center gap-3 pr-4 opacity-0 transition-all group-hover:opacity-100">
+                      <IconButtonUnstyled
+                        title="Edit"
+                        className="hover:brightness-75"
+                        onClick={() => {
+                          onOpenEditGroup(group);
+                        }}
+                      >
+                        <MdEdit size={18} />
+                      </IconButtonUnstyled>
+                      <IconButtonUnstyled
+                        title="Delete"
+                        className="hover:brightness-75"
+                        onClick={() => {
+                          onOpenDeleteGroup(group);
+                        }}
+                      >
+                        <MdDelete size={18} />
+                      </IconButtonUnstyled>
+                    </div>
                   </div>
                 }
                 onClick={closeNavbar}

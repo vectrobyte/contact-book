@@ -7,20 +7,20 @@ import { DEFAULT_PAGINATION_META } from '@/lib/configs';
 import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';
-import { type Group, type GroupInput } from '@/server/models';
+import { type Group, type GroupInput, type GroupWithCount } from '@/server/models';
 
 export const useGroups = () => {
   const request = useRequest();
   const { query, setQuery, ready } = useQuery<PageParams>();
 
-  const [groups, setGroups] = useState<Group[]>([]);
+  const [groups, setGroups] = useState<GroupWithCount[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState<PaginationMeta>(DEFAULT_PAGINATION_META);
 
   const listGroups = useCallback(async () => {
     setLoading(true);
     try {
-      const { data: paginatedGroups } = await request<PaginatedResult<Group>>({
+      const { data: paginatedGroups } = await request<PaginatedResult<GroupWithCount>>({
         url: 'groups/list',
         method: 'GET',
         params: query,
@@ -76,7 +76,9 @@ export const useGroups = () => {
     });
 
     setGroups((prevState) =>
-      prevState.map((group) => (group.id === updatedGroup.id ? updatedGroup : group))
+      prevState.map((group) =>
+        group.id === updatedGroup.id ? { ...group, ...updatedGroup } : group
+      )
     );
 
     return updatedGroup;
