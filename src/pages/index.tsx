@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import React, { useEffect } from 'react';
 
-import Contacts from '@/features/contacts/Contacts';
 import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
 import { ROUTE_PATHS } from '@/routes';
 
@@ -31,14 +30,14 @@ const HomePage: React.FC<NextPage> = () => {
             className="mt-[130px] flex-shrink-0 animate-pulse opacity-10 grayscale"
           />
         </div>
-      ) : status === 'authenticated' ? (
-        <Contacts />
       ) : (
-        <div className="flex-center flex-col gap-5 px-16 py-32 sm:gap-10 md:px-32 lg:p-64">
-          <h1 className="text-center text-lg font-light text-gray-600 sm:text-2xl">
-            Sign in to access the contact book
-          </h1>
-        </div>
+        status !== 'authenticated' && (
+          <div className="flex-center flex-col gap-5 px-16 py-32 sm:gap-10 md:px-32 lg:p-64">
+            <h1 className="text-center text-lg font-light text-gray-600 sm:text-2xl">
+              Sign in to access the contact book
+            </h1>
+          </div>
+        )
       )}
     </>
   );
