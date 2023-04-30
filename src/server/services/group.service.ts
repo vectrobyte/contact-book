@@ -2,7 +2,8 @@ import { type PageParams, type PaginatedResult } from '@/@types';
 import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
 import ServerError from '@/lib/errors/ServerError';
 import { prisma } from '@/server/db';
-import { type Group, type GroupInput } from '@/server/models';
+import { mapGroup } from '@/server/helpers/group.helper';
+import { type Group, type GroupInput, type GroupWithContacts } from '@/server/models';
 
 export async function listGroups(
   params: PageParams,
@@ -30,7 +31,7 @@ export async function listGroups(
     include: {
       _count: {
         select: {
-          contacts: true,
+          group_contacts: true,
         },
       },
     },
@@ -55,7 +56,11 @@ export async function findGroupById(id: string, user_id: string): Promise<Group>
   const group = await prisma.group.findFirst({
     where: { id, user_id },
     include: {
-      contacts: true,
+      group_contacts: {
+        include: {
+          contact: true,
+        },
+      },
     },
   });
 
@@ -63,7 +68,7 @@ export async function findGroupById(id: string, user_id: string): Promise<Group>
     throw new ServerError('Group not found!', 404);
   }
 
-  return group;
+  return mapGroup(group as GroupWithContacts);
 }
 
 export function findGroupByLabel(label: string, user_id: string): Promise<Group> {

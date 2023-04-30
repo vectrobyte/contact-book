@@ -68,30 +68,28 @@ model VerificationToken {
 }
 
 model Contact {
-    id            String         @id @default(cuid())
-    full_name     String
-    phone         String
-    email         String?
-    notes         String?
-    created_at    DateTime       @default(now())
-    updated_at    DateTime       @updatedAt
-    user_id       String
-    user          User           @relation(fields: [user_id], references: [id])
-    groups        Group[]        @relation("GroupContact")
-    group_contact GroupContact[]
+    id             String         @id @default(cuid())
+    full_name      String
+    phone          String
+    email          String?
+    notes          String?
+    created_at     DateTime       @default(now())
+    updated_at     DateTime       @updatedAt
+    user_id        String
+    user           User           @relation(fields: [user_id], references: [id])
+    group_contacts GroupContact[]
 
     @@unique([user_id, phone])
 }
 
 model Group {
-    id            String         @id @default(cuid())
-    label         String         @unique
-    created_at    DateTime       @default(now())
-    updated_at    DateTime       @updatedAt
-    user_id       String
-    user          User           @relation(fields: [user_id], references: [id])
-    contacts      Contact[]      @relation("GroupContact")
-    group_contact GroupContact[]
+    id             String         @id @default(cuid())
+    label          String         @unique
+    created_at     DateTime       @default(now())
+    updated_at     DateTime       @updatedAt
+    user_id        String
+    user           User           @relation(fields: [user_id], references: [id])
+    group_contacts GroupContact[]
 
     @@unique([user_id, label])
 }

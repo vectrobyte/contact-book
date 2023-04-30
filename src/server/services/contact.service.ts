@@ -2,6 +2,7 @@ import { type PageParams, type PaginatedResult } from '@/@types';
 import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
 import ServerError from '@/lib/errors/ServerError';
 import { prisma } from '@/server/db';
+import { mapContact } from '@/server/helpers/contact.helper';
 import { type Contact, type ContactInput } from '@/server/models';
 
 export async function listContacts(
@@ -23,7 +24,11 @@ export async function listContacts(
     skip,
     take: size,
     include: {
-      groups: true,
+      group_contacts: {
+        include: {
+          group: true,
+        },
+      },
     },
     orderBy: [{ created_at: 'desc' }],
   });
@@ -32,7 +37,7 @@ export async function listContacts(
   const currentPageSize = contacts.length;
 
   return {
-    data: contacts,
+    data: contacts.map(mapContact),
     meta: {
       total: count,
       total_page: totalPages,

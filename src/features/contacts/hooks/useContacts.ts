@@ -7,20 +7,20 @@ import { DEFAULT_PAGINATION_META } from '@/lib/configs';
 import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';
-import { type Contact, type ContactInput } from '@/server/models';
+import { type Contact, type ContactInput, type ContactWithGroups } from '@/server/models';
 
 export const useContacts = () => {
   const request = useRequest();
   const { query, setQuery, ready } = useQuery<PageParams>();
 
-  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [contacts, setContacts] = useState<ContactWithGroups[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState<PaginationMeta>(DEFAULT_PAGINATION_META);
 
   const listContacts = useCallback(async () => {
     setLoading(true);
     try {
-      const { data: paginatedContacts } = await request<PaginatedResult<Contact>>({
+      const { data: paginatedContacts } = await request<PaginatedResult<ContactWithGroups>>({
         url: 'contacts/list',
         method: 'GET',
         params: query,
@@ -76,7 +76,9 @@ export const useContacts = () => {
     });
 
     setContacts((prevState) =>
-      prevState.map((contact) => (contact.id === updatedContact.id ? updatedContact : contact))
+      prevState.map((contact) =>
+        contact.id === updatedContact.id ? { ...contact, ...updateContact } : contact
+      )
     );
 
     return updatedContact;
