@@ -13,8 +13,8 @@ const TopNav: React.FC<TopNavProps> = () => {
   const { status, data: session } = useSession();
 
   return (
-    <div id="topNav" className="">
-      <div className="flex min-h-[80px] items-center justify-between gap-10 gap-10 bg-gray-100 px-6 py-4 shadow-lg sm:px-10">
+    <div id="topNav" className="relative z-10">
+      <div className="gap-100 flex min-h-[80px] items-center justify-between gap-10 px-6 py-4 sm:px-10">
         <Link
           href="/"
           className="flex w-max items-center gap-4 transition-opacity hover:opacity-80"
