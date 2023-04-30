@@ -42,17 +42,17 @@ const SideNav: React.FC<SideNavProps> = ({
     if (!isDesktop) {
       onCloseSidenav();
     }
-  }, [isDesktop]);
+  }, [isDesktop, onCloseSidenav]);
 
   useEffect(() => {
     const close = (event: KeyboardEvent) => {
       if (isSidenavOpen && event.keyCode === ESC_KEY_CODE) {
-        onCloseSidenav();
+        closeNavbar();
       }
     };
     window.addEventListener('keydown', close);
     return () => window.removeEventListener('keydown', close);
-  }, [onCloseSidenav, isSidenavOpen]);
+  }, [isSidenavOpen, closeNavbar]);
 
   return (
     <aside
