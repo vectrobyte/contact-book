@@ -22,6 +22,9 @@ export async function listContacts(
     where,
     skip,
     take: size,
+    include: {
+      groups: true,
+    },
     orderBy: [{ created_at: 'desc' }],
   });
 
@@ -50,10 +53,6 @@ export async function findContactById(id: string, user_id: string): Promise<Cont
   }
 
   return contact;
-}
-
-export function findContactByEmail(email: string, user_id: string) {
-  return prisma.contact.findFirst({ where: { email, user_id } });
 }
 
 export function findContactByPhone(phone: string, user_id: string) {
