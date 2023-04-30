@@ -41,7 +41,7 @@ const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen
     return () => {
       clearTimeout(timeout);
     };
-  }, []);
+  }, [modalDispatch]);
 
   const clearTargetGroup = useCallback(() => {
     const timeout = setTimeout(() => {
@@ -51,7 +51,7 @@ const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen
     return () => {
       clearTimeout(timeout);
     };
-  }, []);
+  }, [modalDispatch]);
 
   return (
     <>

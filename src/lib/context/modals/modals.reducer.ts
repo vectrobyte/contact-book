@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-unsafe-assignment */
+
 import { type Action } from '@/@types';
 
 import { MODAL_STORE_ACTIONS } from './modals.actions';
