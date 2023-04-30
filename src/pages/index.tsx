@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 
 import Contacts from '@/features/contacts/Contacts';
 import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
+import { ROUTE_PATHS } from '@/routes';
 
 const HomePage: React.FC<NextPage> = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const HomePage: React.FC<NextPage> = () => {
 
   useEffect(() => {
     if (status !== 'loading' && status === 'authenticated') {
-      void router.push('/contacts');
+      void router.push(ROUTE_PATHS.contacts);
     }
   }, [router, status]);
 
