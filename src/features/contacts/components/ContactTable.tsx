@@ -88,7 +88,7 @@ const ContactTable: React.FC<ContactTableProps> = ({ loading, contacts }) => {
                 </td>
                 <td className="hidden overflow-hidden p-3 text-sm font-light sm:table-cell">
                   <div className="flex gap-2">
-                    {contact.groups.map((group) => (
+                    {(contact.groups || []).map((group) => (
                       <GroupLabel key={group.id} group={group} />
                     ))}
                   </div>

@@ -1,27 +1,22 @@
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { useGroups } from '@/features/groups/hooks/useGroups';
 import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useRequest } from '@/lib/hooks/useRequest';
-import { type Group } from '@/server/models';
+import { type ContactWithGroups, type GroupWithContacts } from '@/server/models';
 
 export const useGroup = (groupId: string) => {
   const request = useRequest();
-  const { groups, loading: groupsLoading } = useGroups();
   const [loading, setLoading] = useState(true);
-  const [group, setGroup] = useState<Group>(null);
+  const [group, setGroup] = useState<Partial<GroupWithContacts>>({});
+  const [contacts, setContacts] = useState<ContactWithGroups[]>([]);
 
   const loadGroupWithContacts = useCallback(async () => {
     setLoading(true);
     try {
-      const foundGroup = groups.find(({ id }) => id === groupId);
-
-      if (foundGroup && foundGroup.id) {
-        setGroup(foundGroup);
-      }
-
-      const { data: groupWithContacts } = await request<Group>({
+      const {
+        data: { contacts: groupContacts, ...groupObj },
+      } = await request<GroupWithContacts>({
         url: `groups/get`,
         method: 'GET',
         params: {
@@ -29,7 +24,8 @@ export const useGroup = (groupId: string) => {
         },
       });
 
-      setGroup(groupWithContacts);
+      setGroup(groupObj);
+      setContacts(groupContacts as ContactWithGroups[]);
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -38,7 +34,7 @@ export const useGroup = (groupId: string) => {
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groupId, groups]);
+  }, [groupId]);
 
   useAfterLoad(async () => {
     await loadGroupWithContacts();
@@ -46,6 +42,7 @@ export const useGroup = (groupId: string) => {
 
   return {
     group,
-    loading: loading || groupsLoading,
+    contacts,
+    loading,
   };
 };
