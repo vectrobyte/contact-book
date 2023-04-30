@@ -14,7 +14,7 @@ import TopNav from '@/layouts/app-layout/components/TopNav';
 import { MODAL_STORE_ACTIONS } from '@/lib/context/modals';
 import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
 import { useModals } from '@/lib/providers/ModalProvider';
-import { type Contact, type Group } from '@/server/models';
+import { type Contact, type ContactWithGroups, type Group } from '@/server/models';
 
 type AppLayoutProps = React.HTMLAttributes<HTMLElement> & {
   showSideNav: boolean;
@@ -143,7 +143,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ className = '', showSideNav = tru
 
           <ViewContactModal
             visible={modalState.isViewContactModalOpen}
-            contact={modalState.targetContact as Contact}
+            contact={modalState.targetContact as ContactWithGroups}
             onEdit={() => {
               modalDispatch({ type: MODAL_STORE_ACTIONS.toggleEditContactModal, payload: true });
             }}

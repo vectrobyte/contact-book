@@ -1,13 +1,14 @@
 import React from 'react';
-import { MdDelete, MdEdit, MdMailOutline, MdOutlineNote, MdPhone } from 'react-icons/md';
+import { MdDelete, MdEdit, MdLabel, MdMailOutline, MdOutlineNote, MdPhone } from 'react-icons/md';
 
 import IconButton from '@/components/buttons/IconButton';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
 import ContactAvatar from '@/features/contacts/components/ContactAvatar';
-import { type Contact } from '@/server/models';
+import GroupLabel from '@/features/contacts/components/GroupLabel';
+import { type Contact, type ContactWithGroups } from '@/server/models';
 
 type ViewContactModalProps = ModalProps & {
-  contact: Contact;
+  contact: ContactWithGroups;
   onEdit(contact: Contact);
   onDelete(contact: Contact);
 };
@@ -16,12 +17,13 @@ const ViewContactModal: React.FC<ViewContactModalProps> = ({
   contact,
   onEdit,
   onDelete,
+  onClose,
   ...props
 }) => {
   return (
     <Modal
-      header={<h1 className="mb-4 text-xl leading-tight tracking-tight">Contact Details</h1>}
       {...props}
+      header={<h1 className="mb-4 text-xl leading-tight tracking-tight">Contact Details</h1>}
       controlArea={
         <div className="flex items-center gap-1">
           <IconButton
@@ -43,6 +45,7 @@ const ViewContactModal: React.FC<ViewContactModalProps> = ({
         </div>
       }
       modalClass="!w-[350px] sm:!w-[450px]"
+      onClose={onClose}
     >
       <table>
         <tbody>
@@ -52,6 +55,27 @@ const ViewContactModal: React.FC<ViewContactModalProps> = ({
             </td>
             <td className="p-2">{contact.full_name}</td>
           </tr>
+
+          {Boolean(contact.groups && contact.groups.length) && (
+            <tr>
+              <td className="p-2 align-top">
+                <MdLabel size={24} className="mx-auto text-gray-600" />
+              </td>
+              <td className="p-2">
+                <div className="flex flex-wrap gap-2">
+                  {(contact.groups || []).map((group) => (
+                    <GroupLabel
+                      key={group.id}
+                      group={group}
+                      onClick={() => {
+                        onClose();
+                      }}
+                    />
+                  ))}
+                </div>
+              </td>
+            </tr>
+          )}
 
           <tr>
             <td className="p-2 align-top">
