@@ -30,19 +30,20 @@ const ContactTable: React.FC<ContactTableProps> = ({ loading, contacts }) => {
     <table className="mb-10 w-full table-fixed">
       <thead>
         <tr>
-          <th className="w-full border-b p-3 text-left font-medium text-gray-600 sm:w-1/2 lg:w-1/3">
+          <th className="w-full border-b p-3 text-left font-medium text-gray-600 sm:w-1/2 lg:w-1/3 xl:w-1/4">
             Name
           </th>
-          <th className="hidden border-b p-3 text-left font-medium text-gray-600 lg:table-cell lg:w-[250px]">
-            Email
-          </th>
-          <th className="hidden border-b p-3 text-left font-medium text-gray-600 sm:table-cell lg:w-[250px]">
+
+          <th className="hidden border-b p-3 text-left font-medium text-gray-600 sm:table-cell lg:min-w-[150px]">
             Mobile
           </th>
-          <th className="hidden border-b p-3 text-left font-medium text-gray-600 sm:table-cell lg:w-[250px]">
+          <th className="hidden border-b p-3 text-left font-medium text-gray-600 lg:table-cell lg:min-w-[250px]">
+            Email
+          </th>
+          <th className="hidden border-b p-3 text-left font-medium text-gray-600 xl:table-cell">
             Groups
           </th>
-          <th className="border-b p-3 text-gray-600" />
+          <th className="w-[100px] border-b p-3 text-gray-600" />
         </tr>
       </thead>
 
@@ -68,6 +69,14 @@ const ContactTable: React.FC<ContactTableProps> = ({ loading, contacts }) => {
                     <span className="">{contact.full_name}</span>
                   </button>
                 </td>
+                <td className="hidden p-3 text-sm font-light sm:table-cell">
+                  <Link
+                    href={`tel:${contact.phone}`}
+                    className="transition-opacity hover:opacity-80"
+                  >
+                    {contact.phone}
+                  </Link>
+                </td>
                 <td className="hidden p-3 text-sm font-light lg:table-cell">
                   {contact.email && (
                     <Link
@@ -78,15 +87,7 @@ const ContactTable: React.FC<ContactTableProps> = ({ loading, contacts }) => {
                     </Link>
                   )}
                 </td>
-                <td className="hidden p-3 text-sm font-light sm:table-cell">
-                  <Link
-                    href={`tel:${contact.phone}`}
-                    className="transition-opacity hover:opacity-80"
-                  >
-                    {contact.phone}
-                  </Link>
-                </td>
-                <td className="hidden overflow-hidden p-3 text-sm font-light sm:table-cell">
+                <td className="hidden overflow-hidden p-3 text-sm font-light xl:table-cell">
                   <div className="flex gap-2">
                     {(contact.groups || []).map((group) => (
                       <GroupLabel key={group.id} group={group} />
