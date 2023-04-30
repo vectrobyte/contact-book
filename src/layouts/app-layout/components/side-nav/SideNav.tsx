@@ -111,7 +111,7 @@ const SideNav: React.FC<SideNavProps> = ({
           </li>
 
           {groups.map((group) => {
-            const path = `/groups/${group.id}`;
+            const path = `/group/${group.id}`;
 
             return (
               <NavMenu
