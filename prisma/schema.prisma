@@ -72,6 +72,7 @@ model Contact {
     full_name     String
     phone         String
     email         String?
+    notes         String?
     created_at    DateTime       @default(now())
     updated_at    DateTime       @updatedAt
     user_id       String

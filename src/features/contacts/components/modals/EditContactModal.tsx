@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
+import Textarea from '@/components/inputs/Textarea';
 import TextInput from '@/components/inputs/TextInput';
 import Modal, { type ModalProps } from '@/components/modals/Modal';
 import AppError from '@/lib/errors/AppError';
@@ -127,6 +128,13 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
           autoComplete="off"
           {...register('email')}
           error={errors.email && errors.email?.message}
+        />
+
+        <Textarea
+          id="notes"
+          label="Notes"
+          {...register('notes')}
+          error={errors.notes && errors.notes?.message}
         />
 
         <div className="mt-8 flex w-full items-center justify-end gap-3">
