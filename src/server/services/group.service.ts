@@ -3,7 +3,7 @@ import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
 import ServerError from '@/lib/errors/ServerError';
 import { prisma } from '@/server/db';
 import { mapGroup } from '@/server/helpers/group.helper';
-import { type Group, type GroupInput, type GroupWithContacts } from '@/server/models';
+import { type Group, type GroupInput } from '@/server/models';
 
 export async function listGroups(
   params: PageParams,
@@ -58,7 +58,15 @@ export async function findGroupById(id: string, user_id: string): Promise<Group>
     include: {
       group_contacts: {
         include: {
-          contact: true,
+          contact: {
+            include: {
+              group_contacts: {
+                include: {
+                  group: true,
+                },
+              },
+            },
+          },
         },
       },
     },
@@ -68,7 +76,9 @@ export async function findGroupById(id: string, user_id: string): Promise<Group>
     throw new ServerError('Group not found!', 404);
   }
 
-  return mapGroup(group as GroupWithContacts);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return mapGroup(group);
 }
 
 export function findGroupByLabel(label: string, user_id: string): Promise<Group> {

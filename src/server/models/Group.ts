@@ -11,9 +11,9 @@ export type GroupWithCount = Group & {
   };
 };
 
-export type GroupWithContacts = Group & {
-  contacts: Contact[];
-  group_contacts: GroupContact[];
+export type GroupWithContacts<C = Contact> = Group & {
+  contacts: C[];
+  group_contacts: GroupContact<C>[];
 };
 
 export type GroupInput = Omit<Group, 'id' | 'user_id' | 'created_at' | 'updated_at'>;

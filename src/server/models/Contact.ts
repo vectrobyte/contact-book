@@ -4,9 +4,9 @@ import { type Contact as ContactType } from '.prisma/client';
 
 export type Contact = ContactType;
 
-export type ContactWithGroups = Contact & {
-  groups: Group[];
-  group_contacts: GroupContact[];
+export type ContactWithGroups<G = Group> = Contact & {
+  groups: G[];
+  group_contacts: GroupContact<G>[];
 };
 
 export type ContactInput = Omit<
