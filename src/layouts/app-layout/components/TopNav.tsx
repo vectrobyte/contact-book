@@ -11,12 +11,14 @@ import Search from '@/components/inputs/Search';
 import CircleSkeleton from '@/components/skeletons/CircleSkeleton';
 import RectangleSkeleton from '@/components/skeletons/RectangleSkeleton';
 import { useQuery } from '@/lib/hooks/useQuery';
+import { ROUTE_PATHS } from '@/routes';
 
 type TopNavProps = React.HTMLAttributes<HTMLElement> & {
+  withSearch: boolean;
   onToggleSidenav(): void;
 };
 
-const TopNav: React.FC<TopNavProps> = ({ onToggleSidenav }) => {
+const TopNav: React.FC<TopNavProps> = ({ withSearch = true, onToggleSidenav }) => {
   const { query, setQuery } = useQuery<PageParams>();
   const { status, data: session } = useSession();
 
@@ -37,12 +39,16 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidenav }) => {
           </Link>
         </div>
 
-        <div className="flex flex-auto items-center justify-between gap-4">
-          <Search
-            keyword={query.keyword || ''}
-            onSubmit={(keyword: string) => setQuery({ keyword: keyword || null })}
-            className="w-full lg:max-w-[800px]"
-          />
+        <div
+          className={`flex items-center justify-between gap-10 ${withSearch ? 'flex-auto' : ''}`}
+        >
+          {withSearch && (
+            <Search
+              keyword={query.keyword || ''}
+              onSubmit={(keyword: string) => setQuery({ keyword: keyword || null })}
+              className="w-full lg:max-w-[800px]"
+            />
+          )}
 
           <div className="flex-center flex-shrink-0 gap-4 sm:gap-8">
             {status === 'loading' ? (
@@ -64,10 +70,26 @@ const TopNav: React.FC<TopNavProps> = ({ onToggleSidenav }) => {
                 />
                 <span className="hidden text-lg lg:inline">{session?.user?.name}</span>
 
-                <Button onClick={() => void signOut()}>Sign out</Button>
+                <Button
+                  onClick={() =>
+                    void signOut({
+                      callbackUrl: ROUTE_PATHS.home,
+                    })
+                  }
+                >
+                  Sign out
+                </Button>
               </div>
             ) : (
-              <Button onClick={() => void signIn()}>Sign in</Button>
+              <Button
+                onClick={() =>
+                  void signIn(null, {
+                    callbackUrl: ROUTE_PATHS.contacts,
+                  })
+                }
+              >
+                Sign in
+              </Button>
             )}
           </div>
         </div>

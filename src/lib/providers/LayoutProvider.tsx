@@ -9,7 +9,9 @@ const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
   const session = useSession();
 
   return (
-    <AppLayout showSideNav={session && session.status === 'authenticated'}>{children}</AppLayout>
+    <AppLayout isAuthenticated={session && session.status === 'authenticated'}>
+      {children}
+    </AppLayout>
   );
 };
 
