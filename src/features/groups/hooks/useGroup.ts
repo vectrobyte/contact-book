@@ -42,7 +42,7 @@ export const useGroup = (groupId: string) => {
 
   useAfterLoad(async () => {
     await loadGroupWithContacts();
-  }, []);
+  }, [groupId]);
 
   return {
     group,
