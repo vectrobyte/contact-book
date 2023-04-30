@@ -6,7 +6,6 @@ import Head from 'next/head';
 import { type Session } from 'next-auth';
 import React from 'react';
 
-import AppLayout from '@/layouts/app-layout/AppLayout';
 import { Providers } from '@/lib/providers/Providers';
 import { api } from '@/utils/api';
 
@@ -33,9 +32,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <meta name="theme-color" content="#ffffff" />
       </Head>
 
-      <AppLayout showSideNav={true}>
-        <Component {...pageProps} />
-      </AppLayout>
+      <Component {...pageProps} />
     </Providers>
   );
 };

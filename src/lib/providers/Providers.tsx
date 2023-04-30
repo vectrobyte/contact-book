@@ -3,6 +3,8 @@ import { SessionProvider } from 'next-auth/react';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
+import LayoutProvider from '@/lib/providers/LayoutProvider';
+
 import { ModalStoreProvider } from './ModalProvider';
 
 type ProvidersProps = React.HTMLAttributes<HTMLElement> & {
@@ -22,7 +24,7 @@ export const Providers: React.FC<ProvidersProps> = ({ session, children }) => {
           theme="light"
           toastClassName="whitespace-pre-wrap w-[350px] sm:w-[450px] items-start"
         />
-        {children}
+        <LayoutProvider>{children}</LayoutProvider>
       </ModalStoreProvider>
     </SessionProvider>
   );
