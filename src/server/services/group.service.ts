@@ -54,6 +54,9 @@ export async function listGroups(
 export async function findGroupById(id: string, user_id: string): Promise<Group> {
   const group = await prisma.group.findFirst({
     where: { id, user_id },
+    include: {
+      contacts: true,
+    },
   });
 
   if (!group || !group.id) {
