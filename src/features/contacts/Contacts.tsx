@@ -6,6 +6,7 @@ import { MdDelete, MdEdit } from 'react-icons/md';
 import IconButton from '@/components/buttons/IconButton';
 import Pagination from '@/components/Pagination';
 import ContactAvatar from '@/features/contacts/components/ContactAvatar';
+import GroupLabel from '@/features/contacts/components/GroupLabel';
 import TableLoader from '@/features/contacts/components/TableLoader';
 import { useContacts } from '@/features/contacts/hooks/useContacts';
 import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
@@ -39,6 +40,9 @@ const Contacts: React.FC<ContactsProps> = () => {
             </th>
             <th className="hidden border-b p-3 text-left font-medium text-gray-600 sm:table-cell lg:w-[250px]">
               Mobile
+            </th>
+            <th className="hidden border-b p-3 text-left font-medium text-gray-600 sm:table-cell lg:w-[250px]">
+              Groups
             </th>
             <th className="border-b p-3 text-gray-600" />
           </tr>
@@ -83,6 +87,13 @@ const Contacts: React.FC<ContactsProps> = () => {
                     >
                       {contact.phone}
                     </Link>
+                  </td>
+                  <td className="hidden overflow-hidden p-3 text-sm font-light sm:table-cell">
+                    <div className="flex gap-2">
+                      {contact.groups.map((group) => (
+                        <GroupLabel key={group.id} group={group} />
+                      ))}
+                    </div>
                   </td>
                   <td className="w-[100px] p-3">
                     <div className="flex items-center justify-end gap-1 opacity-0 transition-opacity group-hover:opacity-100">
