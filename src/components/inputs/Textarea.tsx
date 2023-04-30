@@ -41,7 +41,7 @@ const TextInput = forwardRef<HTMLTextAreaElement, TextInputProps>(
           name={name}
           placeholder=""
           rows={rows}
-          className={`mt-2 w-full border border-gray-400 bg-white p-3 placeholder-gray-400 transition-colors focus:border-gray-800 focus:outline-none
+          className={`mt-2 min-h-[130px] w-full resize-none border border-gray-400 bg-white p-3 placeholder-gray-400 transition-colors focus:border-gray-800 focus:outline-none
             ${error ? `!border-red-500` : ''}
             ${className}
           `}

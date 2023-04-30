@@ -40,7 +40,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ className = '', showSideNav = tru
 
   const clearTargetContact = useCallback(() => {
     const timeout = setTimeout(() => {
-      modalDispatch({ type: MODAL_STORE_ACTIONS.setTargetContact, payload: null });
+      modalDispatch({ type: MODAL_STORE_ACTIONS.setTargetContact, payload: {} });
     }, 300);
 
     return () => {
@@ -50,7 +50,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ className = '', showSideNav = tru
 
   const clearTargetGroup = useCallback(() => {
     const timeout = setTimeout(() => {
-      modalDispatch({ type: MODAL_STORE_ACTIONS.setTargetGroup, payload: null });
+      modalDispatch({ type: MODAL_STORE_ACTIONS.setTargetGroup, payload: {} });
     }, 300);
 
     return () => {
