@@ -70,7 +70,7 @@ export const useContacts = () => {
 
       data: {
         ...payload,
-        id: payload,
+        id,
         user_id: session?.user?.id,
       },
     });
