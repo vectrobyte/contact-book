@@ -2,12 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import React from 'react';
-import { MdMenu } from 'react-icons/md';
+import { MdLogin, MdLogout, MdMenu } from 'react-icons/md';
 
 import { type PageParams } from '@/@types';
 import Button from '@/components/buttons/Button';
 import IconButton from '@/components/buttons/IconButton';
 import Search from '@/components/inputs/Search';
+import Separator from '@/components/Separator';
 import CircleSkeleton from '@/components/skeletons/CircleSkeleton';
 import RectangleSkeleton from '@/components/skeletons/RectangleSkeleton';
 import { useQuery } from '@/lib/hooks/useQuery';
@@ -39,23 +40,23 @@ const TopNav: React.FC<TopNavProps> = ({ withSearch = true, onToggleSidenav }) =
           </Link>
         </div>
 
-        <div
-          className={`flex items-center justify-between gap-10 ${withSearch ? 'flex-auto' : ''}`}
-        >
-          {withSearch && (
+        <div className="flex flex-auto items-center justify-between gap-4 sm:gap-10">
+          {withSearch ? (
             <Search
               keyword={query.keyword || ''}
               onSubmit={(keyword: string) => setQuery({ keyword: keyword || null })}
               className="w-full lg:max-w-[800px]"
             />
+          ) : (
+            <Separator />
           )}
 
           <div className="flex-center flex-shrink-0 gap-4 sm:gap-8">
             {status === 'loading' ? (
-              <div className="flex-center gap-2">
+              <div className="flex-center gap-2 pr-2">
                 <CircleSkeleton className="flex-shrink-0" />
-                <RectangleSkeleton className="hidden w-[120px] flex-shrink-0 text-lg lg:inline" />
-                <RectangleSkeleton className="w-[90px] flex-shrink-0" />
+                <RectangleSkeleton className="hidden !w-[120px] flex-shrink-0 text-lg lg:inline" />
+                <RectangleSkeleton className="!w-[100px] flex-shrink-0" />
               </div>
             ) : status === 'authenticated' ? (
               <div className="flex-center gap-2">
@@ -68,20 +69,22 @@ const TopNav: React.FC<TopNavProps> = ({ withSearch = true, onToggleSidenav }) =
                   className="rounded-full"
                   referrerPolicy="no-referrer"
                 />
-                <span className="hidden text-lg lg:inline">{session?.user?.name}</span>
+                <span className="hidden lg:inline">{session?.user?.name}</span>
 
                 <Button
+                  icon={<MdLogout size={20} />}
                   onClick={() =>
                     void signOut({
                       callbackUrl: ROUTE_PATHS.home,
                     })
                   }
                 >
-                  Sign out
+                  <span className="hidden sm:inline">Sign out</span>
                 </Button>
               </div>
             ) : (
               <Button
+                icon={<MdLogin size={20} />}
                 onClick={() =>
                   void signIn(null, {
                     callbackUrl: ROUTE_PATHS.contacts,

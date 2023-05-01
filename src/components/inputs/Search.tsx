@@ -49,7 +49,7 @@ const Search: React.FC<SearchProps> = ({ keyword, className = '', onSubmit }) =>
       {...register('keyword', { required: true, maxLength: 80 })}
       id="search"
       type="search"
-      placeholder="Type keyword to search"
+      placeholder="Search"
       autoComplete="off"
       className="!m-0"
       wrapperClass={`!m-0 w-full flex-auto lg:flex-grow-0 ${className}`}
