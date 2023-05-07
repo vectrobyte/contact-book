@@ -2,34 +2,32 @@ import { getSession } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { type PageParams, type PaginatedResult, type PaginationMeta } from '@/@types';
-import { DEFAULT_PAGINATION_META } from '@/lib/configs';
+import { type PageParams } from '@/@types';
+import { GroupActions, GroupsSelector } from '@/features/groups/store';
 import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';
+import { useAppDispatch, useAppSelector } from '@/lib/providers/StoreProvider';
 import { type Group, type GroupInput, type GroupWithCount } from '@/server/models';
 
 export const useGroups = () => {
   const request = useRequest();
   const { query, setQuery, ready } = useQuery<PageParams>();
 
-  const [groups, setGroups] = useState<GroupWithCount[]>([]);
   const [loading, setLoading] = useState(true);
-  const [pagination, setPagination] = useState<PaginationMeta>(DEFAULT_PAGINATION_META);
+  const groups = useAppSelector(GroupsSelector);
+  const dispatch = useAppDispatch();
 
   const listGroups = useCallback(async () => {
     setLoading(true);
     try {
-      const { data: paginatedGroups } = await request<PaginatedResult<GroupWithCount>>({
+      const { data: groups } = await request<GroupWithCount[]>({
         url: 'groups/list',
         method: 'GET',
         params: query,
       });
 
-      if (paginatedGroups) {
-        setGroups(paginatedGroups.data);
-        setPagination(paginatedGroups.meta);
-      }
+      dispatch(GroupActions.setList(groups));
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -53,8 +51,7 @@ export const useGroups = () => {
         },
       });
 
-      void listGroups();
-
+      dispatch(GroupActions.add(newGroup));
       return newGroup;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,12 +72,7 @@ export const useGroups = () => {
       },
     });
 
-    setGroups((prevState) =>
-      prevState.map((group) =>
-        group.id === updatedGroup.id ? { ...group, ...updatedGroup } : group
-      )
-    );
-
+    dispatch(GroupActions.update(updatedGroup));
     return updatedGroup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -92,7 +84,7 @@ export const useGroups = () => {
       params: { id: groupToDelete.id },
     });
 
-    setGroups((prevState) => prevState.filter((group) => groupToDelete.id !== group.id));
+    dispatch(GroupActions.delete(groupToDelete));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -107,7 +99,6 @@ export const useGroups = () => {
     query,
     setQuery,
     groups,
-    pagination,
     listGroups,
     updateGroup,
     dropGroup,

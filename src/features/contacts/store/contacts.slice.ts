@@ -21,7 +21,10 @@ const ContactsSlice = createSlice({
     update(state, action: PayloadAction<Contact>) {
       const index = state.contacts.findIndex((contact) => contact.id === action.payload.id);
       if (index !== -1) {
-        state.contacts[index] = action.payload;
+        state.contacts[index] = {
+          ...state.contacts[index],
+          ...action.payload,
+        };
       }
     },
     delete(state, action: PayloadAction<Contact>) {
