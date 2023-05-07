@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { type PageParams } from '@/@types';
-import { GroupActions, GroupsSelector } from '@/features/groups/store';
+import { GroupActions, GroupsSelector } from '@/features/groups/store/groups.slice';
 import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';

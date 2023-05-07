@@ -1,8 +1,15 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import { initialState } from '@/features/groups/store';
 import { type RootState } from '@/lib/providers/StoreProvider';
 import { type Group, type GroupWithCount } from '@/server/models';
+
+export type GroupsState = {
+  groups: GroupWithCount[];
+};
+
+const initialState: GroupsState = {
+  groups: [],
+};
 
 const GroupsSlice = createSlice({
   name: 'groups',
@@ -15,7 +22,7 @@ const GroupsSlice = createSlice({
       state.groups.push(action.payload);
     },
     update(state, action: PayloadAction<Group>) {
-      const index = state.groups.findIndex((contact) => contact.id === action.payload.id);
+      const index = state.groups.findIndex((group) => group.id === action.payload.id);
       if (index !== -1) {
         state.groups[index] = {
           ...state.groups[index],
@@ -24,12 +31,12 @@ const GroupsSlice = createSlice({
       }
     },
     delete(state, action: PayloadAction<Group>) {
-      state.groups = state.groups.filter((contact) => contact.id !== action.payload.id);
+      state.groups = state.groups.filter((group) => group.id !== action.payload.id);
     },
   },
 });
 
+export default GroupsSlice.reducer;
+
 export const GroupActions = GroupsSlice.actions;
 export const GroupsSelector = (state: RootState) => state.groups;
-
-export default GroupsSlice.reducer;

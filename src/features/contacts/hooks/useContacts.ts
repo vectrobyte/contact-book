@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { type PageParams, type PaginatedResult } from '@/@types';
-import { ContactActions, ContactsSelector } from '@/features/contacts/store';
+import { ContactActions, ContactsSelector } from '@/features/contacts/store/contacts.slice';
 import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';

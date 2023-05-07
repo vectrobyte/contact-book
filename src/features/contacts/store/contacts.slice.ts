@@ -1,9 +1,19 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import { type PaginatedResult } from '@/@types';
-import { initialState } from '@/features/contacts/store';
+import { type PaginatedResult, type PaginationMeta } from '@/@types';
+import { DEFAULT_PAGINATION_META } from '@/lib/configs';
 import { type RootState } from '@/lib/providers/StoreProvider';
 import { type Contact, type ContactWithGroups } from '@/server/models';
+
+type ContactsState = {
+  contacts: ContactWithGroups[];
+  pagination: PaginationMeta;
+};
+
+export const initialState: ContactsState = {
+  contacts: [],
+  pagination: DEFAULT_PAGINATION_META,
+};
 
 const ContactsSlice = createSlice({
   name: 'contacts',
