@@ -1,0 +1,34 @@
+import { configureStore } from '@reduxjs/toolkit';
+import React from 'react';
+import {
+  Provider,
+  type TypedUseSelectorHook,
+  useDispatch,
+  useSelector,
+  useStore as useReduxStore,
+} from 'react-redux';
+
+import ContactsSlice from '@/features/contacts/store/contacts.slice';
+
+const store = configureStore({
+  reducer: {
+    contacts: ContactsSlice,
+  },
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+export type RootDispatch = typeof store.dispatch;
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export const useAppStore = () => useReduxStore<RootState, RootDispatch>();
+export const useAppDispatch = (): RootDispatch => useDispatch<RootDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+type StoreProviderProps = React.HTMLAttributes<HTMLElement>;
+
+const StoreProvider: React.FC<StoreProviderProps> = ({ children }) => {
+  return <Provider store={store}>{children}</Provider>;
+};
+
+export default StoreProvider;

@@ -4,6 +4,7 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import LayoutProvider from '@/lib/providers/LayoutProvider';
+import StoreProvider from '@/lib/providers/StoreProvider';
 
 import { ModalStoreProvider } from './ModalProvider';
 
@@ -14,18 +15,20 @@ type ProvidersProps = React.HTMLAttributes<HTMLElement> & {
 export const Providers: React.FC<ProvidersProps> = ({ session, children }) => {
   return (
     <SessionProvider session={session}>
-      <ModalStoreProvider>
-        <ToastContainer
-          position="bottom-center"
-          autoClose={5000}
-          closeOnClick
-          pauseOnFocusLoss
-          pauseOnHover
-          theme="light"
-          toastClassName="whitespace-pre-wrap w-[350px] sm:w-[450px] items-start"
-        />
-        <LayoutProvider>{children}</LayoutProvider>
-      </ModalStoreProvider>
+      <StoreProvider>
+        <ModalStoreProvider>
+          <ToastContainer
+            position="bottom-center"
+            autoClose={5000}
+            closeOnClick
+            pauseOnFocusLoss
+            pauseOnHover
+            theme="light"
+            toastClassName="whitespace-pre-wrap w-[350px] sm:w-[450px] items-start"
+          />
+          <LayoutProvider>{children}</LayoutProvider>
+        </ModalStoreProvider>
+      </StoreProvider>
     </SessionProvider>
   );
 };
