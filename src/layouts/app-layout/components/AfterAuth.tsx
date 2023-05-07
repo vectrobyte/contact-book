@@ -166,7 +166,7 @@ const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen
           modalDispatch({ type: MODAL_STORE_ACTIONS.toggleViewContactModal, payload: false });
         }}
         onClose={() => {
-          modalDispatch({ type: MODAL_STORE_ACTIONS.toggleDeleteGroupModal, payload: false });
+          modalDispatch({ type: MODAL_STORE_ACTIONS.toggleDeleteContactModal, payload: false });
         }}
       />
     </>

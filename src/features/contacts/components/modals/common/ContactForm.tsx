@@ -95,6 +95,7 @@ const ContactForm: React.ForwardRefRenderFunction<ContactFormRef, ContactFormPro
     >
       <TextInput
         id="full_name"
+        type="text"
         label="Full Name"
         autoComplete="off"
         {...register('full_name')}
