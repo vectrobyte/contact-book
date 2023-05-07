@@ -1,30 +1,20 @@
-import { type PageParams, type PaginatedResult } from '@/@types';
+import { type PageParams } from '@/@types';
 import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
 import ServerError from '@/lib/errors/ServerError';
 import { prisma } from '@/server/db';
 import { mapGroup } from '@/server/helpers/group.helper';
-import { type Group, type GroupInput } from '@/server/models';
+import { type Group, type GroupInput, type GroupWithCount } from '@/server/models';
 
-export async function listGroups(
-  params: PageParams,
-  user_id: string
-): Promise<PaginatedResult<Group>> {
+export async function listGroups(params: PageParams, user_id: string): Promise<GroupWithCount[]> {
   const { page = 1, size = DEFAULT_PAGE_SIZE, keyword } = params;
 
   const skip = (page - 1) * size;
 
-  const where: Record<string, any> = {
-    user_id,
-  };
-
-  if (keyword) {
-    where.OR = [{ label: { contains: keyword } }];
-  }
-
-  const count = await prisma.group.count({ where });
-
-  const groups = await prisma.group.findMany({
-    where,
+  return prisma.group.findMany({
+    where: {
+      user_id,
+      ...(params.keyword ? { OR: [{ label: { contains: keyword } }] } : {}),
+    },
     skip,
     take: size,
     orderBy: [{ created_at: 'desc' }],
@@ -36,20 +26,6 @@ export async function listGroups(
       },
     },
   });
-
-  const totalPages = Math.ceil(count / size);
-  const currentPageSize = groups.length;
-
-  return {
-    data: groups,
-    meta: {
-      total: count,
-      total_page: totalPages,
-      current_page: Number(page),
-      per_page: size,
-      current_page_size: currentPageSize,
-    },
-  };
 }
 
 export async function findGroupById(id: string, user_id: string): Promise<Group> {

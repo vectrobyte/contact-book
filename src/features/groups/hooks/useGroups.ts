@@ -3,31 +3,30 @@ import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { type PageParams } from '@/@types';
-import { GroupActions, GroupsSelector } from '@/features/groups/store';
 import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';
-import { useAppDispatch, useAppSelector } from '@/lib/providers/StoreProvider';
-import { type Group, type GroupInput, type GroupWithCount } from '@/server/models';
+import { type Group, type GroupInput } from '@/server/models';
 
 export const useGroups = () => {
   const request = useRequest();
   const { query, setQuery, ready } = useQuery<PageParams>();
 
+  const [groups, setGroups] = useState<Group[]>([]);
   const [loading, setLoading] = useState(true);
-  const groups = useAppSelector(GroupsSelector);
-  const dispatch = useAppDispatch();
 
   const listGroups = useCallback(async () => {
     setLoading(true);
     try {
-      const { data: groups } = await request<GroupWithCount[]>({
+      const { data: groupsArr } = await request<Group[]>({
         url: 'groups/list',
         method: 'GET',
         params: query,
       });
 
-      dispatch(GroupActions.setList(groups));
+      if (groupsArr) {
+        setGroups(groupsArr);
+      }
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -42,7 +41,7 @@ export const useGroups = () => {
     async (payload: GroupInput) => {
       const session = await getSession();
 
-      const { data: newGroup } = await request<GroupWithCount>({
+      const { data: newGroup } = await request<Group>({
         url: 'groups/create',
         method: 'POST',
         data: {
@@ -51,7 +50,8 @@ export const useGroups = () => {
         },
       });
 
-      dispatch(GroupActions.add(newGroup));
+      void listGroups();
+
       return newGroup;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,7 +72,10 @@ export const useGroups = () => {
       },
     });
 
-    dispatch(GroupActions.update(updatedGroup));
+    setGroups((prevState) =>
+      prevState.map((group) => (group.id === updatedGroup.id ? updatedGroup : group))
+    );
+
     return updatedGroup;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -84,7 +87,7 @@ export const useGroups = () => {
       params: { id: groupToDelete.id },
     });
 
-    dispatch(GroupActions.delete(groupToDelete));
+    setGroups((prevState) => prevState.filter((group) => groupToDelete.id !== group.id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
