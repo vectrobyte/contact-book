@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { type PageParams, type PaginatedResult } from '@/@types';
-import { ContactActions, ContactsSelector } from '@/features/contacts/store/contacts.slice';
+import { ContactActions, ContactsSelector } from '@/features/contacts/store';
 import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';
@@ -51,7 +51,7 @@ export const useContacts = () => {
         },
       });
 
-      dispatch(ContactActions.addContact(newContact));
+      dispatch(ContactActions.add(newContact));
       return newContact;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,7 +72,7 @@ export const useContacts = () => {
       },
     });
 
-    dispatch(ContactActions.updateContact(updatedContact));
+    dispatch(ContactActions.update(updatedContact));
     return updatedContact;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -84,7 +84,7 @@ export const useContacts = () => {
       params: { id: contactToDelete.id },
     });
 
-    dispatch(ContactActions.deleteContact(contactToDelete));
+    dispatch(ContactActions.delete(contactToDelete));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -7,7 +7,7 @@ export type ContactsState = {
   pagination: PaginationMeta;
 };
 
-export const state: ContactsState = {
+export const ContactsState: ContactsState = {
   contacts: [],
   pagination: DEFAULT_PAGINATION_META,
 };
