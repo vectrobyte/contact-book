@@ -30,6 +30,6 @@ const GroupsSlice = createSlice({
 });
 
 export const GroupActions = GroupsSlice.actions;
-export const GroupsSelector = (state: RootState) => state.groups.groups;
+export const GroupsSelector = (state: RootState) => state.groups;
 
 export default GroupsSlice.reducer;
