@@ -31,7 +31,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           ref={ref}
           id={inputId}
           name={name}
-          className={`mt-2 w-full border border-gray-400 bg-white p-3 placeholder-gray-400 transition-colors focus:border-gray-800 focus:outline-none
+          className={`w-full border border-gray-400 bg-white p-3 placeholder-gray-400 transition-colors focus:border-gray-800 focus:outline-none
             ${error ? `!border-red-500` : ''}
             ${pre ? 'pl-12' : ''}
             ${className}

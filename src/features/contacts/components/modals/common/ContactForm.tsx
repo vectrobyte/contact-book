@@ -1,12 +1,21 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
+import MultiSelect from '@/components/inputs/MultiSelect';
 import Textarea from '@/components/inputs/Textarea';
 import TextInput from '@/components/inputs/TextInput';
+import { useGroups } from '@/features/groups/hooks/useGroups';
 import AppError from '@/lib/errors/AppError';
 import type RequestError from '@/lib/errors/RequestError';
 import { ContactFormSchema } from '@/lib/schemas/contact.schema';
@@ -27,15 +36,28 @@ const ContactForm: React.ForwardRefRenderFunction<ContactFormRef, ContactFormPro
   ref
 ) => {
   const [submitting, setSubmitting] = useState(false);
+  const { groups } = useGroups();
+
+  const groupOptions = useMemo(
+    () =>
+      groups.map((group) => ({
+        label: group.label,
+        value: group.id,
+      })),
+    [groups]
+  );
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    control,
     setError,
     clearErrors,
-  } = useForm<ContactInput>({ resolver: yupResolver(ContactFormSchema) });
+  } = useForm<ContactInput>({
+    resolver: yupResolver(ContactFormSchema),
+  });
 
   const resetForm = useCallback(() => {
     reset();
@@ -118,6 +140,15 @@ const ContactForm: React.ForwardRefRenderFunction<ContactFormRef, ContactFormPro
         autoComplete="off"
         {...register('email')}
         error={errors.email && errors.email?.message}
+      />
+
+      <MultiSelect
+        id="group_ids"
+        label="Groups"
+        control={control}
+        options={groupOptions}
+        {...register('group_ids')}
+        error={errors.group_ids && errors.group_ids?.message}
       />
 
       <Textarea

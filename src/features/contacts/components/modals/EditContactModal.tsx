@@ -5,10 +5,10 @@ import Modal, { type ModalProps } from '@/components/modals/Modal';
 import ContactForm, {
   type ContactFormRef,
 } from '@/features/contacts/components/modals/common/ContactForm';
-import { type Contact, type ContactInput } from '@/server/models';
+import { type Contact, type ContactInput, type ContactWithGroups } from '@/server/models';
 
 type EditContactModalProps = ModalProps & {
-  contact: Contact;
+  contact: ContactWithGroups;
   onSubmit(id: string, data: ContactInput): Promise<Contact>;
   onSuccess(contact: Contact): void;
 };
@@ -50,7 +50,10 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
     >
       <ContactForm
         ref={formRef}
-        contact={contact}
+        contact={{
+          ...contact,
+          group_ids: (contact.groups || []).map(({ id }) => id),
+        }}
         onSubmit={handleFormSubmit}
         onCancel={handleClose}
       />

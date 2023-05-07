@@ -1,33 +1,40 @@
 import React, { forwardRef } from 'react';
+import { type Control, Controller } from 'react-hook-form';
 import Select, { type Props } from 'react-select';
 import makeAnimated from 'react-select/animated';
 
 import InputBase from '@/components/inputs/InputBase';
 import { getSlug, uuid } from '@/lib/helpers';
 
-const animatedComponents = makeAnimated();
+export type Option = {
+  label: string;
+  value: string;
+};
 
-type MultiSelectProps<T> = Props<T> & {
+export type MultiSelectProps = Props & {
   label?: string;
   error?: string;
   wrapperClass?: string;
   labelClass?: string;
-  options: T[];
+  control: Control<any>;
+  options: Option[];
 };
 
-function MultiSelect<T>(props: MultiSelectProps<T>, ref: React.Ref<any>) {
-  const {
+function MultiSelect(
+  {
     id,
     name,
     label,
     error,
-    className = '',
+    control,
     labelClass = '',
     wrapperClass = '',
+    className = '',
     options,
-    ...rest
-  } = props;
-
+    ...props
+  }: MultiSelectProps,
+  ref: React.Ref<any>
+) {
   const inputId = id || getSlug(name || '') || `input-${uuid()}`;
 
   return (
@@ -38,19 +45,37 @@ function MultiSelect<T>(props: MultiSelectProps<T>, ref: React.Ref<any>) {
       error={error}
       className={wrapperClass}
     >
-      <Select
-        ref={ref}
-        closeMenuOnSelect={false}
-        components={animatedComponents}
-        isMulti
-        options={options}
-        className={`${className}`}
-        {...rest}
+      <Controller
+        name="group_ids"
+        defaultValue={options.map((c: Option) => c.value)}
+        control={control}
+        render={({ field: { onChange, value, ...field } }) => (
+          <Select
+            ref={ref}
+            {...field}
+            isMulti
+            isClearable
+            value={options.filter((c: Option) => (value as string[]).includes(c.value))}
+            onChange={(val: Option[]) => onChange(val.map((c: Option) => c.value))}
+            closeMenuOnSelect={false}
+            components={makeAnimated()}
+            options={options}
+            classNames={{
+              control: (state) =>
+                `!min-h-[50px] !rounded-none !p-1 !outline-black !shadow-none
+                 ${state.isFocused ? '!border-gray-800' : '!border-gray-400'}
+                 ${error ? `!border-red-500` : ''}`,
+              multiValue: () => `!rounded-none !bg-gray-200 !mx-2 !w-[95%]`,
+              multiValueLabel: () => 'text-sm font-normal !text-gray-800',
+              multiValueRemove: () => '!bg-transparent transition-colors hover:text-red-500',
+              valueContainer: () => '!p-0',
+              placeholder: () => 'px-2',
+            }}
+          />
+        )}
       />
     </InputBase>
   );
 }
-
-MultiSelect.displayName = 'MultiSelect';
 
 export default forwardRef(MultiSelect);

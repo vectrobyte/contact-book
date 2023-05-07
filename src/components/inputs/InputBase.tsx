@@ -18,7 +18,7 @@ const InputBase: React.FC<InputBase> = ({
   return (
     <div className={`relative mb-4 ${className}`}>
       {label && (
-        <label htmlFor={id} className={`mb-2 capitalize text-gray-800 ${labelClass}`}>
+        <label htmlFor={id} className={`mb-2 block capitalize text-gray-800 ${labelClass}`}>
           {label}
         </label>
       )}

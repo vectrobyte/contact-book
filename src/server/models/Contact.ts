@@ -12,4 +12,6 @@ export type ContactWithGroups<C = Contact, G = Group> = C & {
 export type ContactInput = Omit<
   Contact,
   'id' | 'user_id' | 'created_at' | 'updated_at' | 'group_contacts' | 'groups'
->;
+> & {
+  group_ids: string[];
+};
