@@ -1,17 +1,17 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import { state } from '@/features/groups/store';
+import { initialState } from '@/features/groups/store';
 import { type RootState } from '@/lib/providers/StoreProvider';
-import { type Group } from '@/server/models';
+import { type Group, type GroupWithCount } from '@/server/models';
 
 const GroupsSlice = createSlice({
   name: 'groups',
-  initialState: state,
+  initialState,
   reducers: {
-    setList(state, action: PayloadAction<Group[]>) {
+    setList(state, action: PayloadAction<GroupWithCount[]>) {
       state.groups = action.payload;
     },
-    add(state, action: PayloadAction<Group>) {
+    add(state, action: PayloadAction<GroupWithCount>) {
       state.groups.push(action.payload);
     },
     update(state, action: PayloadAction<Group>) {

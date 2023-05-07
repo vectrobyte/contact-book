@@ -1,9 +1,9 @@
-import { type Group } from '@/server/models';
+import { type GroupWithCount } from '@/server/models';
 
 export type GroupsState = {
-  groups: Group[];
+  groups: GroupWithCount[];
 };
 
-export const state: GroupsState = {
+export const initialState: GroupsState = {
   groups: [],
 };

@@ -42,7 +42,7 @@ export const useGroups = () => {
     async (payload: GroupInput) => {
       const session = await getSession();
 
-      const { data: newGroup } = await request<Group>({
+      const { data: newGroup } = await request<GroupWithCount>({
         url: 'groups/create',
         method: 'POST',
         data: {

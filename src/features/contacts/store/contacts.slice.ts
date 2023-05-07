@@ -1,19 +1,19 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { type PaginatedResult } from '@/@types';
-import { ContactsState } from '@/features/contacts/store';
+import { initialState } from '@/features/contacts/store';
 import { type RootState } from '@/lib/providers/StoreProvider';
-import { type Contact } from '@/server/models';
+import { type Contact, type ContactWithGroups } from '@/server/models';
 
 const ContactsSlice = createSlice({
   name: 'contacts',
-  initialState: ContactsState,
+  initialState,
   reducers: {
-    setPaginatedContacts(state, action: PayloadAction<PaginatedResult<Contact>>) {
+    setPaginatedContacts(state, action: PayloadAction<PaginatedResult<ContactWithGroups>>) {
       state.contacts = action.payload.data;
       state.pagination = action.payload.meta;
     },
-    add(state, action: PayloadAction<Contact>) {
+    add(state, action: PayloadAction<ContactWithGroups>) {
       state.contacts.push(action.payload);
       state.pagination.total += 1;
       state.pagination.per_page += 1;

@@ -1,13 +1,13 @@
 import { type PaginationMeta } from '@/@types';
 import { DEFAULT_PAGINATION_META } from '@/lib/configs';
-import { type Contact } from '@/server/models';
+import { type ContactWithGroups } from '@/server/models';
 
-export type ContactsState = {
-  contacts: Contact[];
+type ContactsState = {
+  contacts: ContactWithGroups[];
   pagination: PaginationMeta;
 };
 
-export const ContactsState: ContactsState = {
+export const initialState: ContactsState = {
   contacts: [],
   pagination: DEFAULT_PAGINATION_META,
 };

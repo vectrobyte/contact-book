@@ -42,7 +42,7 @@ export const useContacts = () => {
     async (payload: ContactInput) => {
       const session = await getSession();
 
-      const { data: newContact } = await request<Contact>({
+      const { data: newContact } = await request<ContactWithGroups>({
         url: 'contacts/create',
         method: 'POST',
         data: {
