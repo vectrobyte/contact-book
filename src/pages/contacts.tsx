@@ -7,11 +7,16 @@ import Pagination from '@/components/Pagination';
 import ContactTable from '@/features/contacts/components/ContactTable';
 import { useContacts } from '@/features/contacts/hooks/useContacts';
 import WithAuth from '@/lib/hoc/WithAuth';
+import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useQuery } from '@/lib/hooks/useQuery';
 
 const ContactsPage: NextPage = () => {
   const { query, setQuery } = useQuery<PageParams>();
-  const { contacts, loading, pagination } = useContacts(query);
+  const { loading, contacts, pagination, listContacts } = useContacts(query);
+
+  useAfterLoad(async () => {
+    await listContacts();
+  }, [query]);
 
   return (
     <>

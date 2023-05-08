@@ -10,7 +10,7 @@ import { type Contact, type ContactInput, type ContactWithGroups } from '@/serve
 export const useContacts = (query: PageParams) => {
   const request = useRequest();
   const [contacts, setContacts] = useState<ContactWithGroups[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState<PaginationMeta>(DEFAULT_PAGINATION_META);
 
   const listContacts = useCallback(async () => {
