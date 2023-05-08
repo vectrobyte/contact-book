@@ -24,7 +24,7 @@ const ContactsSlice = createSlice({
       state.pagination = action.payload.meta;
     },
     add(state, action: PayloadAction<ContactWithGroups>) {
-      state.contacts.push(action.payload);
+      state.contacts.unshift(action.payload);
       state.pagination.total += 1;
       state.pagination.per_page += 1;
     },

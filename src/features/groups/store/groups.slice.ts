@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { sortBy } from 'lodash';
 
 import { type RootState } from '@/lib/providers/StoreProvider';
 import { type Group, type GroupWithCount } from '@/server/models';
@@ -19,7 +20,7 @@ const GroupsSlice = createSlice({
       state.groups = action.payload;
     },
     add(state, action: PayloadAction<GroupWithCount>) {
-      state.groups.push(action.payload);
+      state.groups = sortBy([...state.groups, action.payload], 'label');
     },
     update(state, action: PayloadAction<Group>) {
       const index = state.groups.findIndex((group) => group.id === action.payload.id);
