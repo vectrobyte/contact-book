@@ -17,7 +17,7 @@ export async function listGroups(params: PageParams, user_id: string): Promise<G
     },
     skip,
     take: size,
-    orderBy: [{ created_at: 'desc' }],
+    orderBy: [{ label: 'asc' }],
     include: {
       _count: {
         select: {
