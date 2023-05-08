@@ -66,6 +66,7 @@ function MultiSelect(
               multiValue: () => `!rounded-none !bg-gray-200 !mx-2 !w-[95%]`,
               multiValueLabel: () => 'text-sm font-normal !text-gray-800',
               multiValueRemove: () => '!bg-transparent transition-colors hover:text-red-500',
+              input: () => 'px-2',
               valueContainer: () => '!p-0',
               placeholder: () => 'px-2',
             }}
