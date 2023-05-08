@@ -22,7 +22,7 @@ export default function WithAuth(Component) {
     }, [router]);
 
     if (loading) {
-      return <p>Loading...</p>; // or a spinner component
+      return <></>;
     }
 
     return <Component {...props} />;

@@ -14,8 +14,8 @@ type GroupProps = React.HTMLAttributes<HTMLElement>;
 
 const GroupPage: React.FC<GroupProps> = () => {
   const { query, setQuery } = useQuery<PageParams>();
-  const { group, loading } = useGetGroup(query.group_id);
-  const { contacts, pagination, listContacts } = useContacts(query);
+  const { group } = useGetGroup(query.group_id);
+  const { contacts, pagination, loading, listContacts } = useContacts(query);
 
   useAfterLoad(async () => {
     await listContacts();
