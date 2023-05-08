@@ -9,7 +9,7 @@ import NavMenu from '@/layouts/app-layout/components/side-nav/components/NavMenu
 import { ESC_KEY_CODE } from '@/lib/configs';
 import { useIsDesktop } from '@/lib/hooks/useIsDesktop';
 import { ROUTE_PATHS } from '@/routes';
-import { type Contact, type Group, type GroupWithCount } from '@/server/models';
+import { type Group, type GroupWithCount } from '@/server/models';
 
 type SideNavProps = {
   groups: GroupWithCount[];
