@@ -146,7 +146,7 @@ const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen
 
       <EditContactModal
         visible={modalState.isEditContactModalOpen}
-        contact={modalState.targetContact as Contact}
+        contact={modalState.targetContact as ContactWithGroups}
         onSubmit={updateContact}
         onSuccess={(contact) => {
           setTargetContact(contact);

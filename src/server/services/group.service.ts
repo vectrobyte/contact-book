@@ -28,7 +28,11 @@ export async function listGroups(params: PageParams, user_id: string): Promise<G
   });
 }
 
-export async function findGroupById(id: string, user_id: string): Promise<Group> {
+export async function findGroupById(
+  id: string,
+  user_id: string,
+  withCount = false
+): Promise<Group> {
   const group = await prisma.group.findFirst({
     where: { id, user_id },
     include: {
@@ -45,6 +49,15 @@ export async function findGroupById(id: string, user_id: string): Promise<Group>
           },
         },
       },
+      ...(withCount
+        ? {
+            _count: {
+              select: {
+                group_contacts: true,
+              },
+            },
+          }
+        : {}),
     },
   });
 
@@ -66,10 +79,8 @@ export function findGroupByLabel(label: string, user_id: string): Promise<Group>
 export async function createGroup(data: GroupInput, user_id: string) {
   return prisma.group.create({
     data: {
-      ...data,
       user_id,
-      created_at: new Date(),
-      updated_at: new Date(),
+      label: data.label,
     },
   });
 }
@@ -80,8 +91,7 @@ export async function updateGroup({ id, ...data }: Group, user_id: string) {
   return prisma.group.update({
     where: { user_id_label: { user_id, label } },
     data: {
-      ...data,
-      updated_at: new Date(),
+      label: data.label,
     },
   });
 }

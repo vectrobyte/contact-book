@@ -29,9 +29,7 @@ function MultiSelect(
     control,
     labelClass = '',
     wrapperClass = '',
-    className = '',
     options,
-    ...props
   }: MultiSelectProps,
   ref: React.Ref<any>
 ) {

@@ -1,4 +1,4 @@
-import { type Group, type GroupContact } from '@/server/models';
+import { type Group, type GroupContactHydrated } from '@/server/models';
 
 import { type Contact as ContactType } from '.prisma/client';
 
@@ -6,7 +6,7 @@ export type Contact = ContactType;
 
 export type ContactWithGroups<C = Contact, G = Group> = C & {
   groups: G[];
-  group_contacts: Partial<GroupContact<C, G>>[];
+  group_contacts: Partial<GroupContactHydrated<C, G>>[];
 };
 
 export type ContactInput = Omit<

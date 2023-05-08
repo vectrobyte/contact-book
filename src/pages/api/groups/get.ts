@@ -5,6 +5,6 @@ import { findGroupById } from '@/server/services/group.service';
 
 export default AuthMiddleware(
   Get(IdSchema, async ({ id }, { request }) => {
-    return findGroupById(id, request.user?.id);
+    return findGroupById(id, request.user?.id, true);
   })
 );

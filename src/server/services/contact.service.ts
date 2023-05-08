@@ -3,7 +3,7 @@ import { DEFAULT_PAGE_SIZE } from '@/lib/configs';
 import ServerError from '@/lib/errors/ServerError';
 import { prisma } from '@/server/db';
 import { mapContact } from '@/server/helpers/contact.helper';
-import { type Contact, type ContactInput } from '@/server/models';
+import { type Contact, type ContactInput, type ContactWithGroups } from '@/server/models';
 
 export async function listContacts(
   params: PageParams,
@@ -48,41 +48,59 @@ export async function listContacts(
   };
 }
 
-export async function findContactById(id: string, user_id: string): Promise<Contact> {
+export async function findContactById(
+  id: string,
+  user_id: string,
+  withGroups = false
+): Promise<Contact> {
   const contact = await prisma.contact.findFirst({
     where: { id, user_id },
+    ...(withGroups
+      ? {
+          include: {
+            group_contacts: {
+              include: {
+                group: true,
+              },
+            },
+          },
+        }
+      : {}),
   });
 
   if (!contact || !contact.id) {
     throw new ServerError('Contact not found!', 404);
   }
 
-  return contact;
+  return mapContact(contact as ContactWithGroups);
 }
 
 export function findContactByPhone(phone: string, user_id: string) {
   return prisma.contact.findUnique({ where: { user_id_phone: { phone, user_id } } });
 }
 
-export async function createContact(data: ContactInput, user_id: string) {
+export async function createContact(payload: ContactInput, user_id: string) {
   return prisma.contact.create({
     data: {
-      ...data,
       user_id,
-      created_at: new Date(),
-      updated_at: new Date(),
+      full_name: payload.full_name,
+      phone: payload.phone,
+      email: payload.email,
+      notes: payload.notes,
     },
   });
 }
 
-export async function updateContact({ id, ...data }: Contact, user_id: string) {
-  const { phone } = await findContactById(id, user_id);
+export async function updateContact(payload: Contact, user_id: string) {
+  const { phone } = await findContactById(payload.id, user_id);
 
   return prisma.contact.update({
     where: { user_id_phone: { user_id, phone } },
     data: {
-      ...data,
-      updated_at: new Date(),
+      full_name: payload.full_name,
+      phone: payload.phone,
+      email: payload.email,
+      notes: payload.notes,
     },
   });
 }

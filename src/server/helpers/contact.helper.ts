@@ -1,8 +1,12 @@
 import { type ContactWithGroups, type Group } from '@/server/models';
 
-export function mapContact<G = Group>({ group_contacts, ...contact }: ContactWithGroups<G>) {
+export function mapContact<G = Group>(contact: ContactWithGroups<G>) {
+  if (!contact.group_contacts) {
+    return contact;
+  }
+
   return {
     ...contact,
-    groups: group_contacts.map(({ group }) => group),
+    groups: contact.group_contacts.map(({ group }) => group),
   };
 }

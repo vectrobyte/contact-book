@@ -48,15 +48,16 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    contacts      Contact[]
-    groups        Group[]
+    id             String         @id @default(cuid())
+    name           String?
+    email          String?        @unique
+    emailVerified  DateTime?
+    image          String?
+    accounts       Account[]
+    sessions       Session[]
+    contacts       Contact[]
+    groups         Group[]
+    group_contacts GroupContact[]
 }
 
 model VerificationToken {
@@ -96,10 +97,12 @@ model Group {
 
 model GroupContact {
     id         String  @id @default(cuid())
-    contact_id String
+    user_id    String
     group_id   String
-    contact    Contact @relation(fields: [contact_id], references: [id])
+    contact_id String
+    user       User    @relation(fields: [user_id], references: [id])
     group      Group   @relation(fields: [group_id], references: [id])
+    contact    Contact @relation(fields: [contact_id], references: [id])
 
-    @@unique([contact_id, group_id])
+    @@unique([user_id, group_id, contact_id])
 }
