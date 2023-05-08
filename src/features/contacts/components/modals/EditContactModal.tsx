@@ -50,10 +50,14 @@ const EditContactModal: React.FC<EditContactModalProps> = ({
     >
       <ContactForm
         ref={formRef}
-        contact={{
-          ...contact,
-          group_ids: (contact.groups || []).map(({ id }) => id),
-        }}
+        contact={
+          visible
+            ? {
+                ...contact,
+                group_ids: (contact.groups || []).map(({ id }) => id),
+              }
+            : ({} as ContactInput)
+        }
         onSubmit={handleFormSubmit}
         onCancel={handleClose}
       />
