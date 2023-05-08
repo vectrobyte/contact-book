@@ -2,19 +2,15 @@ import { getSession } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { type PageParams } from '@/@types';
 import { GroupActions, GroupsSelector } from '@/features/groups/store/groups.slice';
-import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
-import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';
 import { useAppDispatch, useAppSelector } from '@/lib/providers/StoreProvider';
 import { type Group, type GroupInput, type GroupWithCount } from '@/server/models';
 
 export const useGroups = () => {
   const request = useRequest();
-  const { query, setQuery, ready } = useQuery<PageParams>();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { groups } = useAppSelector(GroupsSelector);
   const dispatch = useAppDispatch();
 
@@ -24,7 +20,6 @@ export const useGroups = () => {
       const { data: groups } = await request<GroupWithCount[]>({
         url: 'groups/list',
         method: 'GET',
-        params: query,
       });
 
       dispatch(GroupActions.setList(groups));
@@ -36,7 +31,7 @@ export const useGroups = () => {
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query]);
+  }, []);
 
   const createGroup = useCallback(
     async (payload: GroupInput) => {
@@ -88,16 +83,8 @@ export const useGroups = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useAfterLoad(async () => {
-    if (ready) {
-      await listGroups();
-    }
-  }, [query, ready]);
-
   return {
     loading,
-    query,
-    setQuery,
     groups,
     listGroups,
     updateGroup,

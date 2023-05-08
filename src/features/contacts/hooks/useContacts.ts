@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 
 import { type PageParams, type PaginatedResult } from '@/@types';
 import { ContactActions, ContactsSelector } from '@/features/contacts/store/contacts.slice';
-import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useQuery } from '@/lib/hooks/useQuery';
 import { useRequest } from '@/lib/hooks/useRequest';
 import { useAppDispatch, useAppSelector } from '@/lib/providers/StoreProvider';
@@ -13,7 +12,7 @@ import { type Contact, type ContactInput, type ContactWithGroups } from '@/serve
 export const useContacts = () => {
   const request = useRequest();
   const { query, setQuery, ready } = useQuery<PageParams>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const { contacts, pagination } = useAppSelector(ContactsSelector);
   const dispatch = useAppDispatch();
@@ -87,12 +86,6 @@ export const useContacts = () => {
     dispatch(ContactActions.delete(contactToDelete));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useAfterLoad(async () => {
-    if (ready) {
-      await listContacts();
-    }
-  }, [query, ready]);
 
   return {
     loading,

@@ -11,6 +11,7 @@ import EditGroupModal from '@/features/groups/components/modals/EditGroupModal';
 import { useGroups } from '@/features/groups/hooks/useGroups';
 import SideNav from '@/layouts/app-layout/components/side-nav/SideNav';
 import { MODAL_STORE_ACTIONS } from '@/lib/context/modals';
+import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useModals } from '@/lib/providers/ModalProvider';
 import { type Contact, type ContactWithGroups, type Group } from '@/server/models';
 
@@ -20,7 +21,7 @@ type InitializerProps = React.HTMLAttributes<HTMLElement> & {
 };
 
 const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen }) => {
-  const { groups, createGroup, updateGroup, dropGroup } = useGroups();
+  const { groups, listGroups, createGroup, updateGroup, dropGroup } = useGroups();
 
   const [modalState, modalDispatch] = useModals();
   const { contacts, createContact, updateContact, dropContact } = useContacts();
@@ -52,6 +53,12 @@ const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen
       clearTimeout(timeout);
     };
   }, [modalDispatch]);
+
+  useAfterLoad(async () => {
+    if (!contacts.length) {
+      await listGroups();
+    }
+  }, [contacts]);
 
   return (
     <>

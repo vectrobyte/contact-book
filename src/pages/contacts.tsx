@@ -6,9 +6,16 @@ import Pagination from '@/components/Pagination';
 import ContactTable from '@/features/contacts/components/ContactTable';
 import { useContacts } from '@/features/contacts/hooks/useContacts';
 import WithAuth from '@/lib/hoc/WithAuth';
+import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 
 const ContactsPage: NextPage = () => {
-  const { contacts, loading, pagination, setQuery } = useContacts();
+  const { contacts, loading, listContacts, pagination, setQuery } = useContacts();
+
+  useAfterLoad(async () => {
+    if (!contacts.length) {
+      await listContacts();
+    }
+  }, [contacts]);
 
   return (
     <>
