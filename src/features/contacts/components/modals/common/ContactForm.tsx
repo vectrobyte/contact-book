@@ -36,7 +36,7 @@ const ContactForm: React.ForwardRefRenderFunction<ContactFormRef, ContactFormPro
   ref
 ) => {
   const [submitting, setSubmitting] = useState(false);
-  const { groups } = useGroups();
+  const { groups, listGroups } = useGroups();
 
   const groupOptions = useMemo(
     () =>
@@ -67,6 +67,12 @@ const ContactForm: React.ForwardRefRenderFunction<ContactFormRef, ContactFormPro
   const handleFormSubmit = (data: ContactInput) => {
     setSubmitting(true);
     onSubmit(data)
+      .then(() => {
+        // check if the groups were changed or not
+        if (JSON.stringify(contact?.group_ids || []) !== JSON.stringify(data.group_ids)) {
+          void listGroups();
+        }
+      })
       .catch((err: RequestError<ContactInput>) => {
         if (!err.response) {
           throw err;
