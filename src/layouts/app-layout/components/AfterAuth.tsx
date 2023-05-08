@@ -24,7 +24,7 @@ const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen
   const { groups, listGroups, createGroup, updateGroup, dropGroup } = useGroups();
 
   const [modalState, modalDispatch] = useModals();
-  const { contacts, createContact, updateContact, dropContact } = useContacts();
+  const { contacts, listContacts, createContact, updateContact, dropContact } = useContacts();
 
   function setTargetContact(contact: Contact) {
     modalDispatch({ type: MODAL_STORE_ACTIONS.setTargetContact, payload: contact });
@@ -102,7 +102,10 @@ const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen
         visible={modalState.isEditGroupModalOpen}
         group={modalState.targetGroup as Group}
         onSubmit={updateGroup}
-        onSuccess={() => {
+        onSuccess={(group) => {
+          if (group.label !== modalState.targetGroup.label) {
+            void listContacts();
+          }
           clearTargetGroup();
         }}
         onClose={() => {
@@ -116,6 +119,7 @@ const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen
         group={modalState.targetGroup as Group}
         onSubmit={dropGroup}
         onSuccess={() => {
+          void listContacts();
           clearTargetGroup();
         }}
         onClose={() => {
@@ -169,6 +173,9 @@ const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen
         contact={modalState.targetContact as Contact}
         onSubmit={dropContact}
         onSuccess={() => {
+          if (modalState.targetContact.groups.length) {
+            void listGroups();
+          }
           clearTargetContact();
           modalDispatch({ type: MODAL_STORE_ACTIONS.toggleViewContactModal, payload: false });
         }}

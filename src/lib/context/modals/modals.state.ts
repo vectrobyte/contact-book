@@ -1,7 +1,7 @@
-import { type Contact, type Group } from '@/server/models';
+import { type ContactWithGroups, type Group } from '@/server/models';
 
 export type ModalStore = {
-  targetContact: Partial<Contact>;
+  targetContact: Partial<ContactWithGroups>;
   isAddContactModalOpen: boolean;
   isEditContactModalOpen: boolean;
   isDeleteContactModalOpen: boolean;
