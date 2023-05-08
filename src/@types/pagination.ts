@@ -10,6 +10,7 @@ export type PageParams = Partial<{
   page: number;
   size: number;
   keyword?: string;
+  group_id?: string;
 }>;
 
 export type PaginatedResult<T> = {

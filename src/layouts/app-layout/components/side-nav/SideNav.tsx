@@ -13,7 +13,6 @@ import { type Contact, type Group, type GroupWithCount } from '@/server/models';
 
 type SideNavProps = {
   groups: GroupWithCount[];
-  contacts: Contact[];
   isSidenavOpen: boolean;
   className?: string;
   style?: CSSProperties;
@@ -27,7 +26,6 @@ const navbarHeight = '80px';
 const SideNav: React.FC<SideNavProps> = ({
   className,
   groups,
-  contacts,
   isSidenavOpen,
   onOpenAddGroup,
   onOpenEditGroup,
@@ -85,9 +83,6 @@ const SideNav: React.FC<SideNavProps> = ({
               label="Contacts"
               active={router.asPath === ROUTE_PATHS.contacts}
               href={ROUTE_PATHS.contacts}
-              after={
-                Boolean(contacts.length) && <p className="pr-6 leading-none">{contacts.length}</p>
-              }
               onClick={closeNavbar}
             />
           </li>

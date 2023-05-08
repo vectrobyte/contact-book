@@ -3,20 +3,17 @@ import { toast } from 'react-toastify';
 
 import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
 import { useRequest } from '@/lib/hooks/useRequest';
-import { type ContactWithGroups, type GroupWithContacts } from '@/server/models';
+import { type GroupWithContacts } from '@/server/models';
 
-export const useGroup = (groupId: string) => {
+export const useGetGroup = (groupId: string) => {
   const request = useRequest();
   const [loading, setLoading] = useState(true);
   const [group, setGroup] = useState<Partial<GroupWithContacts>>({});
-  const [contacts, setContacts] = useState<ContactWithGroups[]>([]);
 
-  const loadGroupWithContacts = useCallback(async () => {
+  const getGroup = useCallback(async () => {
     setLoading(true);
     try {
-      const {
-        data: { contacts: groupContacts, ...groupObj },
-      } = await request<GroupWithContacts>({
+      const { data: groupObj } = await request<GroupWithContacts>({
         url: `groups/get`,
         method: 'GET',
         params: {
@@ -25,7 +22,6 @@ export const useGroup = (groupId: string) => {
       });
 
       setGroup(groupObj);
-      setContacts(groupContacts as ContactWithGroups[]);
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -37,12 +33,11 @@ export const useGroup = (groupId: string) => {
   }, [groupId]);
 
   useAfterLoad(async () => {
-    await loadGroupWithContacts();
+    await getGroup();
   }, [groupId]);
 
   return {
     group,
-    contacts,
     loading,
   };
 };

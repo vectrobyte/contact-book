@@ -8,12 +8,10 @@ import {
   useStore as useReduxStore,
 } from 'react-redux';
 
-import ContactsSlice from '@/features/contacts/store/contacts.slice';
 import GroupsSlice from '@/features/groups/store/groups.slice';
 
 const store = configureStore({
   reducer: {
-    contacts: ContactsSlice,
     groups: GroupsSlice,
   },
 });

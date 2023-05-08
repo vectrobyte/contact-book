@@ -2,20 +2,16 @@ import { type NextPage } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
+import { type PageParams } from '@/@types';
 import Pagination from '@/components/Pagination';
 import ContactTable from '@/features/contacts/components/ContactTable';
 import { useContacts } from '@/features/contacts/hooks/useContacts';
 import WithAuth from '@/lib/hoc/WithAuth';
-import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
+import { useQuery } from '@/lib/hooks/useQuery';
 
 const ContactsPage: NextPage = () => {
-  const { contacts, loading, listContacts, pagination, setQuery } = useContacts();
-
-  useAfterLoad(async () => {
-    if (!contacts.length) {
-      await listContacts();
-    }
-  }, [contacts]);
+  const { query, setQuery } = useQuery<PageParams>();
+  const { contacts, loading, pagination } = useContacts(query);
 
   return (
     <>

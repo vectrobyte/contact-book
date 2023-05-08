@@ -2,20 +2,16 @@ import { getSession } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { type PageParams, type PaginatedResult } from '@/@types';
-import { ContactActions, ContactsSelector } from '@/features/contacts/store/contacts.slice';
-import { useQuery } from '@/lib/hooks/useQuery';
+import { type PageParams, type PaginatedResult, type PaginationMeta } from '@/@types';
+import { DEFAULT_PAGINATION_META } from '@/lib/configs';
 import { useRequest } from '@/lib/hooks/useRequest';
-import { useAppDispatch, useAppSelector } from '@/lib/providers/StoreProvider';
 import { type Contact, type ContactInput, type ContactWithGroups } from '@/server/models';
 
-export const useContacts = () => {
+export const useContacts = (query: PageParams) => {
   const request = useRequest();
-  const { query, setQuery, ready } = useQuery<PageParams>();
-  const [loading, setLoading] = useState(false);
-
-  const { contacts, pagination } = useAppSelector(ContactsSelector);
-  const dispatch = useAppDispatch();
+  const [contacts, setContacts] = useState<ContactWithGroups[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [pagination, setPagination] = useState<PaginationMeta>(DEFAULT_PAGINATION_META);
 
   const listContacts = useCallback(async () => {
     setLoading(true);
@@ -26,7 +22,10 @@ export const useContacts = () => {
         params: query,
       });
 
-      dispatch(ContactActions.setPaginatedContacts(paginatedContacts));
+      if (paginatedContacts) {
+        setContacts(paginatedContacts.data);
+        setPagination(paginatedContacts.meta);
+      }
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -50,7 +49,7 @@ export const useContacts = () => {
         },
       });
 
-      dispatch(ContactActions.add(newContact));
+      setContacts((prevState) => [newContact, ...prevState]);
       return newContact;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -71,7 +70,11 @@ export const useContacts = () => {
       },
     });
 
-    dispatch(ContactActions.update(updatedContact));
+    setContacts((prevState) =>
+      prevState.map((contact) =>
+        contact.id === updatedContact.id ? { ...contact, ...updateContact } : contact
+      )
+    );
     return updatedContact;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -83,14 +86,12 @@ export const useContacts = () => {
       params: { id: contactToDelete.id },
     });
 
-    dispatch(ContactActions.delete(contactToDelete));
+    setContacts((prevState) => prevState.filter((contact) => contactToDelete.id !== contact.id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
     loading,
-    query,
-    setQuery,
     contacts,
     pagination,
     listContacts,

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 
+import { type PageParams } from '@/@types';
 import CreateContactModal from '@/features/contacts/components/modals/CreateContactModal';
 import DeleteContactModal from '@/features/contacts/components/modals/DeleteContactModal';
 import EditContactModal from '@/features/contacts/components/modals/EditContactModal';
@@ -12,6 +13,7 @@ import { useGroups } from '@/features/groups/hooks/useGroups';
 import SideNav from '@/layouts/app-layout/components/side-nav/SideNav';
 import { MODAL_STORE_ACTIONS } from '@/lib/context/modals';
 import { useAfterLoad } from '@/lib/hooks/useAfterLoad';
+import { useQuery } from '@/lib/hooks/useQuery';
 import { useModals } from '@/lib/providers/ModalProvider';
 import { type Contact, type ContactWithGroups, type Group } from '@/server/models';
 
@@ -21,10 +23,11 @@ type InitializerProps = React.HTMLAttributes<HTMLElement> & {
 };
 
 const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen }) => {
+  const { query } = useQuery<PageParams>();
   const { groups, listGroups, createGroup, updateGroup, dropGroup } = useGroups();
 
   const [modalState, modalDispatch] = useModals();
-  const { contacts, listContacts, createContact, updateContact, dropContact } = useContacts();
+  const { listContacts, createContact, updateContact, dropContact } = useContacts(query);
 
   function setTargetContact(contact: Contact) {
     modalDispatch({ type: MODAL_STORE_ACTIONS.setTargetContact, payload: contact });
@@ -55,16 +58,13 @@ const AfterAuth: React.FC<InitializerProps> = ({ isSidenavOpen, setIsSidenavOpen
   }, [modalDispatch]);
 
   useAfterLoad(async () => {
-    if (!contacts.length) {
-      await listGroups();
-    }
-  }, [contacts]);
+    await listGroups();
+  }, []);
 
   return (
     <>
       <SideNav
         groups={groups}
-        contacts={contacts}
         isSidenavOpen={isSidenavOpen}
         className={`${isSidenavOpen ? 'left-0 ease-in' : '-left-72 ease-out'}`}
         onOpenCreateContactModal={() => {

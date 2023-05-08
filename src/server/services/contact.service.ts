@@ -7,15 +7,34 @@ import { type Contact, type ContactInput, type ContactWithGroups } from '@/serve
 
 export async function listContacts(
   params: PageParams,
-  user_id: string
+  user_id: string,
+  group_id: string
 ): Promise<PaginatedResult<Contact>> {
   const { page = 1, size = DEFAULT_PAGE_SIZE, keyword } = params;
 
   const skip = (page - 1) * size;
 
-  const where = keyword
-    ? { user_id, OR: [{ full_name: { contains: keyword } }, { email: { contains: keyword } }] }
-    : { user_id };
+  let where: Record<string, any> = { user_id };
+
+  if (keyword) {
+    where = {
+      ...where,
+      user_id,
+      OR: [{ full_name: { contains: keyword } }, { email: { contains: keyword } }],
+    };
+  }
+
+  if (group_id?.length) {
+    where = {
+      ...where,
+      group_contacts: {
+        some: {
+          user_id,
+          group_id,
+        },
+      },
+    };
+  }
 
   const count = await prisma.contact.count({ where });
 
