@@ -2,16 +2,18 @@ import { getSession } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { type PageParams, type PaginatedResult, type PaginationMeta } from '@/@types';
-import { DEFAULT_PAGINATION_META } from '@/lib/configs';
+import { type PageParams, type PaginatedResult } from '@/@types';
+import { ContactActions, ContactsSelector } from '@/features/contacts/store/contacts.slice';
 import { useRequest } from '@/lib/hooks/useRequest';
+import { useAppDispatch, useAppSelector } from '@/lib/providers/StoreProvider';
 import { type Contact, type ContactInput, type ContactWithGroups } from '@/server/models';
 
 export const useContacts = (query: PageParams) => {
   const request = useRequest();
-  const [contacts, setContacts] = useState<ContactWithGroups[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [pagination, setPagination] = useState<PaginationMeta>(DEFAULT_PAGINATION_META);
+  const [loading, setLoading] = useState(true);
+
+  const { contacts, pagination } = useAppSelector(ContactsSelector);
+  const dispatch = useAppDispatch();
 
   const listContacts = useCallback(async () => {
     setLoading(true);
@@ -22,10 +24,7 @@ export const useContacts = (query: PageParams) => {
         params: query,
       });
 
-      if (paginatedContacts) {
-        setContacts(paginatedContacts.data);
-        setPagination(paginatedContacts.meta);
-      }
+      dispatch(ContactActions.setPaginatedContacts(paginatedContacts));
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -49,7 +48,7 @@ export const useContacts = (query: PageParams) => {
         },
       });
 
-      setContacts((prevState) => [newContact, ...prevState]);
+      dispatch(ContactActions.add(newContact));
       return newContact;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,11 +69,7 @@ export const useContacts = (query: PageParams) => {
       },
     });
 
-    setContacts((prevState) =>
-      prevState.map((contact) =>
-        contact.id === updatedContact.id ? { ...contact, ...updateContact } : contact
-      )
-    );
+    dispatch(ContactActions.update(updatedContact));
     return updatedContact;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -86,7 +81,7 @@ export const useContacts = (query: PageParams) => {
       params: { id: contactToDelete.id },
     });
 
-    setContacts((prevState) => prevState.filter((contact) => contactToDelete.id !== contact.id));
+    dispatch(ContactActions.delete(contactToDelete));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
